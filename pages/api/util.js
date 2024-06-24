@@ -1,0 +1,1 @@
+export const SERVER_HOST = "https://occipital-cqaymsy2sa-uc.a.run.app";
