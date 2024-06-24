@@ -3,54 +3,74 @@ import Layout from "../components/Layout";
 import Title from "../components/Title";
 import Router from "next/router";
 
+import AsyncSelect from "react-select/async";
+
+const DropdownIndicator = () => {
+  return null;
+};
+
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    border: state.isFocused ? "1px solid #ccc" : "1px solid #ccc",
+    boxShadow: "none",
+    "&:hover": {
+      border: "1px solid #ccc",
+    },
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    padding: 0,
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    display: "none",
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    display: "none",
+  }),
+};
+
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [sourceId, setSourceId] = useState("");
   const [content, setContent] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const search = async (query: string) => {
+  const [selectedOption, setSelectedOption] = useState(null);
+  const handleChange = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleClear = () => {
+    setSelectedOption(null);
+  };
+
+  const noOptionsMessage = ({ inputValue }) => {
+    if (inputValue.trim() === "") {
+      return "Start typing..";
+    }
+    return "No songs found";
+  };
+
+  const loadOptions = async (inputValue) => {
     try {
       const resp = await fetch(`/api/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query: inputValue }),
       });
 
       const data = await resp.json();
-      setSearchResults(data.results);
+      return data.results.map((item) => ({
+        value: item.id,
+        label: `${item.artist} - ${item.name}`,
+      }));
     } catch (error) {
       console.error(error);
+      return [];
     }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setTitle(value);
-
-    // Clear previous timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // Set new timeout
-    timeoutRef.current = setTimeout(() => {
-      if (value.length > 2) {
-        search(value);
-        setShowDropdown(true);
-      } else {
-        setShowDropdown(false);
-      }
-    }, 500);
-  };
-
-  const selectResult = (result: any) => {
-    console.log("selecting result", result);
-    setTitle(result.title);
-    setShowDropdown(false);
   };
 
   const submitData = async (e: React.SyntheticEvent) => {
@@ -73,30 +93,20 @@ const Draft: React.FC = () => {
       <div className="page bg-white py-4">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
-
-          <input
-            ref={inputRef}
-            autoFocus
-            onChange={handleInputChange}
-            placeholder="Search for a song"
-            type="text"
-            value={title}
-            className="w-full px-4 py-2 mt-4 rounded-md border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          />
-
-          {showDropdown && searchResults.length > 0 && (
-            <ul className="absolute bg-white shadow-md w-full mt-1 rounded-md z-10">
-              {searchResults.map((result) => (
-                <li
-                  key={result.id}
-                  onClick={() => selectResult(result)}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  {result.name}
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="py-4">
+            <AsyncSelect
+              value={selectedOption}
+              onChange={handleChange}
+              loadOptions={loadOptions}
+              defaultOptions={false}
+              isClearable={true}
+              placeholder="Search for a song..."
+              noOptionsMessage={noOptionsMessage}
+              cacheOptions
+              components={{ DropdownIndicator }}
+              styles={customStyles}
+            />
+          </div>
 
           <textarea
             cols={50}
