@@ -82,7 +82,7 @@ const Header: React.FC = () => {
           {session.user.name.toLowerCase()}
         </p>
         <Link href="/create" legacyBehavior>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <button className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             <PlusIcon className="h-6 w-6 text-white" />
           </button>
         </Link>

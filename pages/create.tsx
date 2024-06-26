@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import debounce from "lodash/debounce";
 import Layout from "../components/Layout";
 import Title from "../components/Title";
 import Router from "next/router";
@@ -73,6 +74,8 @@ const Draft: React.FC = () => {
     }
   };
 
+  const debouncedLoadOptions = debounce(loadOptions, 500);
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
@@ -97,7 +100,7 @@ const Draft: React.FC = () => {
             <AsyncSelect
               value={selectedOption}
               onChange={handleChange}
-              loadOptions={loadOptions}
+              loadOptions={debouncedLoadOptions}
               defaultOptions={false}
               isClearable={true}
               placeholder="Search for a song..."
