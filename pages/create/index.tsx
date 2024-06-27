@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import debounce from "lodash/debounce";
-import Layout from "../components/Layout";
-import Title from "../components/Title";
+import Layout from "../../components/Layout";
+import Title from "../../components/Title";
+import Image from "next/image";
 import Router from "next/router";
 
 import AsyncSelect from "react-select/async";
@@ -9,29 +10,7 @@ import AsyncSelect from "react-select/async";
 const DropdownIndicator = () => {
   return null;
 };
-
-const customStyles = {
-  control: (provided, state) => ({
-    ...provided,
-    border: state.isFocused ? "1px solid #ccc" : "1px solid #ccc",
-    boxShadow: "none",
-    "&:hover": {
-      border: "1px solid #ccc",
-    },
-  }),
-  indicatorsContainer: (provided) => ({
-    ...provided,
-    padding: 0,
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    display: "none",
-  }),
-  indicatorSeparator: (provided) => ({
-    ...provided,
-    display: "none",
-  }),
-};
+import styles from "./styles";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -66,7 +45,14 @@ const Draft: React.FC = () => {
       const data = await resp.json();
       return data.results.map((item) => ({
         value: item.id,
-        label: `${item.artist} - ${item.name}`,
+        label: (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Image src={item.thumb} alt={item.name} width={32} height={32} />
+            <span
+              style={{ marginLeft: "10px" }}
+            >{`${item.artist} - ${item.name}`}</span>
+          </div>
+        ),
       }));
     } catch (error) {
       console.error(error);
@@ -79,7 +65,7 @@ const Draft: React.FC = () => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content };
+      const body = { title, content, sourceId: selectedOption };
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,6 +76,8 @@ const Draft: React.FC = () => {
       console.error(error);
     }
   };
+
+  console.log({ selectedOption });
 
   return (
     <Layout>
@@ -107,7 +95,7 @@ const Draft: React.FC = () => {
               noOptionsMessage={noOptionsMessage}
               cacheOptions
               components={{ DropdownIndicator }}
-              styles={customStyles}
+              styles={styles}
             />
           </div>
 
