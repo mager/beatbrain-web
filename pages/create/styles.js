@@ -5,6 +5,7 @@ export default {
         boxShadow: "none",
         "&:hover": {
             border: "1px solid #ccc",
+            cursor: "text",
         },
         paddingTop: "8px",
         paddingBottom: "8px",
@@ -20,5 +21,11 @@ export default {
     indicatorSeparator: (provided) => ({
         ...provided,
         display: "none",
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        "&:hover": {
+            cursor: "pointer",
+        },
     }),
 };

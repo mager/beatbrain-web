@@ -82,14 +82,14 @@ const Header: React.FC = () => {
           {session.user.name.toLowerCase()}
         </p>
         <Link href="/create" legacyBehavior>
-          <button className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             <PlusIcon className="h-6 w-6 text-white" />
           </button>
         </Link>
         <button
           title="Logout"
           onClick={() => signOut()}
-          className="ml-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="ml-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-white" />
         </button>
@@ -98,7 +98,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav className="flex bg-green-300 p-8 items-center">
+    <nav className="flex bg-indigo-300 px-8 py-4 mb-4 items-center">
       {left}
       {right}
     </nav>

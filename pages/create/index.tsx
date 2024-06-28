@@ -14,24 +14,19 @@ import styles from "./styles";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
-  const [sourceId, setSourceId] = useState("");
   const [content, setContent] = useState("");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [sourceId, setSourceId] = useState(null);
   const handleChange = (option) => {
-    setSelectedOption(option);
-  };
-
-  const handleClear = () => {
-    setSelectedOption(null);
+    setSourceId(option);
   };
 
   const noOptionsMessage = ({ inputValue }) => {
-    if (inputValue.trim() === "") {
-      return "Start typing..";
+    if (inputValue.trim() !== "") {
+      return "No songs found";
     }
-    return "No songs found";
+    return null;
   };
 
   const loadOptions = async (inputValue) => {
@@ -60,12 +55,12 @@ const Draft: React.FC = () => {
     }
   };
 
-  const debouncedLoadOptions = debounce(loadOptions, 500);
+  // const debouncedLoadOptions = debounce(loadOptions, 300);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content, sourceId: selectedOption };
+      const body = { title, content, sourceId };
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,7 +72,7 @@ const Draft: React.FC = () => {
     }
   };
 
-  console.log({ selectedOption });
+  console.log({ sourceId });
 
   return (
     <Layout>
@@ -86,9 +81,9 @@ const Draft: React.FC = () => {
           <Title>Share a beat</Title>
           <div className="py-4">
             <AsyncSelect
-              value={selectedOption}
+              value={sourceId}
               onChange={handleChange}
-              loadOptions={debouncedLoadOptions}
+              loadOptions={loadOptions}
               defaultOptions={false}
               isClearable={true}
               placeholder="Search for a song..."
