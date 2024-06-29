@@ -71,7 +71,7 @@ const Header: React.FC = () => {
       <div className="ml-auto">
         <Link href="/api/auth/signin" legacyBehavior>
           <a className="border border-black px-4 py-2 rounded-md text-black hover:bg-gray-100">
-            Log in
+            Login
           </a>
         </Link>
       </div>

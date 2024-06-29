@@ -1,16 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import debounce from "lodash/debounce";
+import React, { useState, useRef } from "react";
 import Layout from "../../components/Layout";
+import Select from "../../components/Select";
 import Title from "../../components/Title";
 import Image from "next/image";
 import Router from "next/router";
-
-import AsyncSelect from "react-select/async";
-
-const DropdownIndicator = () => {
-  return null;
-};
-import styles from "./styles";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -55,8 +48,6 @@ const Draft: React.FC = () => {
     }
   };
 
-  // const debouncedLoadOptions = debounce(loadOptions, 300);
-
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
@@ -79,20 +70,12 @@ const Draft: React.FC = () => {
       <div className="page bg-white py-4">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
-          <div className="py-4">
-            <AsyncSelect
-              value={sourceId}
-              onChange={handleChange}
-              loadOptions={loadOptions}
-              defaultOptions={false}
-              isClearable={true}
-              placeholder="Search for a song..."
-              noOptionsMessage={noOptionsMessage}
-              cacheOptions
-              components={{ DropdownIndicator }}
-              styles={styles}
-            />
-          </div>
+          <Select
+            sourceId={sourceId}
+            handleChange={handleChange}
+            loadOptions={loadOptions}
+            noOptionsMessage={noOptionsMessage}
+          />
 
           <textarea
             cols={50}
