@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowRightStartOnRectangleIcon,
-  PlusIcon,
+  Cog8ToothIcon,
+  PaintBrushIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
-
+import Dropdown from "./Dropdown";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 
@@ -14,7 +14,11 @@ const Header: React.FC = () => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   const { data: session, status } = useSession();
 
   let left = (
@@ -76,29 +80,38 @@ const Header: React.FC = () => {
 
   if (session) {
     right = (
-      <div className="ml-auto flex items-center">
+      <div className="ml-auto flex items-center relative">
         <UserIcon className="h-6 w-6 mr-2" />
         <p className="text-lg font-bold mr-4">
           {session.user.name.toLowerCase()}
         </p>
         <Link href="/create" legacyBehavior>
           <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            <PlusIcon className="h-6 w-6 text-white" />
+            <PaintBrushIcon className="h-6 w-6 text-white" />
           </button>
         </Link>
         <button
-          title="Logout"
-          onClick={() => signOut()}
+          title="Menu"
+          onClick={toggleDropdown}
           className="ml-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-white" />
+          <Cog8ToothIcon className="h-6 w-6 text-white" />
         </button>
+        <Dropdown isOpen={isOpen}>
+          <a
+            onClick={() => signOut()}
+            className="block px-4 py-2 text-sm text-black hover:text-gray-500 cursor-pointer"
+            role="menuitem"
+          >
+            Logout
+          </a>
+        </Dropdown>
       </div>
     );
   }
 
   return (
-    <nav className="flex bg-indigo-300 px-8 py-4 mb-4 items-center">
+    <nav className="flex bg-indigo-400 px-8 py-4 mb-4 items-center">
       {left}
       {right}
     </nav>

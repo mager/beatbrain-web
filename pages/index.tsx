@@ -32,7 +32,7 @@ const Blog: React.FC<Props> = (props) => {
     <Layout>
       <div className="py-4">
         <Title>
-          <span className="text-4xl font-mono">beatbrain</span>{" "}
+          <span className="text-5xl font-mono">beatbrain</span>{" "}
           <span className="text-xl">
             Share and discover your favorite tunes
           </span>
