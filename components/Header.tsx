@@ -26,14 +26,14 @@ const Header: React.FC = () => {
       <div>
         <Link href="/" legacyBehavior>
           <Image
-            src="/images/beatbrain-notes.png"
+            src="/images/beatbrain-notes-head.png"
             width={64}
             height={60}
             alt="Beatbrain"
           />
         </Link>
       </div>
-      <div>
+      <div className="pb-4">
         <Link href="/feed" legacyBehavior>
           <a
             className="ml-4 text-black hover:text-gray-500"
@@ -44,14 +44,17 @@ const Header: React.FC = () => {
         </Link>
       </div>
       {session && (
-        <Link href="/drafts" legacyBehavior>
-          <a
-            className="ml-4 text-black hover:text-gray-500"
-            data-active={isActive("/drafts")}
-          >
-            Drafts
-          </a>
-        </Link>
+        <div className="pb-4">
+          {" "}
+          <Link href="/drafts" legacyBehavior>
+            <a
+              className="ml-4 text-black hover:text-gray-500"
+              data-active={isActive("/drafts")}
+            >
+              Drafts
+            </a>
+          </Link>
+        </div>
       )}
     </div>
   );
@@ -80,7 +83,7 @@ const Header: React.FC = () => {
 
   if (session) {
     right = (
-      <div className="ml-auto flex items-center relative">
+      <div className="ml-auto flex items-center relative pb-4">
         <UserIcon className="h-6 w-6 mr-2" />
         <p className="text-lg font-bold mr-4">
           {session.user.name.toLowerCase()}
@@ -111,7 +114,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav className="flex bg-indigo-400 px-8 py-4 mb-4 items-center">
+    <nav className="flex bg-indigo-400 px-8 pt-4 mb-4 items-center">
       {left}
       {right}
     </nav>
