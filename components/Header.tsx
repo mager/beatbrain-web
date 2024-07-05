@@ -23,7 +23,7 @@ const Header: React.FC = () => {
 
   let left = (
     <div className="flex justify-center items-center">
-      <div>
+      <div className="cursor-pointer">
         <Link href="/" legacyBehavior>
           <Image
             src="/images/beatbrain-notes-head.png"
