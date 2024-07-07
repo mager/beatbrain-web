@@ -60,7 +60,7 @@ const Header = () => {
       <div className="pb-4">
         <Link href="/feed" legacyBehavior>
           <a
-            className="ml-4 text-black hover:text-gray-500"
+            className="ml-4 text-black hover:text-white"
             data-active={isActive("/feed")}
           >
             Feed
@@ -72,7 +72,7 @@ const Header = () => {
           {" "}
           <Link href="/drafts" legacyBehavior>
             <a
-              className="ml-4 text-black hover:text-gray-500"
+              className="ml-4 text-black hover:text-white"
               data-active={isActive("/drafts")}
             >
               Drafts
@@ -116,14 +116,14 @@ const Header = () => {
           {session.user.name.toLowerCase()}
         </p>
         <Link href="/create" legacyBehavior>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <button className="hover:bg-gray-600 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline">
             <PaintBrushIcon className="h-6 w-6 text-white" />
           </button>
         </Link>
         <button
           title="Menu"
           onClick={toggleDropdown}
-          className="ml-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="hover:bg-gray-600 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
         >
           <Cog8ToothIcon className="h-6 w-6 text-white" />
         </button>
@@ -140,7 +140,7 @@ const Header = () => {
     );
   }
   return (
-    <nav className={classNames(colors[random], "flex", "px-8", "pt-4", "mb-4")}>
+    <nav className="bg-purple-500 flex px-8 pt-4 mb-4">
       {left}
       {right}
     </nav>
