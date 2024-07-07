@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   Cog8ToothIcon,
   PaintBrushIcon,
+  ArrowRightEndOnRectangleIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -73,9 +74,12 @@ const Header: React.FC = () => {
     right = (
       <div className="ml-auto">
         <Link href="/api/auth/signin" legacyBehavior>
-          <a className="border border-black px-4 py-2 rounded-md text-black hover:bg-gray-100">
-            Login
-          </a>
+          <button
+            title="Login"
+            className="hover:bg-gray-300 font-bold p-2 rounded focus:outline-none focus:shadow-outline"
+          >
+            <ArrowRightEndOnRectangleIcon className="h-6 w-6 text-black" />
+          </button>
         </Link>
       </div>
     );
@@ -114,7 +118,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav className="flex bg-indigo-400 px-8 pt-4 mb-4 items-center">
+    <nav className="flex bg-green-400 px-8 pt-4 mb-4">
       {left}
       {right}
     </nav>
