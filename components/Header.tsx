@@ -1,22 +1,45 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import {
   Cog8ToothIcon,
   PaintBrushIcon,
   ArrowRightEndOnRectangleIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
-import Image from "next/image";
-import Dropdown from "./Dropdown";
-import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import classNames from "classnames";
 
-const Header: React.FC = () => {
+import Dropdown from "@components/Dropdown";
+
+const Header = () => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
   const [isOpen, setIsOpen] = useState(false);
-
+  const colors = [
+    "bg-red-500",
+    "bg-pink-500",
+    "bg-purple-500",
+    "bg-deep-purple-500",
+    "bg-indigo-500",
+    "bg-blue-500",
+    "bg-light-blue-500",
+    "bg-teal-500",
+    "bg-cyan-500",
+    "bg-green-500",
+    "bg-light-green-500",
+    "bg-lime-500",
+    "bg-yellow-500",
+    "bg-amber-500",
+    "bg-orange-500",
+    "bg-deep-orange-500",
+    "bg-brown-500",
+    "bg-grey-500",
+    "bg-blue-grey-500",
+  ];
+  const random = Math.floor(Math.random() * colors.length);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -88,8 +111,8 @@ const Header: React.FC = () => {
   if (session) {
     right = (
       <div className="ml-auto flex items-center relative pb-4">
-        <UserIcon className="h-6 w-6 mr-2" />
-        <p className="text-lg font-bold mr-4">
+        <UserIcon className="hidden md:block h-6 w-6 mr-2" />
+        <p className="hidden md:block text-lg font-bold mr-4">
           {session.user.name.toLowerCase()}
         </p>
         <Link href="/create" legacyBehavior>
@@ -116,9 +139,8 @@ const Header: React.FC = () => {
       </div>
     );
   }
-
   return (
-    <nav className="flex bg-green-400 px-8 pt-4 mb-4">
+    <nav className={classNames(colors[random], "flex", "px-8", "pt-4", "mb-4")}>
       {left}
       {right}
     </nav>

@@ -14,13 +14,15 @@ type Props = {
   children: ReactNode;
 };
 
-const Layout: React.FC<Props> = (props) => (
-  <div className={`${bodyFont.variable} font-sans`}>
-    <Crown />
-    <Header />
-    <main className="px-8 flex flex-col min-h-screen">{props.children}</main>
-    <Footer className="fixed bottom-0 w-full" />
-  </div>
-);
+const Layout: React.FC<Props> = (props) => {
+  return (
+    <div className={`${bodyFont.variable} font-sans`}>
+      <Crown />
+      <Header />
+      <main className="px-8 flex flex-col min-h-screen">{props.children}</main>
+      <Footer className="fixed bottom-0 w-full" />
+    </div>
+  );
+};
 
 export default Layout;

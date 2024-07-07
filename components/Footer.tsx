@@ -10,7 +10,7 @@ const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
       className={`footer flex bg-black text-white py-4 px-8 items-center ${className}`}
       {...rest}
     >
-      <div className="pr-2">beatbrain.xyz</div>
+      <div className="pr-2">beatbrain</div>
       <RocketLaunchIcon className="h-6 w-6 text-white" />
       <div className="pl-2">side project by @mager</div>
     </div>
