@@ -47,9 +47,9 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, sourceId }) => {
         isClearable={true}
         placeholder="Search for a song..."
         noOptionsMessage={noOptionsMessage}
-        cacheOptions
         components={{ DropdownIndicator }}
         styles={styles}
+        cacheOptions
       />
     </div>
   );

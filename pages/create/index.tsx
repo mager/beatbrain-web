@@ -63,8 +63,6 @@ const Draft: React.FC = () => {
     }
   };
 
-  console.log({ sourceId });
-
   return (
     <Layout>
       <div className="page bg-white py-4">
