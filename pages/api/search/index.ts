@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SERVER_HOST } from "../util";
+import { SERVER_HOST } from "@util";
 
 // POST /api/search
 // Required fields in body: query

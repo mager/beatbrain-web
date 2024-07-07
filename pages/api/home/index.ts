@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SERVER_HOST } from "../util";
+import { SERVER_HOST } from "@util";
 
 // GET /api/get_featured_tracks
 // Required fields in body: query

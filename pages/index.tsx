@@ -4,9 +4,9 @@ import Image from "next/image";
 import Layout from "../components/Layout";
 import { shuffle } from "../lib/util";
 import Title from "../components/Title";
-import type { GetFeaturedTracksResp, Track } from "../lib/types";
+import type { GetFeaturedTracksResp, Track } from "@types";
 import Link from "next/link";
-import { SERVER_HOST } from "./api/util";
+import { SERVER_HOST } from "@util";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${SERVER_HOST}/spotify/get_featured_tracks`);

@@ -5,7 +5,7 @@ type Props = {
 };
 
 const Subtitle: React.FC<Props> = ({ children }) => {
-  return <h2 className="text-2xl font-bold">{children}</h2>;
+  return <h2 className="text-xl xl:text-3xl font-bold">{children}</h2>;
 };
 
 export default Subtitle;

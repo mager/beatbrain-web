@@ -7,6 +7,7 @@ export type Track = {
 
   features: Features;
   release_date: string;
+  genres: string[];
 };
 
 export type Features = {

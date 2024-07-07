@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Fragment_Mono, Chakra_Petch } from "next/font/google";
+import { Chakra_Petch } from "next/font/google";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -7,12 +7,6 @@ export const bodyFont = Chakra_Petch({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-body",
-});
-
-export const monoFont = Fragment_Mono({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-mono",
 });
 
 type Props = {
