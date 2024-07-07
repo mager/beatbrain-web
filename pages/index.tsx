@@ -6,11 +6,10 @@ import { shuffle } from "../lib/util";
 import Title from "../components/Title";
 import type { GetFeaturedTracksResp, Track } from "../lib/types";
 import Link from "next/link";
+import { SERVER_HOST } from "./api/util";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(
-    "https://occipital-cqaymsy2sa-uc.a.run.app/spotify/get_featured_tracks",
-  );
+  const res = await fetch(`${SERVER_HOST}/spotify/get_featured_tracks`);
   const resp: GetFeaturedTracksResp = await res.json();
   return {
     props: { tracks: shuffle(resp.tracks).slice(0, 12) },
