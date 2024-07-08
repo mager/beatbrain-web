@@ -12,14 +12,12 @@ enum Source {
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-  source    Source
-  sourceId  String
+  id       Int     @id @default(autoincrement())
+  content  String?
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId Int?
+  source   Source
+  sourceId String
 }
 
 model Account {

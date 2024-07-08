@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import Layout from "../../components/Layout";
 import Select from "../../components/Select";
 import Title from "../../components/Title";
@@ -6,7 +6,6 @@ import Image from "next/image";
 import Router from "next/router";
 
 const Draft: React.FC = () => {
-  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -48,16 +47,32 @@ const Draft: React.FC = () => {
     }
   };
 
+  const debouncedLoadOptions = useCallback(
+    (inputValue, callback) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(async () => {
+        const options = await loadOptions(inputValue);
+        callback(options);
+      }, 200);
+    },
+    [loadOptions]
+  );
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content, sourceId };
+      const body = { content, sourceId: sourceId.value };
+      console.log({ body });
+
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push("/drafts");
+      await Router.push("/posts");
     } catch (error) {
       console.error(error);
     }
@@ -71,30 +86,27 @@ const Draft: React.FC = () => {
           <Select
             sourceId={sourceId}
             handleChange={handleChange}
-            loadOptions={loadOptions}
+            loadOptions={debouncedLoadOptions}
             noOptionsMessage={noOptionsMessage}
           />
 
-          <textarea
-            cols={50}
+          <input
             onChange={(e) => setContent(e.target.value)}
             placeholder="How does it make you feel?"
-            rows={8}
             value={content}
-            className="w-full px-4 py-2 mt-4 rounded-md border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 mt-4 rounded-md border border-gray-300 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
           />
 
           <div className="flex items-center mt-4">
             <button
-              disabled={!content || !title}
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mr-4"
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mr-4"
             >
               Create
             </button>
 
             <a
-              className="text-blue-500 hover:text-blue-600 cursor-pointer"
+              className="text-green-500 hover:text-green-600 cursor-pointer"
               onClick={() => Router.push("/")}
             >
               or Cancel

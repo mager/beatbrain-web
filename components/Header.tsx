@@ -70,12 +70,12 @@ const Header = () => {
       {session && (
         <div className="pb-4">
           {" "}
-          <Link href="/drafts" legacyBehavior>
+          <Link href="/posts" legacyBehavior>
             <a
               className="ml-4 text-black hover:text-white"
-              data-active={isActive("/drafts")}
+              data-active={isActive("/posts")}
             >
-              Drafts
+              Posts
             </a>
           </Link>
         </div>

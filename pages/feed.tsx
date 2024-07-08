@@ -7,9 +7,6 @@ import Title from "../components/Title";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const feed = await prisma.post.findMany({
-    where: {
-      published: true,
-    },
     include: {
       author: {
         select: {
