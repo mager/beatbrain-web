@@ -6,7 +6,7 @@ type Props = {
 
 const GiantTitle: React.FC<Props> = ({ children }) => {
   return (
-    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2">
       {children}
     </h1>
   );

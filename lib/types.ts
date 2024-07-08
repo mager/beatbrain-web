@@ -26,7 +26,7 @@ export type Features = {
   time_signature: number;
 };
 
-export type GetFeaturedTracksResp = {
+export type RecommendedTracksResp = {
   tracks: Track[];
 };
 

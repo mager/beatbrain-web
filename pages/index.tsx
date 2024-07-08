@@ -4,13 +4,13 @@ import Image from "next/image";
 import Layout from "../components/Layout";
 import { shuffle } from "../lib/util";
 import Title from "../components/Title";
-import type { GetFeaturedTracksResp, Track } from "@types";
+import type { RecommendedTracksResp, Track } from "@types";
 import Link from "next/link";
 import { SERVER_HOST } from "@util";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${SERVER_HOST}/spotify/get_featured_tracks`);
-  const resp: GetFeaturedTracksResp = await res.json();
+  const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`);
+  const resp: RecommendedTracksResp = await res.json();
   return {
     props: { tracks: shuffle(resp.tracks).slice(0, 12) },
   };
