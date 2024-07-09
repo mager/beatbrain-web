@@ -1,16 +1,26 @@
 -- CreateEnum
-CREATE TYPE "Source" AS ENUM ('SPOTIFY');
+CREATE TYPE "Source" AS ENUM ('SPOTIFY', 'MIXCLOUD');
 
 -- CreateTable
 CREATE TABLE "Post" (
     "id" SERIAL NOT NULL,
     "content" TEXT,
-    "published" BOOLEAN NOT NULL DEFAULT false,
     "authorId" INTEGER,
-    "source" "Source" NOT NULL,
-    "sourceId" TEXT NOT NULL,
+    "trackId" INTEGER NOT NULL,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Track" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "artist" TEXT NOT NULL,
+    "source" "Source" NOT NULL,
+    "sourceId" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+
+    CONSTRAINT "Track_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -92,6 +102,9 @@ CREATE UNIQUE INDEX "verificationtokens_identifier_token_key" ON "verificationto
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Post" ADD CONSTRAINT "Post_trackId_fkey" FOREIGN KEY ("trackId") REFERENCES "Track"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

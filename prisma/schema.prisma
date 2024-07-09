@@ -9,6 +9,7 @@ datasource db {
 
 enum Source {
   SPOTIFY
+  MIXCLOUD
 }
 
 model Post {
@@ -16,8 +17,20 @@ model Post {
   content  String?
   author   User?   @relation(fields: [authorId], references: [id])
   authorId Int?
+  track    Track   @relation(fields: [trackId], references: [id])
+  trackId  Int
+}
+
+model Track {
+  id       Int    @id @default(autoincrement())
+  title    String
+  artist   String
   source   Source
   sourceId String
+  image    String
+  Post     Post[]
+
+  @@unique([source, sourceId])
 }
 
 model Account {

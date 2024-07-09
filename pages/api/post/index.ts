@@ -10,17 +10,31 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { title, content, sourceId } = req.body;
+  const { content, track } = req.body;
 
   const session = await getServerSession(req, res, options);
   if (session) {
+    // Check if a track exists
+    let trackToUpdate = await prisma.track.findUnique({
+      where: {
+        source_sourceId: {
+          source: "SPOTIFY",
+          sourceId: track.sourceId,
+        },
+      },
+    });
+
+    if (!trackToUpdate) {
+      trackToUpdate = await prisma.track.create({
+        data: track,
+      });
+    }
+
     const result = await prisma.post.create({
       data: {
-        title: title,
-        content: content,
+        content,
         author: { connect: { email: session?.user?.email } },
-        sourceId,
-        source: "SPOTIFY",
+        track: { connect: { id: trackToUpdate.id } },
       },
     });
     res.json(result);

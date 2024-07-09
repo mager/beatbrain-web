@@ -36,11 +36,11 @@ const DropdownIndicator = () => {
   return null;
 };
 
-const Select = ({ handleChange, loadOptions, noOptionsMessage, sourceId }) => {
+const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
   return (
     <div className="py-4">
       <AsyncSelect
-        value={sourceId}
+        value={option}
         onChange={handleChange}
         loadOptions={loadOptions}
         defaultOptions={false}

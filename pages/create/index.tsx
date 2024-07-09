@@ -9,9 +9,10 @@ const Draft: React.FC = () => {
   const [content, setContent] = useState("");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [sourceId, setSourceId] = useState(null);
+  const [option, setOption] = useState(null);
   const handleChange = (option) => {
-    setSourceId(option);
+    console.log({ option });
+    setOption(option);
   };
 
   const noOptionsMessage = ({ inputValue }) => {
@@ -31,7 +32,7 @@ const Draft: React.FC = () => {
 
       const data = await resp.json();
       return data.results.map((item) => ({
-        value: item.id,
+        value: item,
         label: (
           <div style={{ display: "flex", alignItems: "center" }}>
             <Image src={item.thumb} alt={item.name} width={32} height={32} />
@@ -64,8 +65,14 @@ const Draft: React.FC = () => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { content, sourceId: sourceId.value };
-      console.log({ body });
+      const track = {
+        source: "SPOTIFY",
+        sourceId: option.value.id,
+        artist: option.value.artist,
+        title: option.value.name,
+        image: option.value.thumb,
+      };
+      const body = { content, track };
 
       await fetch(`/api/post`, {
         method: "POST",
@@ -84,7 +91,7 @@ const Draft: React.FC = () => {
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
           <Select
-            sourceId={sourceId}
+            option={option}
             handleChange={handleChange}
             loadOptions={debouncedLoadOptions}
             noOptionsMessage={noOptionsMessage}
