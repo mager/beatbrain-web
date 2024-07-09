@@ -23,13 +23,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-async function publishPost(id: number): Promise<void> {
-  await fetch(`/api/publish/${id}`, {
-    method: "PUT",
-  });
-  await Router.push("/");
-}
-
 async function deletePost(id: number): Promise<void> {
   await fetch(`/api/post/${id}`, {
     method: "DELETE",
@@ -61,14 +54,6 @@ const Post: React.FC<PostProps> = (props) => {
         </div>
         {userHasValidSession && postBelongsToUser && (
           <div className="mt-6">
-            {!props.published && (
-              <button
-                onClick={() => publishPost(props.id)}
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
-              >
-                Publish
-              </button>
-            )}
             <button
               onClick={() => deletePost(props.id)}
               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

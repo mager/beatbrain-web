@@ -5,7 +5,7 @@ import Title from "../../components/Title";
 import Image from "next/image";
 import Router from "next/router";
 
-const Draft: React.FC = () => {
+const Create: React.FC = () => {
   const [content, setContent] = useState("");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -125,4 +125,4 @@ const Draft: React.FC = () => {
   );
 };
 
-export default Draft;
+export default Create;

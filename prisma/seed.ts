@@ -9,11 +9,8 @@ const userData: Prisma.UserCreateInput[] = [
     posts: {
       create: [
         {
-          title: "Test",
           content: "Test",
-          published: true,
-          source: "SPOTIFY",
-          sourceId: "5fZJQrFKWQLb7FpJXZ1g7K",
+          trackId: 1,
         },
       ],
     },
