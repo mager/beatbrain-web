@@ -9,7 +9,7 @@ import Subtitle from "@components/Subtitle";
 import Meta from "@components/Meta";
 import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
-import { SERVER_HOST } from "@util";
+import { SERVER_HOST, listToString } from "@util";
 // import { PlusIcon } from "@heroicons/react/24/solid";
 import Instrument from "@components/Instrument";
 
@@ -39,21 +39,21 @@ const Track: React.FC<Props> = ({ track }) => {
           <Meta>
             Released {formatDistanceToNow(new Date(release_date))} ago
           </Meta>
-          {genres.length && (
+          {genres.length > 0 && (
             <div className="mb-2">
               {genres.map((genre) => (
                 <Tag>{genre}</Tag>
               ))}
             </div>
           )}
-          {instruments.length && (
-            <div className="mb-2">
+          {instruments && instruments.length > 0 && (
+            <div className="mt-4 mb-2">
               {instruments.map((instrument) => (
-                <div className="flex items-center">
+                <div className="mb-2 flex items-center">
                   <div className="mr-2">
                     <Instrument name={instrument.name} />
                   </div>
-                  <div>{instrument.artists}</div>
+                  <div>{listToString(instrument.artists)}</div>
                 </div>
               ))}
             </div>

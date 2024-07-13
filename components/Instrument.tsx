@@ -5,7 +5,16 @@ type Props = {
   name: string;
 };
 
-const supported = ["guitar", "keyboard", "synthesizer"];
+const supported = [
+  "bass",
+  "cello",
+  "drums",
+  "guitar",
+  "keyboard",
+  "piano",
+  "synthesizer",
+  "trumpet",
+];
 
 const Instrument: React.FC<Props> = ({ name }) => {
   if (!supported.includes(name)) {
@@ -19,6 +28,7 @@ const Instrument: React.FC<Props> = ({ name }) => {
         width={32}
         height={32}
         alt={name}
+        title={name}
       />
     </div>
   );

@@ -28,3 +28,15 @@ export const getRandomColorClass = () => {
   const randomIndex = Math.floor(Math.random() * colorClasses.length);
   return colorClasses[randomIndex];
 };
+
+export const listToString = (list: string[]) => {
+  if (list.length === 0) {
+    return "";
+  }
+  if (list.length === 1) {
+    return list[0];
+  }
+  const allButLast = list.slice(0, -1).join(", ");
+  const last = list[list.length - 1];
+  return `${allButLast} & ${last}`;
+};
