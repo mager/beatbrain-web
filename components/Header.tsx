@@ -47,7 +47,7 @@ const Header = () => {
 
   let left = (
     <div className="flex justify-center items-center">
-      <div className="cursor-pointer">
+      <div className="cursor-pointer mr-4">
         <Link href="/" legacyBehavior>
           <Image
             src="/images/beatbrain-notes-head.png"
@@ -57,10 +57,10 @@ const Header = () => {
           />
         </Link>
       </div>
-      <div className="pb-4">
+      <div className="ml-4 mb-4">
         <Link href="/feed" legacyBehavior>
           <a
-            className="ml-4 text-black hover:text-white"
+            className=" text-black text-lg hover:text-white"
             data-active={isActive("/feed")}
           >
             Feed
@@ -68,11 +68,11 @@ const Header = () => {
         </Link>
       </div>
       {session && (
-        <div className="pb-4">
+        <div className="ml-4 mb-4">
           {" "}
           <Link href="/posts" legacyBehavior>
             <a
-              className="ml-4 text-black hover:text-white"
+              className="text-black text-lg hover:text-white"
               data-active={isActive("/posts")}
             >
               Posts
@@ -95,7 +95,7 @@ const Header = () => {
 
   if (!session) {
     right = (
-      <div className="ml-auto">
+      <div className="ml-auto mb-4">
         <Link href="/api/auth/signin" legacyBehavior>
           <button
             title="Login"
@@ -110,9 +110,9 @@ const Header = () => {
 
   if (session) {
     right = (
-      <div className="ml-auto flex items-center relative pb-4">
+      <div className="ml-auto mb-4 flex items-center relative">
         <UserIcon className="hidden md:block h-6 w-6 mr-2" />
-        <p className="hidden md:block text-lg font-bold mr-4">
+        <p className="hidden md:block text-md font-bold mr-4">
           {session.user.name.toLowerCase()}
         </p>
         <Link href="/create" legacyBehavior>
@@ -130,7 +130,7 @@ const Header = () => {
         <Dropdown isOpen={isOpen}>
           <a
             onClick={() => signOut()}
-            className="block px-4 py-2 text-sm text-black hover:text-gray-500 cursor-pointer"
+            className="block px-4 py-2 text-lg text-black hover:white cursor-pointer"
             role="menuitem"
           >
             Logout
@@ -140,7 +140,7 @@ const Header = () => {
     );
   }
   return (
-    <nav className="bg-purple-500 flex px-8 pt-4 mb-4">
+    <nav className="bg-cyan-500 flex px-8 pt-4 mb-4">
       {left}
       {right}
     </nav>

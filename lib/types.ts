@@ -8,6 +8,7 @@ export type Track = {
   features: Features;
   release_date: string;
   genres: string[];
+  instruments: Instrument[];
 };
 
 export type Features = {
@@ -24,6 +25,11 @@ export type Features = {
   speechiness: number;
   tempo: number;
   time_signature: number;
+};
+
+export type Instrument = {
+  name: string;
+  artists: string[];
 };
 
 export type RecommendedTracksResp = {
