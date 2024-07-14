@@ -11,7 +11,6 @@ const Create: React.FC = () => {
 
   const [option, setOption] = useState(null);
   const handleChange = (option) => {
-    console.log({ option });
     setOption(option);
   };
 

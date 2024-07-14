@@ -25,10 +25,8 @@ const Home: React.FC<Props> = ({ tracks }) => {
     <Layout>
       <div className="py-4">
         <Title>
-          <span className="text-5xl font-mono">beatbrain</span>{" "}
-          <span className="text-xl">
-            Share and discover your favorite tunes
-          </span>
+          <div className="text-6xl font-mono">beatbrain</div>{" "}
+          <div className="text-lg">Share and discover your favorite tunes</div>
         </Title>
         {tracks && (
           <div className="mt-8 mb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

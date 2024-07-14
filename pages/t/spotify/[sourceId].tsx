@@ -32,7 +32,7 @@ const Track: React.FC<Props> = ({ track }) => {
   const { name, artist, image, release_date, genres, instruments } = track;
   return (
     <Layout>
-      <div className="py-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="pt-4 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div className="col-span-1 xl:col-span-3">
           <GiantTitle>{name}</GiantTitle>
           <Subtitle>{artist}</Subtitle>
