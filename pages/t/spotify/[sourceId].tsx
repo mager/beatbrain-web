@@ -42,7 +42,7 @@ const Track: React.FC<Props> = ({ track }) => {
           {genres.length > 0 && (
             <div className="mb-2">
               {genres.map((genre) => (
-                <Tag>{genre}</Tag>
+                <Tag key={genre}>{genre}</Tag>
               ))}
             </div>
           )}

@@ -9,7 +9,6 @@ import {
   ArrowRightEndOnRectangleIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
-import classNames from "classnames";
 
 import Dropdown from "@components/Dropdown";
 
@@ -140,7 +139,7 @@ const Header = () => {
     );
   }
   return (
-    <nav className="bg-cyan-500 flex px-8 pt-4 mb-4">
+    <nav className="bg-cyan-500 flex px-8 pt-4">
       {left}
       {right}
     </nav>

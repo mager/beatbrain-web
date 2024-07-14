@@ -3,7 +3,7 @@ import AsyncSelect from "react-select/async";
 const styles = {
   control: (provided, state) => ({
     ...provided,
-    border: state.isFocused ? "1px solid #ccc" : "1px solid #ccc",
+    border: state.isFocused ? "1px solid #6b7280" : "1px solid #ccc",
     boxShadow: "none",
     "&:hover": {
       border: "1px solid #ccc",
@@ -11,6 +11,8 @@ const styles = {
     },
     paddingTop: "8px",
     paddingBottom: "8px",
+    paddingLeft: "4px",
+    paddingRight: "4px",
   }),
   indicatorsContainer: (provided) => ({
     ...provided,
@@ -23,6 +25,10 @@ const styles = {
   indicatorSeparator: (provided) => ({
     ...provided,
     display: "none",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "#999",
   }),
   option: (provided, state) => ({
     ...provided,
@@ -38,7 +44,7 @@ const DropdownIndicator = () => {
 
 const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
   return (
-    <div className="py-4">
+    <div className="py-4 pb-2 focus:outline-none focus:ring-gray-500 focus:border-gray-500">
       <AsyncSelect
         value={option}
         onChange={handleChange}
