@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`);
   const resp: RecommendedTracksResp = await res.json();
   return {
-    props: { tracks: shuffle(resp.tracks).slice(0, 12) },
+    props: { tracks: shuffle(resp.tracks).slice(0, 48) },
   };
 };
 

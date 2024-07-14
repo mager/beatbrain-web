@@ -28,8 +28,8 @@ export type Features = {
 };
 
 export type Instrument = {
-  name: string;
-  artists: string[];
+  artist: string;
+  instruments: string[];
 };
 
 export type RecommendedTracksResp = {

@@ -9,20 +9,24 @@ const supported = [
   "bass",
   "cello",
   "drums",
+  "foot-stomps",
   "guitar",
+  "handclaps",
   "keyboard",
   "piano",
   "synthesizer",
   "trumpet",
+  "violin",
 ];
 
-const Instrument: React.FC<Props> = ({ name }) => {
+const InstrumentIcon: React.FC<Props> = ({ name }) => {
   if (!supported.includes(name)) {
-    return <div className="font-bold">{name}</div>;
+    console.debug("Instrument not supported", name);
+    return null;
   }
 
   return (
-    <div>
+    <div className="mr-2">
       <Image
         src={`/images/icon-${name}.png`}
         width={32}
@@ -34,4 +38,4 @@ const Instrument: React.FC<Props> = ({ name }) => {
   );
 };
 
-export default Instrument;
+export default InstrumentIcon;

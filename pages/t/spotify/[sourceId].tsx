@@ -6,12 +6,12 @@ import { formatDistanceToNow } from "date-fns";
 import Layout from "@components/Layout";
 import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
+import Instruments from "@components/Instruments";
 import Meta from "@components/Meta";
 import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
 import { SERVER_HOST, listToString } from "@util";
 // import { PlusIcon } from "@heroicons/react/24/solid";
-import Instrument from "@components/Instrument";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sourceId } = context.params;
@@ -42,21 +42,12 @@ const Track: React.FC<Props> = ({ track }) => {
           {genres.length > 0 && (
             <div className="mb-2">
               {genres.map((genre) => (
-                <Tag key={genre}>{genre}</Tag>
+                <Tag name={genre}>{genre}</Tag>
               ))}
             </div>
           )}
           {instruments && instruments.length > 0 && (
-            <div className="mt-4 mb-2">
-              {instruments.map((instrument) => (
-                <div className="mb-2 flex items-center">
-                  <div className="mr-2">
-                    <Instrument name={instrument.name} />
-                  </div>
-                  <div>{listToString(instrument.artists)}</div>
-                </div>
-              ))}
-            </div>
+            <Instruments instruments={instruments} />
           )}
         </div>
         <div className="col-span-1 xl:col-span-1">

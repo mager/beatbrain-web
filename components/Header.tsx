@@ -12,33 +12,15 @@ import {
 
 import Dropdown from "@components/Dropdown";
 
-const Header = () => {
+type Props = {
+  color: string;
+};
+
+const Header: React.FC<Props> = ({ color }) => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
   const [isOpen, setIsOpen] = useState(false);
-  const colors = [
-    "bg-red-500",
-    "bg-pink-500",
-    "bg-purple-500",
-    "bg-deep-purple-500",
-    "bg-indigo-500",
-    "bg-blue-500",
-    "bg-light-blue-500",
-    "bg-teal-500",
-    "bg-cyan-500",
-    "bg-green-500",
-    "bg-light-green-500",
-    "bg-lime-500",
-    "bg-yellow-500",
-    "bg-amber-500",
-    "bg-orange-500",
-    "bg-deep-orange-500",
-    "bg-brown-500",
-    "bg-grey-500",
-    "bg-blue-grey-500",
-  ];
-  const random = Math.floor(Math.random() * colors.length);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -139,7 +121,7 @@ const Header = () => {
     );
   }
   return (
-    <nav className="bg-cyan-500 flex px-8 pt-4">
+    <nav className={`${color} flex px-8 pt-4`}>
       {left}
       {right}
     </nav>

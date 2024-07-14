@@ -1,14 +1,14 @@
 import React from "react";
 
 type Props = {
-  key: string;
+  name: string;
   children: React.ReactNode;
 };
 
-const Tag: React.FC<Props> = ({ children, key }) => {
+const Tag: React.FC<Props> = ({ children, name }) => {
   return (
     <div
-      key={key}
+      key={name}
       className="inline-block px-3 py-1 rounded-full text-sm xl:text-md font-medium bg-gray-100 text-gray-600 mr-2"
     >
       {children}
