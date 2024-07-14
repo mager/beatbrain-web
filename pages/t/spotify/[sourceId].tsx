@@ -10,7 +10,7 @@ import Instruments from "@components/Instruments";
 import Meta from "@components/Meta";
 import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
-import { SERVER_HOST, listToString } from "@util";
+import { SERVER_HOST, getSpotifyTrackURL } from "@util";
 // import { PlusIcon } from "@heroicons/react/24/solid";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -29,10 +29,11 @@ type Props = {
 };
 
 const Track: React.FC<Props> = ({ track }) => {
-  const { name, artist, image, release_date, genres, instruments } = track;
+  const { name, artist, image, release_date, genres, source_id, instruments } =
+    track;
   return (
     <Layout>
-      <div className="pt-4 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="py-8 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div className="col-span-1 xl:col-span-3">
           <GiantTitle>{name}</GiantTitle>
           <Subtitle>{artist}</Subtitle>
@@ -51,7 +52,7 @@ const Track: React.FC<Props> = ({ track }) => {
           )}
         </div>
         <div className="col-span-1 xl:col-span-1">
-          <div className="border-4 border-black">
+          <div className="mb-8 border-4 border-black">
             <Image
               src={image}
               alt={name}
@@ -59,6 +60,17 @@ const Track: React.FC<Props> = ({ track }) => {
               height={300}
               className="object-cover w-full"
             />
+          </div>
+          <div>
+            <a target="blank" href={getSpotifyTrackURL(source_id)}>
+              <Image
+                src={`/images/icon-spotify.png`}
+                width={64}
+                height={64}
+                alt="Listen on Spotify"
+                title="Listen on Spotify"
+              />
+            </a>
           </div>
           {/* <div>
             <button

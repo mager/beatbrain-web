@@ -40,3 +40,7 @@ export const listToString = (list: string[]) => {
   const last = list[list.length - 1];
   return `${allButLast} & ${last}`;
 };
+
+export const getSpotifyTrackURL = (id: string) => {
+  return `https://open.spotify.com/track/${id}`;
+};
