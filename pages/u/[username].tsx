@@ -94,7 +94,13 @@ const Profile: React.FC<ProfileProps> = (props) => {
           {drafts.map(({ content, track }) => (
             <div className="flex items-center gap-2 mb-4">
               <div>
-                <Image width={48} height={48} src={track.image} alt="thumb" />
+                <Image
+                  width={48}
+                  height={48}
+                  src={track.image}
+                  alt="thumb"
+                  unoptimized
+                />
               </div>
               <div>
                 <div>{track.title}</div>
