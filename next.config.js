@@ -7,7 +7,7 @@ module.exports = withSuperjson()({
                 protocol: 'https',
                 hostname: 'i.scdn.co',
                 port: '',
-                pathname: '**',
+                pathname: '/image/**',
             },
             {
                 protocol: 'https',

@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+import React, { useMemo } from "react";
+import type { ReactNode } from "react";
 import { Chakra_Petch } from "next/font/google";
 import Crown from "@components/Crown";
 import Header from "@components/Header";
@@ -32,11 +33,17 @@ const Layout: React.FC<Props> = (props) => {
     "bg-gray-500",
     "bg-blue-gray-500",
   ];
+
+  const color = useMemo(
+    () => colors[Math.floor(Math.random() * colors.length)],
+    []
+  );
+
   // Should we add back min-h-screen to main?
   return (
     <div className={`${bodyFont.variable} font-sans`}>
       <Crown />
-      <Header color={colors[Math.floor(Math.random() * colors.length)]} />
+      <Header color={color} />
       <Search />
       <main className="px-8 flex flex-col">{props.children}</main>
       <Footer className="fixed bottom-0 w-full" />
