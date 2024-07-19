@@ -14,11 +14,9 @@ export const loadOptions = async (inputValue) => {
     return data.results.map((item) => ({
       value: item,
       label: (
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className="flex items-center">
           <Image src={item.thumb} alt={item.name} width={32} height={32} />
-          <span
-            style={{ marginLeft: "10px" }}
-          >{`${item.artist} - ${item.name}`}</span>
+          <span className="ml-2">{`${item.artist} - ${item.name}`}</span>
         </div>
       ),
     }));

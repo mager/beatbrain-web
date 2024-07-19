@@ -20,22 +20,23 @@ const supported = [
 ];
 
 const InstrumentIcon: React.FC<Props> = ({ name }) => {
-  if (!supported.includes(name)) {
+  const unsupported = !supported.includes(name);
+  if (unsupported) {
     console.debug("Instrument not supported", name);
-    return null;
+    return <div className="mr-2 font-bold">{name}</div>;
   }
 
-  return (
-    <div className="mr-2">
-      <Image
-        src={`/images/icon-${name}.png`}
-        width={32}
-        height={32}
-        alt={name}
-        title={name}
-      />
-    </div>
+  const img = (
+    <Image
+      src={`/images/icon-${name}.png`}
+      width={32}
+      height={32}
+      alt={name}
+      title={name}
+    />
   );
+
+  return <div className="mr-2">{img}</div>;
 };
 
 export default InstrumentIcon;

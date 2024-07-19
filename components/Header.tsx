@@ -69,7 +69,7 @@ const Header: React.FC<Props> = ({ color }) => {
   if (status === "loading") {
     right = (
       <div className="ml-auto">
-        <p>Validating session ...</p>
+        <p>Loading...</p>
       </div>
     );
   }

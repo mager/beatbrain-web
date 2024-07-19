@@ -32,12 +32,13 @@ const Layout: React.FC<Props> = (props) => {
     "bg-gray-500",
     "bg-blue-gray-500",
   ];
+  // Should we add back min-h-screen to main?
   return (
     <div className={`${bodyFont.variable} font-sans`}>
       <Crown />
       <Header color={colors[Math.floor(Math.random() * colors.length)]} />
       <Search />
-      <main className="px-8 flex flex-col min-h-screen">{props.children}</main>
+      <main className="px-8 flex flex-col">{props.children}</main>
       <Footer className="fixed bottom-0 w-full" />
     </div>
   );

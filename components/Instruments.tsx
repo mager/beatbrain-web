@@ -12,7 +12,7 @@ const Instruments: React.FC<Props> = ({ instruments }) => {
     <div className="mt-4 mb-2">
       {instruments.map(({ artist, instruments }) => (
         <div className="mb-2 flex items-center">
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center">
             {instruments.map((instrument) => (
               <InstrumentIcon name={instrument} />
             ))}

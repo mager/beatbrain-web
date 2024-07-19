@@ -61,7 +61,7 @@ const Track: React.FC<Props> = ({ track }) => {
               className="object-cover w-full"
             />
           </div>
-          <div>
+          <div className="pb-12">
             <a target="blank" href={getSpotifyTrackURL(source_id)}>
               <Image
                 src={`/images/icon-spotify.png`}

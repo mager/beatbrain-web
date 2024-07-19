@@ -9,6 +9,12 @@ module.exports = withSuperjson()({
                 port: '',
                 pathname: '**',
             },
+            {
+                protocol: 'https',
+                hostname: 'github.com',
+                port: '',
+                pathname: '**',
+            },
         ],
     },
 })
