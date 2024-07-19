@@ -1,6 +1,20 @@
 import React from "react";
 import Router from "next/router";
 
+export type Draft = {
+  track: TrackProps;
+  content: string;
+};
+
+export type TrackProps = {
+  id: number;
+  title: string;
+  artist: string;
+  image: string;
+  source: string;
+  sourceId: string;
+};
+
 export type PostProps = {
   id: number;
   title: string;

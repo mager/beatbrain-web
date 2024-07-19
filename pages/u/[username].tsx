@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import prisma from "../../lib/prisma";
 import Layout from "@components/Layout";
 import Username from "@components/Username";
-import { PostProps } from "@components/Post";
+import { Draft } from "@components/Post";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const params = context.params;
@@ -37,6 +37,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = result;
 
   const drafts = await prisma.post.findMany({
+    select: {
+      content: true,
+      track: true,
+    },
     where: {
       authorId: id,
     },
@@ -58,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 type ProfileProps = {
-  drafts: PostProps[];
+  drafts: Draft[];
 };
 
 const Profile: React.FC<ProfileProps> = (props) => {
@@ -87,8 +91,16 @@ const Profile: React.FC<ProfileProps> = (props) => {
       </div>
       {drafts && drafts.length > 0 && (
         <div>
-          {drafts.map((draft) => (
-            <div>{draft.content}</div>
+          {drafts.map(({ content, track }) => (
+            <div className="flex items-center gap-2 mb-4">
+              <div>
+                <Image width={48} height={48} src={track.image} alt="thumb" />
+              </div>
+              <div>
+                <div>{track.title}</div>
+                <div>{content}</div>
+              </div>
+            </div>
           ))}
         </div>
       )}
