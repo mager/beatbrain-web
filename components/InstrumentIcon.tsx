@@ -33,6 +33,7 @@ const InstrumentIcon: React.FC<Props> = ({ name }) => {
       height={32}
       alt={name}
       title={name}
+      unoptimized
     />
   );
 

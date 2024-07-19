@@ -42,6 +42,7 @@ const Home: React.FC<Props> = ({ tracks }) => {
                         width={300}
                         height={300}
                         className="object-cover"
+                        unoptimized
                       />
                     </Link>
                     <div className="text-xl font-bold">

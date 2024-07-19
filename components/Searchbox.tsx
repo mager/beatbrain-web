@@ -15,7 +15,13 @@ export const loadOptions = async (inputValue) => {
       value: item,
       label: (
         <div className="flex items-center">
-          <Image src={item.thumb} alt={item.name} width={32} height={32} />
+          <Image
+            src={item.thumb}
+            alt={item.name}
+            width={32}
+            height={32}
+            unoptimized
+          />
           <span className="ml-2">{`${item.artist} - ${item.name}`}</span>
         </div>
       ),

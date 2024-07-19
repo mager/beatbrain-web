@@ -59,6 +59,7 @@ const Track: React.FC<Props> = ({ track }) => {
               width={300}
               height={300}
               className="object-cover w-full"
+              unoptimized
             />
           </div>
           <div className="pb-12">
@@ -69,6 +70,7 @@ const Track: React.FC<Props> = ({ track }) => {
                 height={64}
                 alt="Listen on Spotify"
                 title="Listen on Spotify"
+                unoptimized
               />
             </a>
           </div>

@@ -80,6 +80,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
             width={64}
             height={64}
             className="rounded-full"
+            unoptimized
           />
         </div>
         <Username>{username}</Username>
