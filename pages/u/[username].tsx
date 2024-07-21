@@ -6,35 +6,35 @@ import prisma from "../../lib/prisma";
 import Layout from "@components/Layout";
 import Username from "@components/Username";
 import { Draft } from "@components/Post";
+import ProfileImage from "@components/ProfileImage";
+import { User } from "@prisma/client";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const params = context.params;
+  const defaultProps = {
+    props: {
+      drafts: [],
+      user: null,
+    },
+  };
 
   if (!params) {
-    return {
-      props: {
-        drafts: [],
-      },
-    };
+    return defaultProps;
   }
 
   const { username } = params;
-
-  const result = await prisma.user.findFirst({
+  const user = await prisma.user.findFirst({
     where: {
       name: username as string,
     },
   });
 
-  if (!result) {
-    return {
-      props: {
-        drafts: [],
-      },
-    };
+  console.log({ user });
+  if (!user) {
+    return defaultProps;
   }
 
-  const { id } = result;
+  const { id } = user;
 
   const drafts = await prisma.post.findMany({
     select: {
@@ -46,16 +46,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
+  const props = {
+    user,
+    drafts: [],
+  };
+
   if (!drafts || drafts.length == 0) {
     return {
-      props: {
-        drafts: [],
-      },
+      props,
     };
   }
 
+  props.drafts = drafts;
+
   return {
     props: {
+      user,
       drafts,
     },
   };
@@ -63,6 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 type ProfileProps = {
   drafts: Draft[];
+  user: User;
 };
 
 const Profile: React.FC<ProfileProps> = (props) => {
@@ -71,21 +78,20 @@ const Profile: React.FC<ProfileProps> = (props) => {
     return null;
   }
 
+  console.log({ props });
+  const { drafts, user } = props;
+
+  if (!user) {
+    return null;
+  }
+
   const { username } = params;
-  const { drafts } = props;
 
   return (
     <Layout>
       <div className="py-8 pb-8 flex flex-col items-center sm:flex-row sm:gap-4 sm:items-center">
         <div className="mb-4 sm:mb-0">
-          <Image
-            alt="profile"
-            src={`https://github.com/${username}.png`}
-            width={64}
-            height={64}
-            className="rounded-full"
-            unoptimized
-          />
+          <ProfileImage username={username} />
         </div>
         <Username>{username}</Username>
       </div>

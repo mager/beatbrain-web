@@ -13,12 +13,13 @@ enum Source {
 }
 
 model Post {
-  id       Int     @id @default(autoincrement())
-  content  String?
-  author   User?   @relation(fields: [authorId], references: [id])
-  authorId Int?
-  track    Track   @relation(fields: [trackId], references: [id])
-  trackId  Int
+  id        Int      @id @default(autoincrement())
+  content   String?
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  track     Track    @relation(fields: [trackId], references: [id])
+  trackId   Int
+  createdAt DateTime @default(now()) @map(name: "created_at")
 }
 
 model Track {

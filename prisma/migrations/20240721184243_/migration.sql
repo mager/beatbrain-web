@@ -7,6 +7,7 @@ CREATE TABLE "Post" (
     "content" TEXT,
     "authorId" INTEGER,
     "trackId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
@@ -81,6 +82,9 @@ CREATE TABLE "verificationtokens" (
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Track_source_sourceId_key" ON "Track"("source", "sourceId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "accounts_provider_provider_account_id_key" ON "accounts"("provider", "provider_account_id");
