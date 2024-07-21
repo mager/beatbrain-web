@@ -48,19 +48,6 @@ const Header: React.FC<Props> = ({ color }) => {
           </a>
         </Link>
       </div>
-      {session && (
-        <div className="ml-4 mb-4">
-          {" "}
-          <Link href="/posts" legacyBehavior>
-            <a
-              className="text-black text-lg hover:text-white"
-              data-active={isActive("/posts")}
-            >
-              Posts
-            </a>
-          </Link>
-        </div>
-      )}
     </div>
   );
 
