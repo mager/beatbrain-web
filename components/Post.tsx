@@ -23,7 +23,6 @@ export type PostProps = {
     email: string;
   } | null;
   content: string;
-  published: boolean;
 };
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {

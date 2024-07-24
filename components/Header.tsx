@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/solid";
 
 import Dropdown from "@components/Dropdown";
+import ProfileImage from "./ProfileImage";
 
 type Props = {
   color: string;
@@ -25,6 +26,12 @@ const Header: React.FC<Props> = ({ color }) => {
     setIsOpen(!isOpen);
   };
   const { data: session, status } = useSession();
+
+  const username = session?.user.name.toLowerCase();
+  let profileImage = <UserIcon className="hidden md:block h-6 w-6 mr-2" />;
+  if (username) {
+    profileImage = <ProfileImage height={32} width={32} username={username} />;
+  }
 
   let left = (
     <div className="flex justify-center items-center">
@@ -79,10 +86,11 @@ const Header: React.FC<Props> = ({ color }) => {
   if (session) {
     right = (
       <div className="ml-auto mb-4 flex items-center relative">
-        <UserIcon className="hidden md:block h-6 w-6 mr-2" />
-        <p className="hidden md:block text-md font-bold mr-4">
-          {session.user.name.toLowerCase()}
-        </p>
+        {username && (
+          <div className="mx-2">
+            <Link href={`/u/${username}`}>{profileImage}</Link>
+          </div>
+        )}
         <Link href="/create" legacyBehavior>
           <button className="hover:bg-gray-600 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline">
             <PaintBrushIcon className="h-6 w-6 text-white" />

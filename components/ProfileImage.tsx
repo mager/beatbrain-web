@@ -3,15 +3,21 @@ import React from "react";
 
 type Props = {
   username: string | string[];
+  height?: number;
+  width?: number;
 };
 
-const ProfileImage: React.FC<Props> = ({ username }) => {
+const ProfileImage: React.FC<Props> = ({
+  username,
+  height = 64,
+  width = 48,
+}) => {
   return (
     <Image
       alt="profile"
       src={`https://github.com/${username}.png`}
-      width={64}
-      height={64}
+      width={width}
+      height={height}
       className="rounded-full"
       unoptimized
     />
