@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "@components/Layout";
+import Input from "@components/Input";
 import Title from "@components/Title";
 import Router from "next/router";
 import Searchbox, { loadOptions } from "@components/Searchbox";
@@ -49,11 +50,10 @@ const Create: React.FC = () => {
           />
 
           <div className="mb-8">
-            <input
-              onChange={(e) => setContent(e.target.value)}
+            <Input
               placeholder="How does it make you feel?"
               value={content}
-              className="w-full px-4 py-4 mt-4 rounded-md border border-gray-300 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+              setValue={setContent}
             />
           </div>
 

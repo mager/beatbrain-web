@@ -70,6 +70,7 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "Profile" (
     "id" SERIAL NOT NULL,
+    "username" TEXT NOT NULL,
     "bio" TEXT,
     "userId" INTEGER NOT NULL,
 
@@ -94,6 +95,9 @@ CREATE UNIQUE INDEX "sessions_session_token_key" ON "sessions"("session_token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Profile_username_key" ON "Profile"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");

@@ -6,7 +6,6 @@ const styles = {
     border: state.isFocused ? "1px solid #6b7280" : "1px solid #ccc",
     boxShadow: "none",
     "&:hover": {
-      border: "1px solid #ccc",
       cursor: "text",
     },
     paddingTop: "8px",

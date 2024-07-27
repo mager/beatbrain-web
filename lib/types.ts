@@ -39,3 +39,7 @@ export type RecommendedTracksResp = {
 export type GetTrackResponse = {
   track: Track;
 };
+
+export type Profile = {
+  username: string;
+};

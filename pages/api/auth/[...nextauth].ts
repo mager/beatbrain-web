@@ -16,12 +16,22 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user }) {
-      if (user.name) {
-        user.name = user.name.toLowerCase();
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        // @ts-ignore
+        session.user.id = token.sub;
       }
-      return true;
+      return session;
     },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+  },
+  session: {
+    strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
