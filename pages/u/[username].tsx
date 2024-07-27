@@ -29,7 +29,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  console.log({ user });
   if (!user) {
     return defaultProps;
   }
@@ -78,7 +77,6 @@ const Profile: React.FC<ProfileProps> = (props) => {
     return null;
   }
 
-  console.log({ props });
   const { drafts, user } = props;
 
   if (!user) {

@@ -31,7 +31,7 @@ const Create: React.FC = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push("/posts");
+      await Router.push("/feed");
     } catch (error) {
       console.error(error);
     }
@@ -39,7 +39,7 @@ const Create: React.FC = () => {
 
   return (
     <Layout>
-      <div className="page bg-white py-4">
+      <div className="page bg-white py-8">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
           <Searchbox
