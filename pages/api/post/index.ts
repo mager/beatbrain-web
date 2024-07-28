@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { options } from "../auth/[...nextauth]";
+import { getToken } from "next-auth/jwt";
+
+const secret = process.env.NEXTAUTH_SECRET;
 
 // POST /api/post
 // Required fields in body: title
@@ -11,7 +14,8 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { content, track } = req.body;
-
+  const token = await getToken({ req, secret });
+  console.log("JSON Web Token", token);
   const session = await getServerSession(req, res, options);
   if (session) {
     // Check if a track exists

@@ -27,6 +27,8 @@ const Create: React.FC = () => {
       };
       const body = { content, track };
 
+      // TODO: Send JWT
+
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
