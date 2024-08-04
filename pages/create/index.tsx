@@ -7,6 +7,7 @@ import Searchbox, { loadOptions } from "@components/Searchbox";
 import useDebouncedLoadOptions from "../../lib/hooks/useDebouncedLoadOptions";
 
 const Create: React.FC = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [content, setContent] = useState("");
   const debouncedLoadOptions = useDebouncedLoadOptions(loadOptions);
 
@@ -18,6 +19,7 @@ const Create: React.FC = () => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
+      setIsSubmitting(true);
       const track = {
         source: "SPOTIFY",
         sourceId: option.value.id,
@@ -37,6 +39,8 @@ const Create: React.FC = () => {
       await Router.push("/feed");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -45,12 +49,13 @@ const Create: React.FC = () => {
       <div className="page bg-white py-8">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
-          <Searchbox
-            option={option}
-            handleChange={handleChange}
-            loadOptions={debouncedLoadOptions}
-          />
-
+          <div className="mt-4">
+            <Searchbox
+              option={option}
+              handleChange={handleChange}
+              loadOptions={debouncedLoadOptions}
+            />
+          </div>
           <div className="mb-8">
             <Input
               placeholder="How does it make you feel?"
@@ -62,9 +67,14 @@ const Create: React.FC = () => {
           <div className="flex items-center">
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mr-4"
+              disabled={isSubmitting}
+              className={`text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mr-4 ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-500 hover:bg-green-600"
+              }`}
             >
-              Create
+              {isSubmitting ? "Creating..." : "Create"}
             </button>
 
             <a

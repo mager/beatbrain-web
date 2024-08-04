@@ -43,7 +43,7 @@ const DropdownIndicator = () => {
 
 const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
   return (
-    <div className="py-4 pb-2 focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+    <div className="py-4 pb-2 text-md focus:outline-none focus:ring-gray-500 focus:border-gray-500">
       <AsyncSelect
         value={option}
         onChange={handleChange}

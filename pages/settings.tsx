@@ -53,6 +53,7 @@ const Settings: React.FC<Props> = (props) => {
   const [username, setUsername] = useState("");
 
   const { profile } = props;
+  console.log({ profile });
   return (
     <Layout>
       <div className="py-4">

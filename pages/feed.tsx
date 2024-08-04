@@ -33,7 +33,7 @@ const Blog: React.FC<Props> = (props) => {
           {props.feed.map((post) => (
             <div
               key={post.id}
-              className="post bg-white rounded-md shadow-md hover:shadow-lg transition-shadow duration-150 ease-in-out p-4"
+              className="post bg-white rounded-md shadow-md hover:shadow-lg transition-shadow duration-150 ease-in-out p-4 cursor-pointer"
             >
               <Post post={post} />
             </div>

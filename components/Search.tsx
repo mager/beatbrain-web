@@ -18,9 +18,7 @@ const Search: React.FC = () => {
   }, [router.pathname]);
 
   return (
-    <div
-      className={`px-8 py-2 border-b-2 bg-gray-200 ${isHidden ? "hidden" : ""}`}
-    >
+    <div className={`px-8 border-b-2 bg-gray-200 ${isHidden ? "hidden" : ""}`}>
       <Searchbox
         option={option}
         handleChange={goToTrackPage}
