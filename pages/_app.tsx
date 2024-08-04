@@ -1,14 +1,32 @@
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
-
+import { AppProvider } from "../context/AppContext";
+import { AppContext } from "next/app";
+import App from "next/app";
 import "./global.css";
 
-const App = ({ Component, pageProps }: AppProps) => {
+interface MyAppProps extends AppProps {
+  data: any;
+}
+
+const MyApp = ({ Component, pageProps, data }: MyAppProps) => {
   return (
     <SessionProvider session={pageProps.session}>
-      <Component {...pageProps} />
+      <AppProvider initialData={data}>
+        <Component {...pageProps} />
+      </AppProvider>
     </SessionProvider>
   );
 };
 
-export default App;
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const appProps = await App.getInitialProps(appContext);
+
+  // Fetch your data here
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const data = await res.json();
+  console.log(data);
+  return { ...appProps, data };
+};
+
+export default MyApp;

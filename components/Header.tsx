@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import {
   ArrowRightEndOnRectangleIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
+import { AppContext } from "../context/AppContext";
 
 import Dropdown from "@components/Dropdown";
 import ProfileImage from "./ProfileImage";
@@ -18,6 +19,9 @@ type Props = {
 };
 
 const Header: React.FC<Props> = ({ color }) => {
+  const context = useContext(AppContext);
+  const { state } = context;
+  console.log(state);
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
