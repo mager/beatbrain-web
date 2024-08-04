@@ -9,56 +9,14 @@ import prisma from "../lib/prisma";
 import { Profile } from "@types";
 import Subtitle from "@components/Subtitle";
 
-export async function getServerSideProps(context) {
-  const session = await getServerSession(context.req, context.res, options);
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  // @ts-ignore
-  const userId = session?.id;
-  const profile = await prisma.profile.findFirst({
-    where: {
-      userId,
-    },
-  });
-
-  const defaultProps = {
-    props: {
-      profile: null,
-    },
-  };
-
-  if (!profile) {
-    return defaultProps;
-  }
-
-  return {
-    props: {
-      profile,
-    },
-  };
-}
-
-type Props = {
-  profile: Profile;
-};
-
-const Settings: React.FC<Props> = (props) => {
+const Settings: React.FC = () => {
   const [username, setUsername] = useState("");
 
-  const { profile } = props;
-  console.log({ profile });
   return (
     <Layout>
       <div className="py-4">
         <GiantTitle>Settings</GiantTitle>
-        {profile && (
+        {/* {profile && (
           <div className="py-4">
             <div>{profile.username}</div>
           </div>
@@ -74,7 +32,7 @@ const Settings: React.FC<Props> = (props) => {
               />
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </Layout>
   );

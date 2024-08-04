@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import { AppProvider } from "../context/AppContext";
@@ -21,12 +22,16 @@ const MyApp = ({ Component, pageProps, data }: MyAppProps) => {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
+  const session = await getSession(appContext.ctx);
+  console.log(session);
+  let data = null;
+  if (session) {
+    // Fetch data only if session exists
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+    data = await res.json();
+  }
 
-  // Fetch your data here
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const data = await res.json();
-  console.log(data);
-  return { ...appProps, data };
+  return { ...appProps, pageProps: { ...appProps.pageProps, session, data } };
 };
 
 export default MyApp;

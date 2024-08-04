@@ -20,6 +20,8 @@ model Post {
   track     Track    @relation(fields: [trackId], references: [id])
   trackId   Int
   createdAt DateTime @default(now()) @map(name: "created_at")
+
+  @@map(name: "posts")
 }
 
 model Track {
@@ -32,6 +34,7 @@ model Track {
   Post     Post[]
 
   @@unique([source, sourceId])
+  @@map(name: "tracks")
 }
 
 model Account {
@@ -75,19 +78,13 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   posts         Post[]
-  profile       Profile?
+  username      String?   @unique
+  spotifyId     String?
+  mixcloudId    String?
   accounts      Account[]
   sessions      Session[]
 
   @@map(name: "users")
-}
-
-model Profile {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  bio      String?
-  userId   Int     @unique
-  user     User    @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {
