@@ -104,13 +104,16 @@ const Header: React.FC<Props> = ({ color }) => {
           <Cog8ToothIcon className="h-6 w-6 text-white" />
         </button>
         <Dropdown isOpen={isOpen}>
-          <a
-            onClick={() => signOut()}
-            className="block px-4 py-2 text-lg text-black hover:white cursor-pointer"
-            role="menuitem"
-          >
-            Logout
-          </a>
+          <div className="flex flex-col text-lg text-black hover:white cursor-pointer">
+            <div className="p-4 border-b border-gray-200">
+              <Link href="/settings">Settings</Link>
+            </div>
+            <div className="p-4">
+              <a onClick={() => signOut()} role="menuitem">
+                Logout
+              </a>
+            </div>
+          </div>
         </Dropdown>
       </div>
     );

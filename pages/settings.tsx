@@ -29,7 +29,9 @@ export async function getServerSideProps(context) {
   });
 
   const defaultProps = {
-    profile: null,
+    props: {
+      profile: null,
+    },
   };
 
   if (!profile) {
@@ -37,7 +39,9 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    profile,
+    props: {
+      profile,
+    },
   };
 }
 
