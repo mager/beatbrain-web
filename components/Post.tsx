@@ -4,6 +4,7 @@ import Router from "next/router";
 export type Draft = {
   track: TrackProps;
   content: string;
+  createdAt: Date;
 };
 
 export type TrackProps = {

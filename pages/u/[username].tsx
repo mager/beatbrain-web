@@ -39,6 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     select: {
       content: true,
       track: true,
+      createdAt: true,
     },
     where: {
       authorId: id,
@@ -94,22 +95,25 @@ const Profile: React.FC<ProfileProps> = (props) => {
         <Username>{username}</Username>
       </div>
       {drafts && drafts.length > 0 && (
-        <div>
-          {drafts.map(({ content, track }) => (
-            <div className="flex items-center gap-2 mb-4">
-              <div>
-                <Image
-                  width={48}
-                  height={48}
-                  src={track.image}
-                  alt="thumb"
-                  unoptimized
-                />
+        <div className="w-full">
+          {drafts.map(({ content, createdAt, track }) => (
+            <div className="flex justify-between items-center gap-2 mb-4">
+              <div className="flex">
+                <div>
+                  <Image
+                    width={48}
+                    height={48}
+                    src={track.image}
+                    alt="thumb"
+                    unoptimized
+                  />
+                </div>
+                <div className="ml-2">
+                  <div>{track.title}</div>
+                  <div>{content}</div>
+                </div>
               </div>
-              <div>
-                <div>{track.title}</div>
-                <div>{content}</div>
-              </div>
+              <div>{createdAt.toLocaleDateString()}</div>
             </div>
           ))}
         </div>
