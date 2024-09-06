@@ -28,9 +28,9 @@ const Header: React.FC<Props> = ({ color }) => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const { data: session, status } = useSession();
 
-  const username = session?.user.name.toLowerCase();
+  const user = state?.user;
+  const username = user?.username;
   let profileImage = <UserIcon className="hidden md:block h-6 w-6 mr-2" />;
   if (username) {
     profileImage = <ProfileImage height={32} width={32} username={username} />;
@@ -63,15 +63,15 @@ const Header: React.FC<Props> = ({ color }) => {
 
   let right = null;
 
-  if (status === "loading") {
-    right = (
-      <div className="ml-auto">
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  // if (status === "loading") {
+  //   right = (
+  //     <div className="ml-auto">
+  //       <p>Loading...</p>
+  //     </div>
+  //   );
+  // }
 
-  if (!session) {
+  if (!user) {
     right = (
       <div className="ml-auto mb-4">
         <Link href="/api/auth/signin" legacyBehavior>
@@ -86,7 +86,7 @@ const Header: React.FC<Props> = ({ color }) => {
     );
   }
 
-  if (session) {
+  if (user) {
     right = (
       <div className="ml-auto mb-4 flex items-center relative">
         {username && (

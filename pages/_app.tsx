@@ -23,7 +23,6 @@ const MyApp = ({ Component, pageProps, data }: MyAppProps) => {
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
   const session = await getSession(appContext.ctx);
-  console.log(session);
   let data = null;
   if (session) {
     // Fetch data only if session exists

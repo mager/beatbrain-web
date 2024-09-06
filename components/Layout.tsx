@@ -1,10 +1,43 @@
-import React, { useState, useEffect } from "react";
 import type { ReactNode } from "react";
+import React, { useState, useEffect } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { GetServerSideProps } from "next";
 import { Chakra_Petch } from "next/font/google";
+
 import Crown from "@components/Crown";
 import Header from "@components/Header";
 import Search from "@components/Search";
 import Footer from "@components/Footer";
+import prisma from "../lib/prisma";
+import { User } from "@prisma/client";
+
+//   const params = context.params;
+//   const defaultProps = {
+//     props: {
+//       user: null,
+//     },
+//   };
+
+//   if (!params) {
+//     return defaultProps;
+//   }
+
+//   const user = await prisma.user.findFirst({
+//     where: {
+//       id: userId,
+//     },
+//   });
+
+//   if (!user) {
+//     return defaultProps;
+//   }
+
+//   return {
+//     props: {
+//       user,
+//     },
+//   };
+// };
 
 export const bodyFont = Chakra_Petch({
   weight: "400",
@@ -29,7 +62,20 @@ const colors = [
   "bg-amber-500",
   "bg-orange-500",
   "bg-gray-500",
-  "bg-blue-gray-500",
+
+  "bg-red-400",
+  "bg-pink-400",
+  "bg-purple-400",
+  "bg-indigo-400",
+  "bg-blue-400",
+  "bg-teal-400",
+  "bg-cyan-400",
+  "bg-green-400",
+  "bg-lime-400",
+  "bg-yellow-400",
+  "bg-amber-400",
+  "bg-orange-400",
+  "bg-gray-400",
 ];
 const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
