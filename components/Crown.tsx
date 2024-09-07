@@ -13,9 +13,10 @@ const Crown = () => {
   return (
     <div className="md:hidden bg-black text-white flex px-8 justify-between">
       <div>beatbrain</div>
-      <div>
+      <div title="Under Construction">🚧</div>
+      {/* <div>
         <Link href={`/u/${username}`}>{username}</Link>
-      </div>
+      </div> */}
     </div>
   );
 };

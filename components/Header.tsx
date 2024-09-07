@@ -21,6 +21,7 @@ type Props = {
 const Header: React.FC<Props> = ({ color }) => {
   const context = useContext(AppContext);
   const { state } = context;
+  console.log({ state });
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
