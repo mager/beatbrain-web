@@ -31,6 +31,10 @@ type Props = {
 const Track: React.FC<Props> = ({ track }) => {
   const { name, artist, image, release_date, genres, source_id, instruments } =
     track;
+
+  console.log({ track });
+  const energy = track.features.energy;
+
   return (
     <Layout>
       <div className="py-8 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -61,6 +65,19 @@ const Track: React.FC<Props> = ({ track }) => {
               className="object-cover w-full"
               unoptimized
             />
+          </div>
+          <div className="py-4 pb-12">
+            <Subtitle>Attributes</Subtitle>
+            <div className="flex flex-col space-y-2">
+              {Object.entries(track.features).map(
+                ([featureName, featureValue]) => (
+                  <div key={featureName} className="flex justify-between">
+                    <Meta>{featureName}</Meta>
+                    <div>{featureValue}</div>
+                  </div>
+                )
+              )}
+            </div>
           </div>
           <div className="pb-12">
             <a target="blank" href={getSpotifyTrackURL(source_id)}>

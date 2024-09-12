@@ -23,16 +23,20 @@ export const options: NextAuthOptions = {
       }
       return session;
     },
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.uid = user.id;
-      }
+    async jwt({ token }) {
+      token.userRole = "admin";
       return token;
     },
+    // jwt: async ({ user, token }) => {
+    //   if (user) {
+    //     token.uid = user.id;
+    //   }
+    //   return token;
+    // },
   },
   session: {
     strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };

@@ -12,7 +12,7 @@ const Settings: React.FC = () => {
   const { state } = context;
   const user = state?.user;
   const [username, setUsername] = useState(user?.username || "");
-  const [isEditing, setIsEditing] = useState(!user?.username);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (user?.username) {
@@ -22,8 +22,10 @@ const Settings: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement API call to update username
-    console.log("Updating username to:", username);
+    fetch("/api/user/edit", {
+      method: "PUT",
+      body: JSON.stringify({ username }),
+    });
     setIsEditing(false);
   };
 
@@ -35,12 +37,12 @@ const Settings: React.FC = () => {
           <Subtitle>Username</Subtitle>
           {!isEditing ? (
             <div className="flex items-center space-x-4">
-              <span>{username}</span>
+              <span>{username || "No username set"}</span>
               <button
                 onClick={() => setIsEditing(true)}
                 className="text-blue-500 hover:text-blue-700"
               >
-                Edit
+                {username ? "Edit" : "Set Username"}
               </button>
             </div>
           ) : (

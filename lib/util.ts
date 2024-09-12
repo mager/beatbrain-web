@@ -1,4 +1,8 @@
-export const SERVER_HOST = "https://occipital-cqaymsy2sa-uc.a.run.app";
+export const SERVER_HOST = "http://localhost:8080";
+// export const SERVER_HOST =
+//   process.env.NODE_ENV === "production"
+//     ? "https://occipital-cqaymsy2sa-uc.a.run.app"
+//     : "http://localhost:8080";
 
 /**
  * Shuffles array in place. ES6 version
