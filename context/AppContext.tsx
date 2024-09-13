@@ -21,7 +21,7 @@ export const AppProvider = ({ children, initialData }: AppProviderProps) => {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.id) {
+    if (status === "authenticated" && session?.user) {
       fetch("/api/user")
         .then((res) => res.json())
         .then((data) => {
