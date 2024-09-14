@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { GetServerSideProps } from "next";
 import Image from "next/image";
 import Layout from "../components/Layout";
 import { shuffle } from "../lib/util";
-import Title from "../components/Title";
 import type { RecommendedTracksResp, Track } from "@types";
 import Link from "next/link";
 import { SERVER_HOST } from "@util";
 
+const fetchTracks = async (genre: string = "hot") => {
+  const res = await fetch(`/api/tracks`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ genre }),
+  });
+  const resp: RecommendedTracksResp = await res.json();
+  return shuffle(resp.tracks).slice(0, 48);
+};
+
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`);
+  const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ genre: "hot" }),
+  });
   const resp: RecommendedTracksResp = await res.json();
   return {
     props: { tracks: shuffle(resp.tracks).slice(0, 48) },
@@ -19,10 +36,20 @@ export const getServerSideProps: GetServerSideProps = async () => {
 type Props = {
   tracks: Track[];
 };
+
 const Home: React.FC<Props> = ({ tracks }) => {
   const [selectedGenre, setSelectedGenre] = useState("HOT");
+  const [displayedTracks, setDisplayedTracks] = useState(tracks);
   const genres = ["HOT", "POP", "HIP-HOP", "COUNTRY", "ELECTRONIC"];
-  console.log({ selectedGenre });
+
+  useEffect(() => {
+    const getTracks = async () => {
+      const newTracks = await fetchTracks(selectedGenre.toLowerCase()); // Pass lowercase genre
+      setDisplayedTracks(newTracks);
+    };
+    getTracks();
+  }, [selectedGenre]);
+  console.log({ displayedTracks });
   return (
     <Layout>
       <div className="py-4">
@@ -54,9 +81,9 @@ const Home: React.FC<Props> = ({ tracks }) => {
           </div>
         </div>
 
-        {tracks && (
+        {displayedTracks.length > 0 && (
           <div className="mt-8 mb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {tracks.map((t, index) => {
+            {displayedTracks.map((t, index) => {
               const trackLink = `/t/${t.source.toLowerCase()}/${t.source_id}`;
               return (
                 <div key={index} className="flex">
