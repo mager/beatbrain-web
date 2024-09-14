@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { GetServerSideProps } from "next";
 import Image from "next/image";
 import Layout from "../components/Layout";
@@ -19,15 +19,41 @@ export const getServerSideProps: GetServerSideProps = async () => {
 type Props = {
   tracks: Track[];
 };
-
 const Home: React.FC<Props> = ({ tracks }) => {
+  const [selectedGenre, setSelectedGenre] = useState("HOT");
+  const genres = ["HOT", "POP", "HIP-HOP", "COUNTRY", "ELECTRONIC"];
+  console.log({ selectedGenre });
   return (
     <Layout>
       <div className="py-4">
-        <Title>
-          <div className="text-6xl font-mono">beatbrain</div>{" "}
-          <div className="text-lg">Share and discover your favorite tunes</div>
-        </Title>
+        <div className="flex flex-col items-start">
+          {/* Mobile: Stack elements vertically */}
+          <div>
+            <div className="text-4xl md:text-7xl font-bold font-mono">
+              beatbrain
+            </div>
+            <div className="text-base md:text-2xl">
+              Share and discover your favorite tunes
+            </div>
+          </div>
+          <div className="flex flex-wrap mt-4">
+            {genres.map((genre) => (
+              <button
+                key={genre}
+                onClick={() => setSelectedGenre(genre)}
+                className={`px-4 py-2 rounded-full font-medium mr-2 mb-2
+                 ${
+                   selectedGenre === genre
+                     ? "bg-blue-500 text-white"
+                     : "bg-gray-200 text-gray-800"
+                 }`}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {tracks && (
           <div className="mt-8 mb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {tracks.map((t, index) => {
