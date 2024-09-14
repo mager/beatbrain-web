@@ -7,6 +7,7 @@ import Layout from "@components/Layout";
 import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
 import Instruments from "@components/Instruments";
+import Attributes from "@components/Attributes";
 import Meta from "@components/Meta";
 import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
@@ -28,12 +29,17 @@ type Props = {
   track: Track;
 };
 
+const getHeatmapColor = (value: number) => {
+  if (value >= 0.8) return "bg-red-500";
+  if (value >= 0.6) return "bg-orange-500";
+  if (value >= 0.4) return "bg-yellow-500";
+  if (value >= 0.2) return "bg-green-500";
+  return "bg-blue-500";
+};
+
 const Track: React.FC<Props> = ({ track }) => {
   const { name, artist, image, release_date, genres, source_id, instruments } =
     track;
-
-  console.log({ track });
-  const energy = track.features.energy;
 
   return (
     <Layout>
@@ -66,7 +72,8 @@ const Track: React.FC<Props> = ({ track }) => {
               unoptimized
             />
           </div>
-          <div className="py-4 pb-12">
+          <Attributes features={track.features} />
+          {/* <div className="py-4 pb-12">
             <Subtitle>Attributes</Subtitle>
             <div className="flex flex-col space-y-2">
               {Object.entries(track.features).map(
@@ -78,7 +85,7 @@ const Track: React.FC<Props> = ({ track }) => {
                 )
               )}
             </div>
-          </div>
+          </div> */}
           <div className="pb-12">
             <a target="blank" href={getSpotifyTrackURL(source_id)}>
               <Image

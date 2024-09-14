@@ -89,7 +89,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
   return (
     <Layout>
       <div className="py-8 pb-8 flex flex-col items-center sm:flex-row sm:gap-4 sm:items-center">
-        <div className="mb-4 sm:mb-0">
+        <div className="mb-2 sm:mb-0">
           <ProfileImage username={username} />
         </div>
         <Username>{username}</Username>
@@ -109,8 +109,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
                   />
                 </div>
                 <div className="ml-2">
+                  <div className="text-sm">{track.artist}</div>
                   <div>{track.title}</div>
-                  <div>{content}</div>
                 </div>
               </div>
               <div>{createdAt.toLocaleDateString()}</div>
