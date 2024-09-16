@@ -25,6 +25,9 @@ const Settings: React.FC = () => {
     fetch("/api/user/edit", {
       method: "PUT",
       body: JSON.stringify({ username }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     setIsEditing(false);
   };

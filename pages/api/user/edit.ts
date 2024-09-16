@@ -16,9 +16,7 @@ export default async function handler(
   const decoded = await getToken({ req, secret });
   const userId = decoded.sub;
   const url = `${SERVER_HOST}/user?id=${userId}`;
-  console.log({ decoded });
   const token = jwt.sign(decoded, secret);
-  console.log({ token });
   const body = {
     ...req.body,
     id: parseInt(userId),
