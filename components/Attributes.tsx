@@ -8,17 +8,18 @@ const TrackAttributes = ({ features }: { features: any }) => {
       <Subtitle>Attributes</Subtitle>
       <div className="flex flex-col space-y-4">
         {Object.entries(features).map(([featureName, featureValue]) => {
+          const value = featureValue as number;
           // Skip negative values
-          if (featureValue < 0) {
+          if (value < 0) {
             return null;
           }
 
-          // Calculate bar width and indicator position based on featureValue
-          const barWidth = `${(featureValue * 100).toFixed(0)}%`;
-          const indicatorPosition = `${(featureValue * 100).toFixed(0)}%`;
+          // Calculate bar width and indicator position based on value
+          const barWidth = `${(value * 100).toFixed(0)}%`;
+          const indicatorPosition = `${(value * 100).toFixed(0)}%`;
 
           // Get color based on percentage
-          const barColor = getPercentageColor(featureValue);
+          const barColor = getPercentageColor(value);
 
           return (
             <div key={featureName} className="flex flex-col items-center">
