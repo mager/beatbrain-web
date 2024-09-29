@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   const { state } = context;
   const router = useRouter();
   const color = useColor();
-  console.log({ ccc: color });
+  console.log({ COLOUR: color });
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
   const [isOpen, setIsOpen] = useState(false);

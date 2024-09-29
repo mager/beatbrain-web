@@ -16,11 +16,13 @@ export const bodyFont = Chakra_Petch({
 });
 
 // Create Color Context
-const ColorContext = createContext<string>("");
+const color = getRandomColor();
+const ColorContext = createContext<string>(color);
 
 // Custom hook for accessing color
 export const useColor = () => {
-  return useContext(ColorContext);
+  const color = useContext(ColorContext);
+  return color;
 };
 
 // Custom hook for accessing hex color
@@ -59,8 +61,6 @@ const Layout: React.FC<Props> = (props) => {
 
   return (
     <ColorContext.Provider value={color}>
-      {" "}
-      {/* Provide color value */}
       <div className={`${bodyFont.variable} font-sans`}>
         <Crown />
         <Header />

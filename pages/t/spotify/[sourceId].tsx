@@ -51,8 +51,7 @@ const Track: React.FC<Props> = ({ track }) => {
   } = track;
 
   const { duration, segments } = analysis;
-  // const color = useHexColor();
-  const color = "#000";
+  const color = useHexColor();
   return (
     <Layout>
       <div className="py-8 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">

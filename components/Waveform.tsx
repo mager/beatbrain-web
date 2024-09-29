@@ -23,7 +23,7 @@ const Waveform = ({ duration, segments, strokeColor }) => {
         viewBox={`0 0 100 ${waveformHeight}`}
         preserveAspectRatio="none"
       >
-        <path d={pathData} stroke={strokeColor} fill="none" strokeWidth="1" />
+        <path d={pathData} stroke={strokeColor} fill="none" strokeWidth="2" />
       </svg>
     </div>
   );
