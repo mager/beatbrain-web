@@ -13,16 +13,14 @@ import { AppContext } from "../context/AppContext";
 
 import Dropdown from "@components/Dropdown";
 import ProfileImage from "./ProfileImage";
+import { useColor } from "./Layout";
 
-type Props = {
-  color: string;
-};
-
-const Header: React.FC<Props> = ({ color }) => {
+const Header: React.FC = () => {
   const context = useContext(AppContext);
   const { state } = context;
-  console.log({ state });
   const router = useRouter();
+  const color = useColor();
+  console.log({ ccc: color });
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
   const [isOpen, setIsOpen] = useState(false);
@@ -63,14 +61,6 @@ const Header: React.FC<Props> = ({ color }) => {
   );
 
   let right = null;
-
-  // if (status === "loading") {
-  //   right = (
-  //     <div className="ml-auto">
-  //       <p>Loading...</p>
-  //     </div>
-  //   );
-  // }
 
   if (!user) {
     right = (

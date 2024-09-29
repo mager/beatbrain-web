@@ -1,43 +1,29 @@
 import React from "react";
 
-const Waveform = ({ duration, segments }) => {
+const Waveform = ({ duration, segments, strokeColor }) => {
   const maxLoudness = Math.max(...segments.map((seg) => seg.loudness_max));
   const minLoudness = Math.min(...segments.map((seg) => seg.loudness_max));
-  let color = localStorage.getItem("randomColor");
-  if (!color) {
-    color = "black";
-  }
 
-  const waveformHeight = 100; // You can adjust this value
+  const waveformHeight = 100;
 
-  const points = segments.flatMap((segment) => {
-    const heightStart =
-      ((segment.loudness_start - minLoudness) / (maxLoudness - minLoudness)) *
+  const points = segments.map((segment) => {
+    const x = (segment.start / duration) * 100;
+    const y =
+      ((segment.loudness_max - minLoudness) / (maxLoudness - minLoudness)) *
       waveformHeight;
-    const heightEnd =
-      ((segment.loudness_end - minLoudness) / (maxLoudness - minLoudness)) *
-      waveformHeight;
-
-    return [
-      `${segment.start},${waveformHeight / 2 - heightStart / 2}`, // Center vertically
-      `${segment.start + segment.duration},${
-        waveformHeight / 2 - heightEnd / 2
-      }`, // Center vertically
-    ];
+    return `${x},${waveformHeight - y}`;
   });
 
   const pathData = `M${points.join(" L")}`;
 
   return (
-    <div className="w-full h-48 overflow-hidden relative my-4">
-      {" "}
-      {/* Increased height */}
+    <div className="w-full h-24 lg:h-48 overflow-hidden relative my-4">
       <svg
         className="w-full h-full absolute top-0 left-0"
-        viewBox={`0 0 ${duration} ${waveformHeight}`} // Updated viewBox
+        viewBox={`0 0 100 ${waveformHeight}`}
         preserveAspectRatio="none"
       >
-        <path d={pathData} fill={color} className="opacity-75" />
+        <path d={pathData} stroke={strokeColor} fill="none" strokeWidth="1" />
       </svg>
     </div>
   );

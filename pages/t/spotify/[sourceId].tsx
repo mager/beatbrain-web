@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 
-import Layout from "@components/Layout";
+import Layout, { useHexColor } from "@components/Layout";
 import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
 import Instruments from "@components/Instruments";
@@ -51,6 +51,8 @@ const Track: React.FC<Props> = ({ track }) => {
   } = track;
 
   const { duration, segments } = analysis;
+  // const color = useHexColor();
+  const color = "#000";
   return (
     <Layout>
       <div className="py-8 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -71,7 +73,11 @@ const Track: React.FC<Props> = ({ track }) => {
             <Instruments instruments={instruments} />
           )}
           {segments.length > 0 && (
-            <Waveform duration={duration} segments={segments} />
+            <Waveform
+              strokeColor={color}
+              duration={duration}
+              segments={segments}
+            />
           )}
         </div>
         <div className="col-span-1 xl:col-span-1">
