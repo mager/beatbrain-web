@@ -1,10 +1,11 @@
 import React from "react";
+import Box from "@components/Box";
 import Subtitle from "@components/Subtitle";
 import Meta from "@components/Meta";
 
 const TrackAttributes = ({ features }: { features: any }) => {
   return (
-    <div className="py-4 pb-12">
+    <Box>
       <Subtitle>Attributes</Subtitle>
       <div className="flex flex-col space-y-4">
         {Object.entries(features).map(([featureName, featureValue]) => {
@@ -42,7 +43,7 @@ const TrackAttributes = ({ features }: { features: any }) => {
           );
         })}
       </div>
-    </div>
+    </Box>
   );
 };
 

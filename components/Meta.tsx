@@ -6,7 +6,9 @@ type Props = {
 
 const Meta: React.FC<Props> = ({ children }) => {
   return (
-    <h5 className="text-md md:text-lg font-bold text-gray-400">{children}</h5>
+    <h5 className="text-md md:text-lg font-bold text-gray-400 mb-4">
+      {children}
+    </h5>
   );
 };
 

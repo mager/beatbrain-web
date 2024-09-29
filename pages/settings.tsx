@@ -6,6 +6,7 @@ import Input from "@components/Input";
 import prisma from "../lib/prisma";
 import { Profile } from "@types";
 import Subtitle from "@components/Subtitle";
+import Box from "@components/Box";
 
 const Settings: React.FC = () => {
   const context = useContext(AppContext);
@@ -34,9 +35,9 @@ const Settings: React.FC = () => {
 
   return (
     <Layout>
-      <div className="py-4">
+      <Box>
         <GiantTitle>Settings</GiantTitle>
-        <div className="py-4">
+        <Box>
           <Subtitle>Username</Subtitle>
           {!isEditing ? (
             <div className="flex items-center space-x-4">
@@ -63,8 +64,8 @@ const Settings: React.FC = () => {
               </button>
             </form>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Layout>
   );
 };

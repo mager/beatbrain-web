@@ -8,6 +8,7 @@ import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
 import Instruments from "@components/Instruments";
 import Attributes from "@components/Attributes";
+import Waveform from "@components/Waveform";
 import Meta from "@components/Meta";
 import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
@@ -38,9 +39,18 @@ const getHeatmapColor = (value: number) => {
 };
 
 const Track: React.FC<Props> = ({ track }) => {
-  const { name, artist, image, release_date, genres, source_id, instruments } =
-    track;
+  const {
+    name,
+    artist,
+    image,
+    release_date,
+    genres,
+    source_id,
+    instruments,
+    analysis,
+  } = track;
 
+  const { duration, segments } = analysis;
   return (
     <Layout>
       <div className="py-8 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -60,6 +70,9 @@ const Track: React.FC<Props> = ({ track }) => {
           {instruments && instruments.length > 0 && (
             <Instruments instruments={instruments} />
           )}
+          {segments.length > 0 && (
+            <Waveform duration={duration} segments={segments} />
+          )}
         </div>
         <div className="col-span-1 xl:col-span-1">
           <div className="mb-8 border-4 border-black">
@@ -73,19 +86,6 @@ const Track: React.FC<Props> = ({ track }) => {
             />
           </div>
           <Attributes features={track.features} />
-          {/* <div className="py-4 pb-12">
-            <Subtitle>Attributes</Subtitle>
-            <div className="flex flex-col space-y-2">
-              {Object.entries(track.features).map(
-                ([featureName, featureValue]) => (
-                  <div key={featureName} className="flex justify-between">
-                    <Meta>{featureName}</Meta>
-                    <div>{featureValue}</div>
-                  </div>
-                )
-              )}
-            </div>
-          </div> */}
           <div className="pb-12">
             <a target="blank" href={getSpotifyTrackURL(source_id)}>
               <Image

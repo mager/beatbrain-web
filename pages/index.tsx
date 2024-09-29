@@ -6,6 +6,7 @@ import { shuffle } from "../lib/util";
 import type { RecommendedTracksResp, Track } from "@types";
 import Link from "next/link";
 import { SERVER_HOST } from "@util";
+import Box from "@components/Box";
 
 const fetchTracks = async (genre: string = "hot") => {
   const res = await fetch(`/api/tracks`, {
@@ -52,7 +53,7 @@ const Home: React.FC<Props> = ({ tracks }) => {
   console.log({ displayedTracks });
   return (
     <Layout>
-      <div className="py-4">
+      <Box>
         <div className="flex flex-col items-start">
           {/* Mobile: Stack elements vertically */}
           <div>
@@ -110,7 +111,7 @@ const Home: React.FC<Props> = ({ tracks }) => {
             })}
           </div>
         )}
-      </div>
+      </Box>
     </Layout>
   );
 };

@@ -1,4 +1,5 @@
 import AsyncSelect from "react-select/async";
+import Box from "./Box";
 
 const styles = {
   control: (provided, state) => ({
@@ -43,7 +44,7 @@ const DropdownIndicator = () => {
 
 const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
   return (
-    <div className="py-4 pb-2 text-md focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+    <Box className="pb-2 text-md focus:outline-none focus:ring-gray-500 focus:border-gray-500">
       <AsyncSelect
         value={option}
         onChange={handleChange}
@@ -56,7 +57,7 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         styles={styles}
         cacheOptions
       />
-    </div>
+    </Box>
   );
 };
 

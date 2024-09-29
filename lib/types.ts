@@ -6,9 +6,25 @@ export type Track = {
   source: string;
 
   features: Features;
+  analysis: Analysis;
+
   release_date: string;
   genres: string[];
   instruments: Instrument[];
+};
+
+export type Analysis = {
+  duration: number;
+  segments: Segment[];
+};
+
+export type Segment = {
+  start: number;
+  duration: number;
+  loudness_start: number;
+  loudness_max: number;
+  loudness_end: number;
+  confidence: number;
 };
 
 export type Features = {

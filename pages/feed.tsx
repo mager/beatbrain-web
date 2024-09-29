@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from "../lib/prisma";
 import Title from "../components/Title";
+import Box from "@components/Box";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const feed = await prisma.post.findMany({
@@ -27,7 +28,7 @@ type Props = {
 const Blog: React.FC<Props> = (props) => {
   return (
     <Layout>
-      <div className="py-4">
+      <Box>
         <Title>Public Feed</Title>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {props.feed.map((post) => (
@@ -39,7 +40,7 @@ const Blog: React.FC<Props> = (props) => {
             </div>
           ))}
         </div>
-      </div>
+      </Box>
     </Layout>
   );
 };
