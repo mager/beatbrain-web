@@ -103,15 +103,15 @@ const Track: React.FC<Props> = ({ track }) => {
               />
             </a>
           </div>
-          {/* <div>
+          <div>
             <button
               className="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:bg-green-600 rounded-lg text-xl p-4 me-2 mb-2"
               onClick={() => console.log("click")}
               disabled
             >
-              Post
+              Post (TODO)
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
     </Layout>
