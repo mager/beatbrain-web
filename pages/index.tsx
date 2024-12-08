@@ -21,17 +21,24 @@ const fetchTracks = async (genre: string = "hot") => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ genre: "hot" }),
-  });
-  const resp: RecommendedTracksResp = await res.json();
-  return {
-    props: { tracks: shuffle(resp.tracks).slice(0, 48) },
-  };
+  try {
+    const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ genre: "hot" }),
+    });
+    const resp: RecommendedTracksResp = await res.json();
+    return {
+      props: { tracks: shuffle(resp.tracks).slice(0, 48) },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: { tracks: [] },
+    };
+  }
 };
 
 type Props = {
