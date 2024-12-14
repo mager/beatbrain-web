@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
     include: {
       author: {
-        select: { name: true, email: true },
+        select: { name: true },
       },
     },
   });
@@ -38,13 +38,13 @@ const Post: React.FC<PostProps> = (props) => {
   }
   const userHasValidSession = Boolean(session);
   const postBelongsToUser = session?.user?.email === props.author?.email;
-
+  console.log(props);
   return (
     <Layout>
       <Box>
         <h2 className="text-3xl font-bold mb-4">{props.title}</h2>
         <p className="text-gray-600 mb-6">
-          By {props?.author?.name || "Unknown author"}
+          {props?.author?.name || "Unknown author"}
         </p>
         <div className="prose max-w-none">
           <ReactMarkdown children={props.content} />

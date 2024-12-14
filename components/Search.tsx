@@ -10,7 +10,7 @@ const Search: React.FC = () => {
   const debouncedLoadOptions = useDebouncedLoadOptions(loadOptions);
 
   const goToTrackPage = (option) => {
-    router.push(`/t/spotify/${option.value.id}`);
+    router.push(`/ext/spotify/${option.value.id}`);
   };
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const Search: React.FC = () => {
   }, [router.pathname]);
 
   return (
-    <div className={`px-8 border-b-2 bg-gray-200 ${isHidden ? "hidden" : ""}`}>
+    <div className="px-8">
       <Searchbox
         option={option}
         handleChange={goToTrackPage}

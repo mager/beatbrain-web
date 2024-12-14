@@ -13,6 +13,7 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-body)'],
         mono: ['var(--font-mono)'],
+        logo: ['var(--font-logo)'],
       },
     },
   },

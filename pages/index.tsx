@@ -22,16 +22,16 @@ const fetchTracks = async (genre: string = "hot") => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const res = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`, {
+    const res = await fetch(`${SERVER_HOST}/discover`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ genre: "hot" }),
+      body: JSON.stringify({}),
     });
     const resp: RecommendedTracksResp = await res.json();
     return {
-      props: { tracks: shuffle(resp.tracks).slice(0, 48) },
+      props: { tracks: shuffle(resp).slice(0, 96) },
     };
   } catch (err) {
     console.log(err);
@@ -46,78 +46,49 @@ type Props = {
 };
 
 const Home: React.FC<Props> = ({ tracks }) => {
-  const [selectedGenre, setSelectedGenre] = useState("HOT");
-  const [displayedTracks, setDisplayedTracks] = useState(tracks);
-  const genres = ["HOT", "POP", "HIP-HOP", "COUNTRY", "ELECTRONIC"];
-
-  useEffect(() => {
-    const getTracks = async () => {
-      const newTracks = await fetchTracks(selectedGenre.toLowerCase()); // Pass lowercase genre
-      setDisplayedTracks(newTracks);
-    };
-    getTracks();
-  }, [selectedGenre]);
-  console.log({ displayedTracks });
+  console.log({ tracks });
   return (
     <Layout>
       <Box>
         <div className="flex flex-col items-start">
-          {/* Mobile: Stack elements vertically */}
           <div>
             <div className="text-4xl md:text-7xl font-bold font-mono">
               beatbrain
             </div>
             <div className="text-base md:text-2xl">
-              Share and discover your favorite tunes
+              Share and discover your favorite songs
             </div>
           </div>
-          <div className="flex flex-wrap mt-4">
-            {genres.map((genre) => (
-              <button
-                key={genre}
-                onClick={() => setSelectedGenre(genre)}
-                className={`px-4 py-2 rounded-full font-medium mr-2 mb-2
-                 ${
-                   selectedGenre === genre
-                     ? "bg-blue-500 text-white"
-                     : "bg-gray-200 text-gray-800"
-                 }`}
-              >
-                {genre}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {displayedTracks.length > 0 && (
-          <div className="mt-8 mb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {displayedTracks.map((t, index) => {
-              const trackLink = `/t/${t.source.toLowerCase()}/${t.source_id}`;
-              return (
-                <div key={index} className="flex">
-                  <div className="flex flex-col">
-                    <Link href={trackLink}>
-                      <Image
-                        src={t.image}
-                        alt={`Track ${index}`}
-                        width={300}
-                        height={300}
-                        className="object-cover"
-                        unoptimized
-                      />
-                    </Link>
-                    <div className="text-xl font-bold">
-                      <Link href={trackLink}>{t.artist}</Link>
-                    </div>
-                    <div className="text-lg">
-                      <Link href={trackLink}>{t.name}</Link>
+          <div className="mt-4 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {tracks.map((track) => (
+                <Link
+                  href={`/ext/spotify/${track.source_id}`}
+                  key={track.source_id}
+                  className="block hover:opacity-75 transition-opacity"
+                >
+                  <div className="flex flex-row lg:flex-col max-w-full">
+                    <Image
+                      src={track.image}
+                      alt={track.name}
+                      width={300}
+                      height={300}
+                      className="w-[100px] h-[100px] lg:w-[300px] lg:h-[300px] object-cover flex-shrink-0"
+                    />
+                    <div className="ml-4 lg:ml-0 lg:mt-2 flex flex-col justify-center min-w-0">
+                      <div className="font-bold truncate max-w-full">
+                        {track.name}
+                      </div>
+                      <div className="text-sm text-gray-600 truncate max-w-full">
+                        {track.artist}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                </Link>
+              ))}
+            </div>
           </div>
-        )}
+        </div>
       </Box>
     </Layout>
   );

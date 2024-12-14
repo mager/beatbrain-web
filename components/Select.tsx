@@ -4,47 +4,54 @@ import Box from "./Box";
 const styles = {
   control: (provided, state) => ({
     ...provided,
-    border: state.isFocused ? "1px solid #6b7280" : "1px solid #ccc",
-    boxShadow: "none",
+    border: state.isFocused ? "2px solid #4ade80" : "2px solid #e5e7eb",
+    borderRadius: "8px",
+    boxShadow: state.isFocused ? "0 4px 12px rgba(74, 222, 128, 0.15)" : "none",
+    transition: "all 0.2s ease",
+    backgroundColor: "white",
     "&:hover": {
+      borderColor: "#4ade80",
       cursor: "text",
     },
-    paddingTop: "8px",
-    paddingBottom: "8px",
-    paddingLeft: "4px",
-    paddingRight: "4px",
+    padding: "10px 12px",
   }),
-  indicatorsContainer: (provided) => ({
-    ...provided,
-    padding: 0,
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
+  // Hide default React Select UI elements
+  dropdownIndicator: () => ({
     display: "none",
   }),
-  indicatorSeparator: (provided) => ({
-    ...provided,
+  indicatorSeparator: () => ({
     display: "none",
   }),
+  // Style placeholder
   placeholder: (provided) => ({
     ...provided,
-    color: "#999",
+    color: "#9ca3af",
+    fontSize: "16px",
   }),
+  // Style options in dropdown
   option: (provided, state) => ({
     ...provided,
+    backgroundColor: state.isFocused ? "#f3f4f6" : "white",
+    color: state.isFocused ? "#4ade80" : "#374151",
+    padding: "12px",
     "&:hover": {
+      backgroundColor: "#dcfce7", // green-100
       cursor: "pointer",
     },
   }),
-};
-
-const DropdownIndicator = () => {
-  return null;
+  // Style dropdown menu
+  menu: (provided) => ({
+    ...provided,
+    borderRadius: "8px",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    border: "2px solid #e5e7eb",
+    padding: "8px",
+  }),
 };
 
 const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
   return (
-    <Box className="pb-2 text-md focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+    <Box>
       <AsyncSelect
         value={option}
         onChange={handleChange}
@@ -53,9 +60,10 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         isClearable={true}
         placeholder="Search for a song..."
         noOptionsMessage={noOptionsMessage}
-        components={{ DropdownIndicator }}
+        components={{ DropdownIndicator: () => null }}
         styles={styles}
         cacheOptions
+        classNamePrefix="react-select"
       />
     </Box>
   );
