@@ -15,7 +15,6 @@ export default async function handle(
 ) {
   const { content, track } = req.body;
   const token = await getToken({ req, secret });
-  console.log("JSON Web Token", token);
   const session = await getServerSession(req, res, options);
   if (session) {
     // Check if a track exists

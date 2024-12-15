@@ -38,7 +38,6 @@ const Post: React.FC<PostProps> = (props) => {
   }
   const userHasValidSession = Boolean(session);
   const postBelongsToUser = session?.user?.email === props.author?.email;
-  console.log(props);
   return (
     <Layout>
       <Box>

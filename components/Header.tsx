@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
@@ -60,7 +59,7 @@ const Header: React.FC = () => {
 
   if (!user) {
     right = (
-      <div className="ml-auto mb-4">
+      <div className="ml-auto flex items-center">
         <Link href="/api/auth/signin" legacyBehavior>
           <a className="text-black hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200">
             <ArrowRightEndOnRectangleIcon className="h-8 w-8" />

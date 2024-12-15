@@ -5,7 +5,6 @@ import { signOut, useSession } from "next-auth/react";
 const Crown = () => {
   const { data: session, status } = useSession();
   const username = session?.user.name.toLowerCase();
-  console.log({ username });
   if (!session) {
     return null;
   }

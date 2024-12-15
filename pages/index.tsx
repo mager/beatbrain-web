@@ -46,7 +46,6 @@ type Props = {
 };
 
 const Home: React.FC<Props> = ({ tracks }) => {
-  console.log({ tracks });
   return (
     <Layout>
       <Box>
