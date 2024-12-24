@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import AuthMenu from "@components/AuthMenu";
 import UsernameLink from "@components/UsernameLink";
+import IconLink from "@components/IconLink";
 
 const Header: React.FC = () => {
   const context = useContext(AppContext);
@@ -31,14 +32,11 @@ const Header: React.FC = () => {
         </Link>
       </div>
       <div className="mx-2">
-        <Link href="/feed" legacyBehavior>
-          <a
-            className="text-black hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200"
-            data-active={isActive("/feed")}
-          >
-            <NewspaperIcon className="h-8 w-8" />
-          </a>
-        </Link>
+        <IconLink
+          href="/feed"
+          icon={<NewspaperIcon className="h-8 w-8" />}
+          active={isActive("/feed")}
+        />
       </div>
     </div>
   );
@@ -63,11 +61,11 @@ const Header: React.FC = () => {
         {username && <UsernameLink username={username} />}
         <AuthMenu iconColor="black" />
         <div className="mx-2 flex items-center">
-          <Link href="/create" legacyBehavior>
-            <a className="text-black hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200">
-              <PaintBrushIcon className="h-8 w-8" />
-            </a>
-          </Link>
+          <IconLink
+            href="/create"
+            icon={<PaintBrushIcon className="h-8 w-8" />}
+            active={isActive("/create")}
+          />
         </div>
       </div>
     );
