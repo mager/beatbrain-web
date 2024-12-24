@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import React from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { Chakra_Petch, Ms_Madi } from "next/font/google";
 
 import Crown from "@components/Crown";
@@ -34,6 +35,7 @@ const Layout: React.FC<Props> = (props) => {
       <Search />
       <Main>{props.children}</Main>
       <Footer className="fixed bottom-0 w-full" />
+      <Analytics />
     </div>
   );
 };
