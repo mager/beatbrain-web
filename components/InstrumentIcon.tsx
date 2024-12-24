@@ -7,6 +7,7 @@ type Props = {
 
 const supported = [
   "bass",
+  "bell",
   "cello",
   "drums",
   "foot-stomps",
