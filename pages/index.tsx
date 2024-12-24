@@ -50,14 +50,6 @@ const Home: React.FC<Props> = ({ tracks }) => {
     <Layout>
       <Box>
         <div className="flex flex-col items-start">
-          <div>
-            <div className="text-4xl md:text-7xl font-bold font-mono">
-              beatbrain
-            </div>
-            <div className="text-base md:text-2xl">
-              Share and discover your favorite songs
-            </div>
-          </div>
           <div className="mt-4 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {tracks.map((track) => (
@@ -75,7 +67,7 @@ const Home: React.FC<Props> = ({ tracks }) => {
                       className="w-[100px] h-[100px] lg:w-[300px] lg:h-[300px] object-cover flex-shrink-0"
                     />
                     <div className="ml-4 lg:ml-0 lg:mt-2 flex flex-col justify-center min-w-0">
-                      <div className="font-bold truncate max-w-full">
+                      <div className="font-bold text-xl truncate max-w-full">
                         {track.name}
                       </div>
                       <div className="text-sm text-gray-600 truncate max-w-full">

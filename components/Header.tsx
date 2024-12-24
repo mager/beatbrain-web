@@ -1,18 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
 import {
-  Cog8ToothIcon,
   PaintBrushIcon,
   ArrowRightEndOnRectangleIcon,
-  UserIcon,
   NewspaperIcon,
 } from "@heroicons/react/24/solid";
-import { AppContext } from "../context/AppContext";
-
-import Dropdown from "@components/Dropdown";
-import ProfileImage from "./ProfileImage";
+import AuthMenu from "@components/AuthMenu";
+import UsernameLink from "@components/UsernameLink";
 
 const Header: React.FC = () => {
   const context = useContext(AppContext);
@@ -20,17 +16,9 @@ const Header: React.FC = () => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
 
   const user = state?.user;
   const username = user?.username;
-  let profileImage = <UserIcon className="hidden md:block h-8 w-8 mr-2" />;
-  if (username) {
-    profileImage = <ProfileImage height={32} width={32} username={username} />;
-  }
 
   let left = (
     <div className="flex justify-center items-center">
@@ -71,12 +59,9 @@ const Header: React.FC = () => {
 
   if (user) {
     right = (
-      <div className="ml-auto flex items-center">
-        {username && (
-          <div className="mx-2 flex items-center">
-            <Link href={`/u/${username}`}>{profileImage}</Link>
-          </div>
-        )}
+      <div className="hidden ml-auto md:flex items-center">
+        {username && <UsernameLink username={username} />}
+        <AuthMenu iconColor="black" />
         <div className="mx-2 flex items-center">
           <Link href="/create" legacyBehavior>
             <a className="text-black hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200">
@@ -84,27 +69,6 @@ const Header: React.FC = () => {
             </a>
           </Link>
         </div>
-        <div className="mx-2 flex items-center">
-          <button
-            title="Menu"
-            onClick={toggleDropdown}
-            className="text-black hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200"
-          >
-            <Cog8ToothIcon className="h-8 w-8" />
-          </button>
-        </div>
-        <Dropdown isOpen={isOpen}>
-          <div className="flex flex-col text-lg text-gray-700 cursor-pointer bg-white rounded-lg shadow-lg">
-            <div className="p-4 border-b border-gray-200 hover:bg-gray-50">
-              <Link href="/settings">Settings</Link>
-            </div>
-            <div className="p-4 hover:bg-gray-50">
-              <a onClick={() => signOut()} role="menuitem">
-                Logout
-              </a>
-            </div>
-          </div>
-        </Dropdown>
       </div>
     );
   }

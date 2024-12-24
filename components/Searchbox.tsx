@@ -22,7 +22,7 @@ export const loadOptions = async (inputValue) => {
             height={32}
             unoptimized
           />
-          <span className="ml-2">{`${item.artist} - ${item.name}`}</span>
+          <span className="mx-2">{`${item.artist} - ${item.name}`}</span>
         </div>
       ),
     }));

@@ -108,7 +108,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
                     unoptimized
                   />
                 </div>
-                <div className="ml-2">
+                <div className="mx-2">
                   <div className="text-sm">{track.artist}</div>
                   <div>{track.title}</div>
                 </div>
