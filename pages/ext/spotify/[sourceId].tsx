@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
+import { PrismaClient } from "@prisma/client";
 
 import Layout from "@components/Layout";
 import GiantTitle from "@components/GiantTitle";
@@ -12,22 +13,42 @@ import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
 import { SERVER_HOST, getSpotifyTrackURL } from "@util";
 
+const prisma = new PrismaClient();
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sourceId } = context.params;
   const resp = await fetch(
     `${SERVER_HOST}/track?source=SPOTIFY&sourceId=${sourceId}`
   );
   const response: GetTrackResponse = await resp.json();
+
+  const posts = await prisma.post.findMany({
+    where: {
+      track: {
+        sourceId: sourceId as string,
+      },
+    },
+    select: {
+      author: true,
+    },
+  });
+
   return {
-    props: { track: response.track },
+    props: { track: response.track, posts },
   };
 };
 
 type Props = {
   track: Track;
+  posts: {
+    author: {
+      name: string;
+      image: string;
+    };
+  }[];
 };
 
-const Track: React.FC<Props> = ({ track }) => {
+const Track: React.FC<Props> = ({ track, posts }) => {
   const {
     artist,
     genres,
@@ -39,7 +60,6 @@ const Track: React.FC<Props> = ({ track }) => {
     release_date,
     source_id,
   } = track;
-
   return (
     <Layout>
       <div className="py-2 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -60,6 +80,22 @@ const Track: React.FC<Props> = ({ track }) => {
             instruments={instruments}
             production_credits={production_credits}
           />
+          {posts && posts.length > 0 && (
+            <div className="mt-4 mb-2 flex items-center">
+              <img
+                src={posts[0].author.image}
+                alt={posts[0].author.name}
+                className="w-8 h-8 rounded-full mr-2"
+              />
+              {posts.length > 1 ? (
+                <p>
+                  Saved by {posts[0].author.name}, and {posts.length - 1} others
+                </p>
+              ) : (
+                <p> Saved by {posts[0].author.name}</p>
+              )}
+            </div>
+          )}
         </div>
         <div className="col-span-1 xl:col-span-1">
           <div className="mb-8 border-4 border-black">
