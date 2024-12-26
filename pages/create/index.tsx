@@ -49,19 +49,21 @@ const Create: React.FC = () => {
       <div className="page bg-white py-8">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
-          <div className="mt-4">
-            <Searchbox
-              option={option}
-              handleChange={handleChange}
-              loadOptions={debouncedLoadOptions}
-            />
-          </div>
-          <div className="mb-8">
-            <Input
-              placeholder="How does it make you feel?"
-              value={content}
-              setValue={setContent}
-            />
+          <div className="flex flex-col lg:flex-row justify-between my-4 gap-4">
+            <div className="w-full lg:w-1/2 flex items-center">
+              <Searchbox
+                option={option}
+                handleChange={handleChange}
+                loadOptions={debouncedLoadOptions}
+              />
+            </div>
+            <div className="w-full lg:w-1/2 flex items-center">
+              <Input
+                placeholder="How does it make you feel?"
+                value={content}
+                setValue={setContent}
+              />
+            </div>
           </div>
 
           <div className="flex items-center">

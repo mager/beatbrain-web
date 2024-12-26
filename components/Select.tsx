@@ -13,7 +13,7 @@ const styles = {
       borderColor: "#4ade80",
       cursor: "text",
     },
-    padding: "10px 12px",
+    padding: "10px 8px",
   }),
   // Hide default React Select UI elements
   dropdownIndicator: () => ({
@@ -35,7 +35,7 @@ const styles = {
     color: state.isFocused ? "#4ade80" : "#374151",
     padding: "12px",
     "&:hover": {
-      backgroundColor: "#dcfce7", // green-100
+      backgroundColor: "#dcfce7",
       cursor: "pointer",
     },
   }),

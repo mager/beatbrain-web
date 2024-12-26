@@ -47,7 +47,7 @@ type Props = {
 
 const Searchbox: React.FC<Props> = ({ handleChange, loadOptions, option }) => {
   return (
-    <div className="w-full py-2">
+    <div className="w-full">
       <Select
         option={option}
         handleChange={handleChange}
