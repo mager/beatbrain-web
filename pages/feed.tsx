@@ -12,6 +12,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       author: {
         select: {
           name: true,
+          image: true,
         },
       },
       track: {
@@ -40,10 +41,7 @@ const Blog: React.FC<Props> = (props) => {
         <Title>Public Feed</Title>
         <div className="flex flex-col space-y-4 my-4">
           {props.feed.map((post) => (
-            <div
-              key={post.id}
-              className="post bg-white rounded-md py-2 cursor-pointer"
-            >
+            <div key={post.id} className="post cursor-pointer">
               <Post post={post} />
             </div>
           ))}

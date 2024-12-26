@@ -13,11 +13,13 @@ const Search: React.FC = () => {
   };
 
   return (
-    <Searchbox
-      option={option}
-      handleChange={goToTrackPage}
-      loadOptions={debouncedLoadOptions}
-    />
+    <div className="mx-8 my-4">
+      <Searchbox
+        option={option}
+        handleChange={goToTrackPage}
+        loadOptions={debouncedLoadOptions}
+      />
+    </div>
   );
 };
 

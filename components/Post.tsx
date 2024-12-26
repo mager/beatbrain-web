@@ -22,6 +22,7 @@ export type PostProps = {
   author: {
     name: string;
     email: string;
+    image: string;
   } | null;
   track: {
     artist: string;
@@ -31,25 +32,38 @@ export type PostProps = {
   } | null;
   content: string;
 };
-
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
+
   return (
     <div
-      onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}
-      className="bg-white rounded-lg cursor-pointer flex items-start p-2"
+      onClick={() => Router.push(`/ext/spotify/${post.track?.sourceId}`)}
+      className="bg-white rounded-lg cursor-pointer"
     >
-      <img
-        src={post.track?.image}
-        alt={post.track?.title}
-        className="w-14 h-14 rounded-lg mr-2"
-      />
-      <div>
-        <h2 className="text-lg font-semibold">@{authorName}</h2>
-        <p className="text-base mt-0.5">
-          {post.track?.title} by {post.track?.artist}
-        </p>
-        <p className="text-base mt-0.5 italic">{post.content}</p>
+      <div className="flex flex-col md:flex-row items-start gap-4 border-b border-gray-200 pb-4">
+        <div className="flex items-center gap-4 w-full">
+          <img
+            src={post.track?.image}
+            alt={post.track?.title}
+            className="w-14 h-14 rounded-lg"
+          />
+          <div className="flex-grow">
+            <p className="font-semibold">{post.track?.title}</p>
+            <p className="text-gray-600">{post.track?.artist}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 w-full">
+          <img
+            src={post.author?.image}
+            alt={authorName}
+            className="w-14 h-14 rounded-lg"
+          />
+          <div className="flex-grow">
+            <h2 className="text-xl font-bold">@{authorName}</h2>
+            <p className="text-gray-600 italic">{post.content}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
