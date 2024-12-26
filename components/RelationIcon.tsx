@@ -6,11 +6,14 @@ type Props = {
 };
 
 const supported = [
+  // Performers
   "bass",
   "bell",
   "cello",
+  "double-bass",
   "drums",
   "foot-stomps",
+  "horn",
   "guitar",
   "handclaps",
   "keyboard",
@@ -18,12 +21,17 @@ const supported = [
   "synthesizer",
   "trumpet",
   "violin",
+
+  // Production Credits
+  "producer",
+  "recording",
+  "mix",
 ];
 
-const InstrumentIcon: React.FC<Props> = ({ name }) => {
+const RelationIcon: React.FC<Props> = ({ name }) => {
   const unsupported = !supported.includes(name);
   if (unsupported) {
-    console.debug("Instrument not supported", name);
+    console.debug("Relation not supported", name);
     return <div className="mr-2 font-bold">{name}</div>;
   }
 
@@ -41,4 +49,4 @@ const InstrumentIcon: React.FC<Props> = ({ name }) => {
   return <div className="mr-2">{img}</div>;
 };
 
-export default InstrumentIcon;
+export default RelationIcon;

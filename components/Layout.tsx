@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import React from "react";
+import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
 import { Chakra_Petch, Ms_Madi } from "next/font/google";
 
@@ -21,20 +22,20 @@ export const logoFont = Ms_Madi({
   variable: "--font-logo",
 });
 
-// Create Color Context
-
 type Props = {
   children: ReactNode;
 };
 
 const Layout: React.FC<Props> = (props) => {
+  const router = useRouter();
+  const hideSearch = ["/create"].includes(router.pathname);
   return (
     <div className={`${bodyFont.variable} ${logoFont.variable} font-sans`}>
       <Crown />
       <Header />
-      <Search />
+      {!hideSearch && <Search />}
       <Main>{props.children}</Main>
-      <Footer className="fixed bottom-0 w-full" />
+      <Footer />
       <Analytics />
     </div>
   );

@@ -17,12 +17,9 @@ const AuthMenu = ({ iconColor = "white" }: Props) => {
   return (
     <>
       <div className="mx-2 flex items-center">
-        <IconLink
-          href="#"
-          icon={<Bars3Icon className="h-8 w-8" />}
-          onClick={toggleDropdown}
-          className={`text-${iconColor}`}
-        />
+        <button onClick={toggleDropdown} className={`text-${iconColor}`}>
+          <Bars3Icon className="h-8 w-8" />
+        </button>
       </div>
       <Dropdown isOpen={isOpen}>
         <div className="flex flex-col text-lg text-gray-700 cursor-pointer bg-white rounded-lg shadow-lg">

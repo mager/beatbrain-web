@@ -4,6 +4,7 @@ export type Track = {
   name: string;
   source_id: string;
   source: string;
+  isrc: string;
 
   features: Features;
   analysis: Analysis;
@@ -11,6 +12,7 @@ export type Track = {
   release_date: string;
   genres: string[];
   instruments: Instrument[];
+  production_credits: ProductionCredit[];
 };
 
 export type Analysis = {
@@ -46,6 +48,11 @@ export type Features = {
 export type Instrument = {
   artist: string;
   instruments: string[];
+};
+
+export type ProductionCredit = {
+  artist: string;
+  credits: string[];
 };
 
 export type RecommendedTracksResp = {

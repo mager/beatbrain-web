@@ -8,7 +8,7 @@ interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
   return (
     <Box
-      className={`footer flex bg-black text-white px-8 items-center ${className}`}
+      className={`footer flex bg-black text-white px-8 items-center fixed bottom-0 w-full ${className}`}
       {...rest}
     >
       <div className="pr-2">beatbrain</div>

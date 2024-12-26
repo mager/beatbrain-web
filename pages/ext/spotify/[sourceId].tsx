@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import Layout from "@components/Layout";
 import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
-import Instruments from "@components/Instruments";
+import Relations from "@components/Relations";
 import Meta from "@components/Meta";
 import Tag from "@components/Tag";
 import type { GetTrackResponse, Track } from "@types";
@@ -28,14 +28,23 @@ type Props = {
 };
 
 const Track: React.FC<Props> = ({ track }) => {
-  const { name, artist, image, release_date, genres, source_id, instruments } =
-    track;
+  const {
+    artist,
+    genres,
+    image,
+    instruments,
+    isrc,
+    name,
+    production_credits,
+    release_date,
+    source_id,
+  } = track;
 
   return (
     <Layout>
-      <div className="py-6 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="py-2 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div className="col-span-1 xl:col-span-3">
-          <GiantTitle>{name}</GiantTitle>
+          <GiantTitle title={isrc}>{name}</GiantTitle>
           <Subtitle>{artist}</Subtitle>
           <Meta>
             Released {formatDistanceToNow(new Date(release_date))} ago
@@ -47,9 +56,10 @@ const Track: React.FC<Props> = ({ track }) => {
               ))}
             </div>
           )}
-          {instruments && instruments.length > 0 && (
-            <Instruments instruments={instruments} />
-          )}
+          <Relations
+            instruments={instruments}
+            production_credits={production_credits}
+          />
         </div>
         <div className="col-span-1 xl:col-span-1">
           <div className="mb-8 border-4 border-black">
