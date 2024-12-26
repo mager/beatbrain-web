@@ -14,6 +14,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
           name: true,
         },
       },
+      track: {
+        select: {
+          artist: true,
+          title: true,
+          sourceId: true,
+          image: true,
+        },
+      },
     },
   });
   return {
@@ -30,11 +38,11 @@ const Blog: React.FC<Props> = (props) => {
     <Layout>
       <Box>
         <Title>Public Feed</Title>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col space-y-4 my-4">
           {props.feed.map((post) => (
             <div
               key={post.id}
-              className="post bg-white rounded-md shadow-md hover:shadow-lg transition-shadow duration-150 ease-in-out p-4 cursor-pointer"
+              className="post bg-white rounded-md py-2 cursor-pointer"
             >
               <Post post={post} />
             </div>
