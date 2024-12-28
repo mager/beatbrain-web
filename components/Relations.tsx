@@ -29,14 +29,15 @@ const Relations: React.FC<Props> = ({ instruments, production_credits }) => {
       )}
       {production_credits && (
         <>
-          {production_credits.map(({ artist, credits }) => (
+          {production_credits.map(({ credit, artists }) => (
             <div className="mb-2 flex items-center">
-              <div className="flex justify-center items-center">
-                {credits.map((credit) => (
-                  <RelationIcon name={credit} />
-                ))}
+              {/* Render the credit icon for each credit type */}
+              <div className="flex justify-center items-center mr-2">
+                <RelationIcon name={credit} />
               </div>
-              <div>{artist}</div>
+
+              {/* Render the comma-separated list of artists for this credit */}
+              <div>{artists.sort().join(", ")}</div>
             </div>
           ))}
         </>

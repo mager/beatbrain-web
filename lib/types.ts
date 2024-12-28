@@ -51,8 +51,8 @@ export type Instrument = {
 };
 
 export type ProductionCredit = {
-  artist: string;
-  credits: string[];
+  artists: string[];
+  credit: string;
 };
 
 export type RecommendedTracksResp = {

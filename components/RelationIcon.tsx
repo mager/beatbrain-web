@@ -20,6 +20,7 @@ const supported = [
   "piano",
   "synthesizer",
   "drum-machine",
+  "shakers",
   "trumpet",
   "violin",
 
@@ -27,6 +28,7 @@ const supported = [
   "producer",
   "recording",
   "mix",
+  "vocal",
 ];
 
 const RelationIcon: React.FC<Props> = ({ name }) => {
