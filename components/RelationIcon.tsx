@@ -6,21 +6,25 @@ type Props = {
 };
 
 const supported = [
-  // Performers
+  // Instruments
   "bass",
+  "banjo",
   "bell",
   "cello",
   "double-bass",
+  "drum-machine",
   "drums",
   "foot-stomps",
-  "horn",
+  "fretless-bass",
   "guitar",
   "handclaps",
+  "horn",
   "keyboard",
   "piano",
-  "synthesizer",
-  "drum-machine",
+  "saxophone",
   "shakers",
+  "synthesizer",
+  "trombone",
   "trumpet",
   "violin",
 

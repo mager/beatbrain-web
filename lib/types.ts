@@ -46,8 +46,8 @@ export type Features = {
 };
 
 export type Instrument = {
-  artist: string;
-  instruments: string[];
+  artists: string[];
+  instrument: string;
 };
 
 export type ProductionCredit = {
