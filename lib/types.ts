@@ -56,7 +56,8 @@ export type ProductionCredit = {
 };
 
 export type RecommendedTracksResp = {
-  tracks: Track[];
+  billboard: Track[];
+  hypem: Track[];
 };
 
 export type GetTrackResponse = {

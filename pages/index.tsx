@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import type { GetServerSideProps } from "next";
-import Image from "next/image";
 import Layout from "../components/Layout";
 import { shuffle } from "../lib/util";
 import type { RecommendedTracksResp, Track } from "@types";
-import Link from "next/link";
 import { SERVER_HOST } from "@util";
 import Box from "@components/Box";
 import TrackItem from "../components/TrackItem";
@@ -20,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     });
     const resp: RecommendedTracksResp = await res.json();
     return {
-      props: { tracks: shuffle(resp).slice(0, 96) },
+      props: { tracks: shuffle(resp.billboard).slice(0, 96) },
     };
   } catch (err) {
     console.log(err);
