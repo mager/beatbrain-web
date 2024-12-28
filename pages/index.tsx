@@ -17,8 +17,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
       body: JSON.stringify({}),
     });
     const resp: RecommendedTracksResp = await res.json();
+    console.log({ resp });
     return {
-      props: { tracks: shuffle(resp.billboard).slice(0, 96) },
+      props: { tracks: resp.tracks },
     };
   } catch (err) {
     console.log(err);

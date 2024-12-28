@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { PrismaClient } from "@prisma/client";
 
@@ -14,6 +15,25 @@ import type { GetTrackResponse, Track } from "@types";
 import { SERVER_HOST, getSpotifyTrackURL } from "@util";
 
 const prisma = new PrismaClient();
+
+const SavedByText = ({ author, othersCount }) => {
+  return (
+    <p>
+      Saved by{" "}
+      <Link
+        href={`/u/${author.name}`}
+        className="border-b-2 hover:border-green-300"
+      >
+        {author.name}
+      </Link>
+      {othersCount > 0 && (
+        <>
+          , and {othersCount} {othersCount === 1 ? "other" : "others"}
+        </>
+      )}
+    </p>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sourceId } = context.params;
@@ -64,6 +84,9 @@ const Track: React.FC<Props> = ({ track, posts }) => {
     source_id,
   } = track;
 
+  const author = posts[0]?.author;
+  const othersCount = posts.length - 1;
+
   const submitPost = async () => {
     const body = {
       content,
@@ -110,13 +133,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
                 alt={posts[0].author.name}
                 className="w-8 h-8 rounded-full mr-2"
               />
-              {posts.length > 1 ? (
-                <p>
-                  Saved by {posts[0].author.name}, and {posts.length - 1} others
-                </p>
-              ) : (
-                <p> Saved by {posts[0].author.name}</p>
-              )}
+              <SavedByText author={author} othersCount={othersCount} />
             </div>
           )}
         </div>
