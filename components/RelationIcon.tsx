@@ -19,6 +19,7 @@ const supported = [
   "keyboard",
   "piano",
   "synthesizer",
+  "drum-machine",
   "trumpet",
   "violin",
 
