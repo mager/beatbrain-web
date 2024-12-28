@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
@@ -49,6 +49,9 @@ type Props = {
 };
 
 const Track: React.FC<Props> = ({ track, posts }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [content, setContent] = useState("");
+
   const {
     artist,
     genres,
@@ -60,6 +63,26 @@ const Track: React.FC<Props> = ({ track, posts }) => {
     release_date,
     source_id,
   } = track;
+
+  const submitPost = async () => {
+    const body = {
+      content,
+      track: {
+        source: "SPOTIFY",
+        sourceId: source_id,
+        artist,
+        title: name,
+        image,
+      },
+    };
+    await fetch(`/api/post`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    setIsModalOpen(false);
+  };
+
   return (
     <Layout>
       <div className="py-2 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -121,14 +144,41 @@ const Track: React.FC<Props> = ({ track, posts }) => {
             </a>
             <button
               className="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:bg-green-600 rounded-lg text-xl p-4 me-2 mb-2"
-              onClick={() => console.log("click")}
-              disabled
+              onClick={() => setIsModalOpen(true)}
             >
               Save
             </button>
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="modal-content bg-white rounded-lg p-6 shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Share your thoughts</h2>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="How does it make you feel?"
+              className="w-full h-24 border border-gray-300 rounded-md p-2"
+            />
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-blue-500 text-white rounded-lg px-4 py-2 mr-2"
+                onClick={submitPost}
+              >
+                Post
+              </button>
+              <button
+                className="bg-gray-300 text-gray-700 rounded-lg px-4 py-2"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };

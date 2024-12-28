@@ -8,6 +8,7 @@ import Username from "@components/Username";
 import { Draft } from "@components/Post";
 import ProfileImage from "@components/ProfileImage";
 import { User } from "@prisma/client";
+import PostList from "@components/PostList";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const params = context.params;
@@ -36,10 +37,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = user;
 
   const drafts = await prisma.post.findMany({
-    select: {
-      content: true,
-      track: true,
-      createdAt: true,
+    include: {
+      author: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+      track: {
+        select: {
+          artist: true,
+          title: true,
+          sourceId: true,
+          image: true,
+        },
+      },
     },
     where: {
       authorId: id,
@@ -96,26 +108,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
       </div>
       {drafts && drafts.length > 0 && (
         <div className="w-full">
-          {drafts.map(({ content, createdAt, track }) => (
-            <div className="flex justify-between items-center gap-2 mb-4">
-              <div className="flex">
-                <div>
-                  <Image
-                    width={48}
-                    height={48}
-                    src={track.image}
-                    alt="thumb"
-                    unoptimized
-                  />
-                </div>
-                <div className="mx-2">
-                  <div className="text-sm">{track.artist}</div>
-                  <div>{track.title}</div>
-                </div>
-              </div>
-              <div>{createdAt.toLocaleDateString()}</div>
-            </div>
-          ))}
+          <PostList posts={drafts} showAuthor={false} />
         </div>
       )}
     </Layout>

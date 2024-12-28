@@ -19,6 +19,7 @@ export type TrackProps = {
 export type PostProps = {
   id: number;
   title: string;
+  createdAt: Date;
   author: {
     name: string;
     email: string;
@@ -32,8 +33,17 @@ export type PostProps = {
   } | null;
   content: string;
 };
-const Post: React.FC<{ post: PostProps }> = ({ post }) => {
+
+type Props = {
+  post: PostProps;
+  showAuthor?: boolean;
+};
+
+const Post: React.FC<Props> = ({ post, showAuthor = true }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
+  const formattedDate = post.createdAt
+    ? post.createdAt.toLocaleDateString()
+    : "";
 
   return (
     <div
@@ -52,17 +62,24 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
             <p className="text-gray-600">{post.track?.artist}</p>
           </div>
         </div>
-
-        <div className="flex items-center gap-4 w-full">
-          <img
-            src={post.author?.image}
-            alt={authorName}
-            className="w-14 h-14 rounded-lg"
-          />
-          <div className="flex-grow">
-            <h2 className="text-xl font-bold">@{authorName}</h2>
-            <p className="text-gray-600 italic">{post.content}</p>
+        {showAuthor && (
+          <div className="flex items-center gap-4 w-full">
+            <img
+              src={post.author?.image}
+              alt={authorName}
+              className="w-14 h-14 rounded-lg"
+            />
+            <div className="flex-grow">
+              <h2 className="text-xl font-bold">@{authorName}</h2>
+              <p className="text-gray-600 italic">{post.content}</p>
+            </div>
           </div>
+        )}
+        {/* TODO: Fix me */}
+        <div className="flex items-center gap-4 w-full">
+          {formattedDate && (
+            <p className="text-gray-600 italic">{formattedDate}</p>
+          )}
         </div>
       </div>
     </div>

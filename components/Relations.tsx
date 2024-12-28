@@ -16,7 +16,7 @@ const Relations: React.FC<Props> = ({ instruments, production_credits }) => {
       {instruments && (
         <>
           {instruments.map(({ artist, instruments }) => (
-            <div className="mb-2 flex items-center">
+            <div key={artist} className="mb-2 flex items-center">
               <div className="flex justify-center items-center">
                 {instruments.map((instrument) => (
                   <RelationIcon name={instrument} />
