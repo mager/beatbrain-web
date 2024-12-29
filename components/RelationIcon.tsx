@@ -27,6 +27,7 @@ const supported = [
   "trombone",
   "trumpet",
   "violin",
+  "whistle",
 
   // Production Credits
   "producer",

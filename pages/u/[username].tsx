@@ -1,102 +1,74 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
-import { useParams } from "next/navigation";
 import prisma from "../../lib/prisma";
 import Layout from "@components/Layout";
 import Username from "@components/Username";
-import { Draft } from "@components/Post";
+import { PostProps } from "@components/Post";
 import ProfileImage from "@components/ProfileImage";
 import { User } from "@prisma/client";
 import PostList from "@components/PostList";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const params = context.params;
-  const defaultProps = {
-    props: {
-      drafts: [],
-      user: null,
-    },
-  };
 
   if (!params) {
-    return defaultProps;
-  }
-
-  const { username } = params;
-  const user = await prisma.user.findFirst({
-    where: {
-      name: username as string,
-    },
-  });
-
-  if (!user) {
-    return defaultProps;
-  }
-
-  const { id } = user;
-
-  const drafts = await prisma.post.findMany({
-    include: {
-      author: {
-        select: {
-          name: true,
-          image: true,
-        },
-      },
-      track: {
-        select: {
-          artist: true,
-          title: true,
-          sourceId: true,
-          image: true,
-        },
-      },
-    },
-    where: {
-      authorId: id,
-    },
-  });
-
-  const props = {
-    user,
-    drafts: [],
-  };
-
-  if (!drafts || drafts.length == 0) {
     return {
-      props,
+      props: {
+        drafts: [],
+        user: null,
+      },
     };
   }
 
-  props.drafts = drafts;
+  const { username } = params;
+
+  const user = await prisma.user.findFirst({
+    where: { name: username as string },
+  });
+
+  if (!user) {
+    return {
+      props: {
+        drafts: [],
+        user: null,
+      },
+    };
+  }
+
+  const drafts = await prisma.post.findMany({
+    include: {
+      author: { select: { name: true, image: true } },
+      track: {
+        select: { artist: true, title: true, sourceId: true, image: true },
+      },
+    },
+    where: { authorId: user.id },
+  });
 
   return {
     props: {
       user,
-      drafts,
+      drafts: drafts.map((draft) => ({
+        ...draft,
+        createdAt: draft.createdAt.toISOString(),
+      })),
     },
   };
 };
 
 type ProfileProps = {
-  drafts: Draft[];
+  drafts: PostProps[];
   user: User;
 };
 
 const Profile: React.FC<ProfileProps> = (props) => {
-  const params = useParams();
-  if (!params) {
-    return null;
-  }
-
   const { drafts, user } = props;
 
   if (!user) {
     return null;
   }
 
-  const { username } = params;
+  const username = props?.user?.name;
 
   return (
     <Layout>
