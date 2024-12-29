@@ -4,9 +4,9 @@ import Box from "./Box";
 const styles = {
   control: (provided, state) => ({
     ...provided,
-    border: state.isFocused ? "2px solid #4ade80" : "2px solid #e5e7eb",
-    borderRadius: "2px 8px 2px 8px",
-    boxShadow: state.isFocused ? "0 4px 12px rgba(74, 222, 128, 0.15)" : "none",
+    border: state.isFocused ? "3px solid #4ade80" : "3px solid #e5e7eb",
+    borderRadius: "0px",
+    boxShadow: state.isFocused ? "0 3px 9px rgba(74, 222, 128, 0.15)" : "none",
     transition: "all 0.2s ease",
     backgroundColor: "white",
     "&:hover": {
@@ -15,20 +15,17 @@ const styles = {
     },
     padding: "5px 4px",
   }),
-  // Hide default React Select UI elements
   dropdownIndicator: () => ({
     display: "none",
   }),
   indicatorSeparator: () => ({
     display: "none",
   }),
-  // Style placeholder
   placeholder: (provided) => ({
     ...provided,
     color: "#9ca3af",
     fontSize: "16px",
   }),
-  // Style options in dropdown
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused ? "#f3f4f6" : "white",
