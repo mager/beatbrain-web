@@ -10,7 +10,7 @@ type Props = {
 const ProfileImage: React.FC<Props> = ({
   username,
   height = 64,
-  width = 48,
+  width = 64,
 }) => {
   return (
     <Image

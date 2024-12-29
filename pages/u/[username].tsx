@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     },
     where: { authorId: user.id },
+    orderBy: { createdAt: "desc" },
   });
 
   return {
@@ -72,7 +73,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
   return (
     <Layout>
-      <div className="py-8 pb-8 flex flex-col items-center sm:flex-row sm:gap-4 sm:items-center">
+      <div className="py-4 pb-8 flex flex-col items-center sm:flex-row sm:gap-4 sm:items-center">
         <div className="mb-2 sm:mb-0">
           <ProfileImage username={username} />
         </div>
