@@ -22,8 +22,8 @@ const AuthMenu = ({ iconColor = "white" }: Props) => {
         </button>
       </div>
       <Dropdown isOpen={isOpen}>
-        <div className="flex flex-col text-lg text-gray-700 cursor-pointer bg-white rounded-lg shadow-lg">
-          <div className="p-4 border-b border-gray-200 hover:bg-gray-50">
+        <div className="flex flex-col text-lg text-gray-600 cursor-pointer bg-white">
+          <div className="p-4 border-b-2 border-gray-200 hover:bg-gray-50">
             <IconLink
               href="/settings"
               icon={<span>Settings</span>}

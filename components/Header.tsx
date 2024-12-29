@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   PaintBrushIcon,
-  ArrowRightEndOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   NewspaperIcon,
 } from "@heroicons/react/24/solid";
 import AuthMenu from "@components/AuthMenu";
@@ -47,8 +47,8 @@ const Header: React.FC = () => {
     right = (
       <div className="ml-auto flex items-center">
         <Link href="/api/auth/signin" legacyBehavior>
-          <a className="text-black hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200">
-            <ArrowRightEndOnRectangleIcon className="h-8 w-8" />
+          <a className="text-white hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200">
+            <ArrowRightStartOnRectangleIcon className="h-8 w-8" />
           </a>
         </Link>
       </div>
@@ -59,7 +59,7 @@ const Header: React.FC = () => {
     right = (
       <div className="hidden ml-auto md:flex items-center">
         {username && <UsernameLink username={username} />}
-        <AuthMenu iconColor="black" />
+        <AuthMenu iconColor="white" />
         <div className="mx-2 flex items-center">
           <IconLink
             href="/create"
@@ -71,7 +71,7 @@ const Header: React.FC = () => {
     );
   }
   return (
-    <nav className="flex items-center py-4 px-4 bg-gray-200">
+    <nav className="flex items-center py-4 px-4 bg-black bg-opacity-50 backdrop-blur-md text-white fixed top-0 w-full z-50">
       {left}
       {right}
     </nav>
