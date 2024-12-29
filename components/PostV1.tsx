@@ -55,18 +55,24 @@ const Post: React.FC<Props> = ({ post, showAuthor = true }) => {
               <h3 className="font-semibold text-lg">{trackTitle}</h3>
               <p className="text-gray-600">{trackArtist}</p>
             </div>
+            <p className="text-gray-400 italic text-right">{formattedDate}</p>
           </div>
         </div>
         {showAuthor && (
-          <div className="flex items-center gap-2 mt-2 md:mt-0">
+          <div className="flex flex-col md:flex-row items-start gap-2 mt-2 md:mt-0">
             {post.author?.image && (
               <img
                 src={post.author.image}
                 alt={authorName}
-                className="w-8 h-8 rounded-lg object-cover md:w-12 md:h-12"
+                className="w-12 h-12 rounded-lg object-cover md:w-16 md:h-16"
               />
             )}
-            <div className="text-gray-500 text-sm italic">{post.content}</div>
+            <div>
+              <p className="font-bold text-gray-700">@{authorName}</p>
+              <p className="text-gray-600 text-sm italic mt-1">
+                {post.content}
+              </p>
+            </div>
           </div>
         )}
       </div>

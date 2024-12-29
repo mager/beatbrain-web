@@ -12,7 +12,7 @@ const Crown = () => {
   }
 
   return (
-    <div className="md:hidden bg-black text-white flex px-8 py-2 justify-end">
+    <div className="md:hidden bg-black text-white flex px-4 py-2 justify-end">
       {username && <UsernameLink username={username} />}
       <AuthMenu />
     </div>

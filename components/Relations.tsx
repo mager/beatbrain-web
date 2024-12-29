@@ -16,11 +16,13 @@ const Relations: React.FC<Props> = ({ instruments, production_credits }) => {
       {instruments && (
         <>
           {instruments.map(({ instrument, artists }) => (
-            <div key={instrument} className="mb-2 flex items-center">
-              <div className="flex justify-center items-center mr-2">
+            <div className="mb-2 flex items-center">
+              <div className="flex justify-center items-start mr-2 w-8 h-8">
                 <RelationIcon name={instrument} />
               </div>
-              <div>{artists.join(", ")}</div>
+              <div className="flex-1">
+                <div className="break-words">{artists.join(", ")}</div>
+              </div>
             </div>
           ))}
         </>
@@ -29,10 +31,12 @@ const Relations: React.FC<Props> = ({ instruments, production_credits }) => {
         <>
           {production_credits.map(({ credit, artists }) => (
             <div className="mb-2 flex items-center">
-              <div className="flex justify-center items-center mr-2">
+              <div className="flex justify-center items-start mr-2 w-8 h-8">
                 <RelationIcon name={credit} />
               </div>
-              <div>{artists.sort().join(", ")}</div>
+              <div className="flex-1">
+                <div className="break-words">{artists.sort().join(", ")}</div>
+              </div>
             </div>
           ))}
         </>

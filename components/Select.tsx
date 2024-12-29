@@ -5,7 +5,7 @@ const styles = {
   control: (provided, state) => ({
     ...provided,
     border: state.isFocused ? "2px solid #4ade80" : "2px solid #e5e7eb",
-    borderRadius: "8px",
+    borderRadius: "2px 8px 2px 8px",
     boxShadow: state.isFocused ? "0 4px 12px rgba(74, 222, 128, 0.15)" : "none",
     transition: "all 0.2s ease",
     backgroundColor: "white",
@@ -13,7 +13,7 @@ const styles = {
       borderColor: "#4ade80",
       cursor: "text",
     },
-    padding: "10px 8px",
+    padding: "5px 4px",
   }),
   // Hide default React Select UI elements
   dropdownIndicator: () => ({

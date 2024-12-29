@@ -51,10 +51,11 @@ const RelationIcon: React.FC<Props> = ({ name }) => {
       alt={name}
       title={name}
       unoptimized
+      className="w-8 h-8 object-contain"
     />
   );
 
-  return <div className="mr-2">{img}</div>;
+  return <div>{img}</div>;
 };
 
 export default RelationIcon;

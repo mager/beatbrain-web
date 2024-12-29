@@ -23,7 +23,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => (
         alt={track.name}
         width={300}
         height={300}
-        className="w-[100px] h-[100px] lg:w-[300px] lg:h-[300px] object-cover flex-shrink-0"
+        className="w-[100px] h-[100px] lg:w-[300px] lg:h-[300px] object-cover"
       />
       <div className="ml-4 lg:ml-0 lg:mt-2 flex flex-col justify-center min-w-0">
         <div className="font-bold text-xl truncate max-w-full">
