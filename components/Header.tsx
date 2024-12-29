@@ -71,7 +71,7 @@ const Header: React.FC = () => {
     );
   }
   return (
-    <nav className="flex items-center py-4 px-4 bg-black bg-opacity-50 backdrop-blur-md text-white fixed top-0 w-full z-50">
+    <nav className="flex items-center py-4 px-4 bg-black bg-opacity-50 backdrop-blur-md text-white fixed top-0 w-full z-50 border-b-2 border-b-white">
       {left}
       {right}
     </nav>
