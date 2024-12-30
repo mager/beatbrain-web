@@ -57,7 +57,7 @@ const Header: React.FC = () => {
 
   if (user) {
     right = (
-      <div className="hidden ml-auto md:flex items-center">
+      <div className="flex ml-auto items-center">
         {username && <UsernameLink username={username} />}
         <AuthMenu iconColor="white" />
         <div className="mx-2 flex items-center">
