@@ -10,6 +10,7 @@ const supported = [
   "bass",
   "banjo",
   "bell",
+  "congas",
   "cello",
   "double-bass",
   "drum-machine",
@@ -24,8 +25,10 @@ const supported = [
   "saxophone",
   "shakers",
   "synthesizer",
+  "tambourine",
   "trombone",
   "trumpet",
+  "viola",
   "violin",
   "whistle",
 
@@ -38,6 +41,7 @@ const supported = [
   // Song Credits
   "composer",
   "lyricist",
+  "writer",
 ];
 
 const RelationIcon: React.FC<Props> = ({ name }) => {
