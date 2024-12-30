@@ -34,6 +34,10 @@ const supported = [
   "recording",
   "mix",
   "vocal",
+
+  // Song Credits
+  "composer",
+  "lyricist",
 ];
 
 const RelationIcon: React.FC<Props> = ({ name }) => {

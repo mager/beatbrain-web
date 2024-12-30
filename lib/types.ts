@@ -13,6 +13,7 @@ export type Track = {
   genres: string[];
   instruments: Instrument[];
   production_credits: ProductionCredit[];
+  song_credits: SongCredit[];
 };
 
 export type Analysis = {
@@ -51,6 +52,11 @@ export type Instrument = {
 };
 
 export type ProductionCredit = {
+  artists: string[];
+  credit: string;
+};
+
+export type SongCredit = {
   artists: string[];
   credit: string;
 };

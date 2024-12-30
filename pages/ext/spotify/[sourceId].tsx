@@ -80,6 +80,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
     isrc,
     name,
     production_credits,
+    song_credits,
     release_date,
     source_id,
   } = track;
@@ -125,6 +126,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
           <Relations
             instruments={instruments}
             production_credits={production_credits}
+            song_credits={song_credits}
           />
           {posts && posts.length > 0 && (
             <div className="mt-4 mb-2 flex items-center">
