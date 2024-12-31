@@ -41,7 +41,6 @@ const FeedPost: React.FC<Props> = ({ post }) => {
   return (
     <Link href={`/ext/spotify/${post.track?.sourceId || ""}`} passHref>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white rounded-lg p-2 border-2 border-transparent hover:border-green-300 hover:shadow-none transition-all duration-100">
-        {/* Left Column */}
         <div className="flex items-center gap-2 w-full">
           {post.track?.image && (
             <img
@@ -57,7 +56,6 @@ const FeedPost: React.FC<Props> = ({ post }) => {
             </div>
           </div>
         </div>
-        {/* Right Column */}
         <div className="flex items-center gap-2">
           {post.author?.image && (
             <img

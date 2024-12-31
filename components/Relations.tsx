@@ -51,9 +51,7 @@ const Relations: React.FC<Props> = ({
               <div className="flex justify-center items-start mr-2 w-8 h-8">
                 <RelationIcon name={instrument} />
               </div>
-              <div className="text-sm flex-1 break-words">
-                {renderArtists(artists)}
-              </div>
+              <div className="flex-1 break-words">{renderArtists(artists)}</div>
             </div>
           ))}
         </>
@@ -65,9 +63,7 @@ const Relations: React.FC<Props> = ({
               <div className="flex justify-center items-start mr-2 w-8 h-8">
                 <RelationIcon name={credit} />
               </div>
-              <div className="text-sm flex-1 break-words">
-                {renderArtists(artists)}
-              </div>
+              <div className="flex-1 break-words">{renderArtists(artists)}</div>
             </div>
           ))}
         </>
@@ -79,9 +75,7 @@ const Relations: React.FC<Props> = ({
               <div className="flex justify-center items-start mr-2 w-8 h-8">
                 <RelationIcon name={credit} />
               </div>
-              <div className="text-sm flex-1 break-words">
-                {renderArtists(artists)}
-              </div>
+              <div className="flex-1 break-words">{renderArtists(artists)}</div>
             </div>
           ))}
         </>

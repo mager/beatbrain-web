@@ -10,8 +10,9 @@ import GiantTitle from "@components/GiantTitle";
 import SavedBy from "@components/SavedBy";
 import Subtitle from "@components/Subtitle";
 import Relations from "@components/Relations";
+import ExternalLinks from "@components/ExternalLinks";
 import Meta from "@components/Meta";
-import Tag from "@components/Tag";
+import Genres from "@components/Genres";
 import type { GetTrackResponse, Track } from "@types";
 import { SERVER_HOST, getSpotifyTrackURL } from "@util";
 
@@ -101,24 +102,32 @@ const Track: React.FC<Props> = ({ track, posts }) => {
         <div className="col-span-1 xl:col-span-3">
           <GiantTitle title={isrc}>{name}</GiantTitle>
           <Subtitle>{artist}</Subtitle>
+
           <Meta>
             Released {formatDistanceToNowStrict(new Date(release_date))} ago
           </Meta>
-          {genres.length > 0 && (
-            <div className="mb-2">
-              {genres.map((genre) => (
-                <Tag name={genre}>{genre}</Tag>
-              ))}
+          <Genres genres={genres} />
+          <div className="md:hidden border-b-4 border-gray-300">
+            <div className="mb-4 border-4 border-black">
+              <Image
+                src={image}
+                alt={name}
+                width={300}
+                height={300}
+                className="object-cover w-full"
+                unoptimized
+              />
             </div>
-          )}
-          <Relations
-            instruments={instruments}
-            production_credits={production_credits}
-            song_credits={song_credits}
-          />
-          <hr />
+            <ExternalLinks sourceId={source_id} />
+            <Relations
+              instruments={instruments}
+              production_credits={production_credits}
+              song_credits={song_credits}
+            />
+          </div>
+
           {posts && posts.length > 0 && (
-            <div className="mt-4 mb-2 flex items-center">
+            <div className="my-4 py-4 flex items-center">
               <img
                 src={posts[0].author.image}
                 alt={posts[0].author.name}
@@ -138,8 +147,8 @@ const Track: React.FC<Props> = ({ track, posts }) => {
             </div>
           )}
         </div>
-        <div className="col-span-1 xl:col-span-1">
-          <div className="mb-8 border-4 border-black">
+        <div className="col-span-1 xl:col-span-1 hidden md:block">
+          <div className="mb-4 border-4 border-black">
             <Image
               src={image}
               alt={name}
@@ -149,18 +158,12 @@ const Track: React.FC<Props> = ({ track, posts }) => {
               unoptimized
             />
           </div>
-          <div className="pb-12 flex">
-            <a target="_blank" href={getSpotifyTrackURL(source_id)}>
-              <Image
-                src={`/images/icon-spotify.png`}
-                width={64}
-                height={64}
-                alt="Listen on Spotify"
-                title="Listen on Spotify"
-                unoptimized
-              />
-            </a>
-          </div>
+          <ExternalLinks sourceId={source_id} />
+          <Relations
+            instruments={instruments}
+            production_credits={production_credits}
+            song_credits={song_credits}
+          />
         </div>
       </div>
 
