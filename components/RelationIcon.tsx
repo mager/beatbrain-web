@@ -17,6 +17,7 @@ const supported = [
   "drums",
   "foot-stomps",
   "fretless-bass",
+  "glockenspiel",
   "guitar",
   "handclaps",
   "horn",

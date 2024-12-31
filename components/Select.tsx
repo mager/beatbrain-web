@@ -4,7 +4,7 @@ import Box from "./Box";
 const styles = {
   control: (provided, state) => ({
     ...provided,
-    border: state.isFocused ? "4px solid #4ade80" : "4px solid #ccc",
+    border: state.isFocused ? "4px solid #4ade80" : "4px solid #d1d5db",
     borderRadius: "0px",
     boxShadow: state.isFocused ? "0 3px 9px rgba(74, 222, 128, 0.15)" : "none",
     transition: "all 0.2s ease",
@@ -13,7 +13,7 @@ const styles = {
       borderColor: "#4ade80",
       cursor: "text",
     },
-    padding: "5px 4px",
+    padding: "6px 4px",
   }),
   dropdownIndicator: () => ({
     display: "none",

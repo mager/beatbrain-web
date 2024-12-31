@@ -12,7 +12,7 @@ const Input: React.FC<Props> = ({ value, setValue, placeholder }) => {
   };
   return (
     <input
-      className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none"
+      className="w-full py-3 px-4 border-4 border-gray-300 focus:border-green-400 focus:outline-none"
       onChange={handleChange}
       placeholder={placeholder}
       value={value}

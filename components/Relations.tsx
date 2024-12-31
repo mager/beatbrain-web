@@ -5,6 +5,7 @@ import type {
   ProductionCredit as ProductionCreditT,
   SongCredit as SongCreditT,
 } from "@types";
+import Box from "./Box";
 
 type Props = {
   instruments: InstrumentT[];
@@ -42,7 +43,7 @@ const Relations: React.FC<Props> = ({
   };
 
   return (
-    <div className="mt-4 mb-2">
+    <Box>
       {instruments && (
         <>
           {instruments.map(({ instrument, artists }, index) => (
@@ -85,7 +86,7 @@ const Relations: React.FC<Props> = ({
           ))}
         </>
       )}
-    </div>
+    </Box>
   );
 };
 

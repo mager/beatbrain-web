@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../../../context/AppContext";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { PrismaClient } from "@prisma/client";
 
 import Layout from "@components/Layout";
 import GiantTitle from "@components/GiantTitle";
+import SavedBy from "@components/SavedBy";
 import Subtitle from "@components/Subtitle";
 import Relations from "@components/Relations";
 import Meta from "@components/Meta";
@@ -15,25 +16,6 @@ import type { GetTrackResponse, Track } from "@types";
 import { SERVER_HOST, getSpotifyTrackURL } from "@util";
 
 const prisma = new PrismaClient();
-
-const SavedByText = ({ author, othersCount }) => {
-  return (
-    <p>
-      Saved by{" "}
-      <Link
-        href={`/u/${author.name}`}
-        className="border-b-2 hover:border-green-300"
-      >
-        {author.name}
-      </Link>
-      {othersCount > 0 && (
-        <>
-          , and {othersCount} {othersCount === 1 ? "other" : "others"}
-        </>
-      )}
-    </p>
-  );
-};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sourceId } = context.params;
@@ -88,6 +70,12 @@ const Track: React.FC<Props> = ({ track, posts }) => {
   const author = posts[0]?.author;
   const othersCount = posts.length - 1;
 
+  const context = useContext(AppContext);
+  const { state } = context;
+  const username = state?.user?.username;
+
+  const hideSaveButton = posts.some((post) => post.author.name === username);
+
   const submitPost = async () => {
     const body = {
       content,
@@ -114,7 +102,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
           <GiantTitle title={isrc}>{name}</GiantTitle>
           <Subtitle>{artist}</Subtitle>
           <Meta>
-            Released {formatDistanceToNow(new Date(release_date))} ago
+            Released {formatDistanceToNowStrict(new Date(release_date))} ago
           </Meta>
           {genres.length > 0 && (
             <div className="mb-2">
@@ -128,6 +116,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
             production_credits={production_credits}
             song_credits={song_credits}
           />
+          <hr />
           {posts && posts.length > 0 && (
             <div className="mt-4 mb-2 flex items-center">
               <img
@@ -135,7 +124,17 @@ const Track: React.FC<Props> = ({ track, posts }) => {
                 alt={posts[0].author.name}
                 className="w-8 h-8 rounded-full mr-2"
               />
-              <SavedByText author={author} othersCount={othersCount} />
+              <SavedBy author={author} othersCount={othersCount} />
+            </div>
+          )}
+          {!hideSaveButton && (
+            <div className="pt-4">
+              <button
+                className="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:bg-green-600 rounded-lg text-xl p-4 me-2 mb-2"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Save
+              </button>
             </div>
           )}
         </div>
@@ -150,8 +149,8 @@ const Track: React.FC<Props> = ({ track, posts }) => {
               unoptimized
             />
           </div>
-          <div className="pb-12 flex items-center justify-between">
-            <a target="blank" href={getSpotifyTrackURL(source_id)}>
+          <div className="pb-12 flex">
+            <a target="_blank" href={getSpotifyTrackURL(source_id)}>
               <Image
                 src={`/images/icon-spotify.png`}
                 width={64}
@@ -161,12 +160,6 @@ const Track: React.FC<Props> = ({ track, posts }) => {
                 unoptimized
               />
             </a>
-            <button
-              className="cursor-pointer focus:outline-none text-white bg-green-400 hover:bg-green-500 focus:bg-green-600 rounded-lg text-xl p-4 me-2 mb-2"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Save
-            </button>
           </div>
         </div>
       </div>
