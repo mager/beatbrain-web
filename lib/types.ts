@@ -63,6 +63,7 @@ export type SongCredit = {
 
 export type RecommendedTracksResp = {
   tracks: Track[];
+  updated: string;
 };
 
 export type GetTrackResponse = {
