@@ -36,11 +36,18 @@ type Props = {
 };
 
 const Home: React.FC<Props> = ({ tracks, updated }) => {
-  const formattedDate = new Date(updated).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDate = (() => {
+    if (!updated || isNaN(new Date(updated).getTime())) {
+      console.error("Invalid updated date:", updated);
+      return "";
+    }
+    return new Date(updated)
+      .toUTCString()
+      .replace("GMT", "UTC")
+      .split(" ")
+      .slice(0, 4)
+      .join(" ");
+  })();
   return (
     <Layout>
       <Box>
