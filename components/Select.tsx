@@ -1,6 +1,7 @@
 import AsyncSelect from "react-select/async";
 import Box from "./Box";
 
+// TODO: Cleanup
 const styles = {
   control: (provided, state) => ({
     ...provided,
@@ -24,7 +25,8 @@ const styles = {
   placeholder: (provided) => ({
     ...provided,
     color: "#9ca3af",
-    fontSize: "16px",
+    fontSize: "24px",
+    letterSpacing: "-0.05em",
   }),
   option: (provided, state) => ({
     ...provided,
@@ -43,6 +45,8 @@ const styles = {
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
     border: "2px solid #e5e7eb",
     padding: "8px",
+    fontSize: "24px",
+    letterSpacing: "-0.05em",
   }),
 };
 
