@@ -56,6 +56,13 @@ const Track: React.FC<Props> = ({ track, posts }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
 
+  const formatReleaseDate = (date) => {
+    const dateObj = new Date(date);
+    const month = dateObj.toLocaleString('default', { month: 'short' });
+    const year = dateObj.getFullYear();
+    return `Released in ${month} ${year}`;
+  };
+
   const {
     artist,
     genres,
@@ -105,7 +112,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
           <Subtitle>{artist}</Subtitle>
 
           <Meta>
-            Released {formatDistanceToNowStrict(new Date(release_date))} ago
+            {formatReleaseDate(release_date)}
           </Meta>
           <Genres genres={genres} />
           <div className="md:hidden border-b-4 border-gray-300">
