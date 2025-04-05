@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
 import { Chakra_Petch, Ms_Madi } from "next/font/google";
 import { useSession } from "next-auth/react";
-import SpotifyPlayer, { SpotifyPlayerCallbackState } from 'react-spotify-web-playback';
+import SpotifyPlayer, { State as SpotifyPlayerCallback } from 'react-spotify-web-playback';
 import { useAppContext } from "../context/AppContext"; // --- Import useAppContext ---
 
 import Header from "@components/Header";
@@ -38,12 +38,9 @@ const Layout: React.FC<Props> = ({ children }) => {
   const hideSearch = ["/create"].includes(router.pathname); // Example logic to hide search
   const { data: session } = useSession(); // Get session data for the token
 
-  // --- Use AppContext for player state ---
   const { state: appState, setPlayerIsPlaying } = useAppContext();
   const { currentTrackUri, isPlaying } = appState;
-  // --- End Use AppContext ---
 
-  // Type assertion for the token - consider creating a Session type for next-auth
   // @ts-ignore
   const spotifyToken = session?.accessToken as string | undefined;
 
@@ -59,7 +56,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 
   // Callback function passed to SpotifyPlayer
   // Updates the global isPlaying state in AppContext
-  const handlePlayerCallback = (state: SpotifyPlayerCallbackState) => {
+  const handlePlayerCallback = (state: SpotifyPlayerCallback) => {
     setPlayerIsPlaying(state.isPlaying);
     // You could add more logic here based on other state properties
     // e.g., console.log('Player Error:', state.error);
@@ -89,6 +86,7 @@ const Layout: React.FC<Props> = ({ children }) => {
             {spotifyToken ? (
               <SpotifyPlayer
                 token={spotifyToken}
+                key={currentTrackUri}
                 uris={[currentTrackUri]} // Use URI from context
                 play={isPlaying} // Use isPlaying state from context
                 callback={handlePlayerCallback} // Update context state on player changes

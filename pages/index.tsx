@@ -5,7 +5,6 @@ import type { RecommendedTracksResp, Track } from "@types";
 import { SERVER_HOST } from "@util";
 import Box from "@components/Box";
 import TrackItem from "../components/TrackItem";
-import { format } from "path";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
