@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { formatDistanceToNowStrict } from "date-fns";
 import { PrismaClient } from "@prisma/client";
-import SpotifyPlayer from 'react-spotify-web-playback';
 import { useSession } from "next-auth/react";
 
 import Layout from "@components/Layout";
@@ -57,7 +56,6 @@ type Props = {
 const Track: React.FC<Props> = ({ track, posts }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
-  const [isPlaying, setIsPlaying] = useState(false);
   const { data: session } = useSession();
 
   const formatReleaseDate = (date) => {
@@ -111,6 +109,14 @@ const Track: React.FC<Props> = ({ track, posts }) => {
 
   // @ts-ignore
   const spotifyToken = session?.accessToken as string | undefined;
+
+  useEffect(() => {
+    // **Check if we're running in the browser before using localStorage**
+    if (typeof window !== "undefined") {
+      localStorage.setItem("currentTrackUri", spotifyUri);
+    }
+  }, [spotifyUri]);  // Run this effect whenever spotifyUri changes.
+
   return (
     <Layout>
       <div className="py-2 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -161,24 +167,6 @@ const Track: React.FC<Props> = ({ track, posts }) => {
               </button>
             </div>
           )}
-          {/* Spotify Player */}
-          <div className="mt-4">
-            {spotifyToken ? ( // Conditionally render the player
-              <SpotifyPlayer
-                token={spotifyToken} // Use the token from session
-                uris={[spotifyUri]}
-                play={isPlaying} // use isPlaying
-                callback={state => {
-                  if (!state.isPlaying) setIsPlaying(false)
-                }}
-              />
-            ) : (
-              <p>Loading Spotify Player...</p> // Display a loading message
-            )}
-            <button onClick={() => setIsPlaying(!isPlaying)}>
-              {isPlaying ? 'Pause' : 'Play'}
-            </button>
-          </div>
         </div>
         <div className="col-span-1 xl:col-span-1 hidden md:block">
           <div className="mb-4 border-4 border-black">
