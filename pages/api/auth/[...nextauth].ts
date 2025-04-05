@@ -14,28 +14,27 @@ export const options: NextAuthOptions = {
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
       authorization: {
-        params: { scope: "streaming user-read-playback-state" },
+        params: { scope: "streaming user-read-playback-state user-read-email user-read-private" },
       },
     }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
-      if (session?.user) {
-        // @ts-ignore
-        session.user.id = token.sub;
-      }
+    async session({ session, token, user }) {
+      // Add access token to the session
+      // @ts-ignore
+      session.accessToken = token.accessToken;
+      // @ts-ignore
+      session.user.id = token.sub;
+
       return session;
     },
-    async jwt({ token }) {
-      token.userRole = "admin";
-      return token;
+    async jwt({ token, account }) {
+      // Persist the access token to the token object
+      if (account) {
+        token.accessToken = account.access_token
+      }
+      return token
     },
-    // jwt: async ({ user, token }) => {
-    //   if (user) {
-    //     token.uid = user.id;
-    //   }
-    //   return token;
-    // },
   },
   session: {
     strategy: "jwt",
