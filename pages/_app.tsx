@@ -1,36 +1,33 @@
-import { getSession } from "next-auth/react";
+import { getSession } from "next-auth/react"; // Keep if using getInitialProps for session
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import { AppProvider } from "../context/AppContext";
-import { AppContext } from "next/app";
-import App from "next/app";
+import Layout from "@components/Layout"; // --- Import Layout ---
 import "./global.css";
 
-interface MyAppProps extends AppProps {
-  data: any;
-}
+// Removed custom interface MyAppProps as data seems handled internally now
+// Removed MyApp.getInitialProps - rely on useSession hook for session data client-side
+// This simplifies the setup and avoids potential issues with getInitialProps disabling static optimization
 
-const MyApp = ({ Component, pageProps, data }: MyAppProps) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
+    // SessionProvider should be high up
     <SessionProvider session={pageProps.session}>
-      <AppProvider initialData={data}>
-        <Component {...pageProps} />
+      {/* AppProvider provides user and player state */}
+      <AppProvider>
+        {/* Layout wraps the actual page Component */}
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </AppProvider>
     </SessionProvider>
   );
 };
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  const session = await getSession(appContext.ctx);
-  let data = null;
-  if (session) {
-    // Fetch data only if session exists
-    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-    data = await res.json();
-  }
-
-  return { ...appProps, pageProps: { ...appProps.pageProps, session, data } };
-};
+// Removed MyApp.getInitialProps - It's generally recommended to avoid getInitialProps
+// in _app unless absolutely necessary. Fetching session/user data client-side
+// with useSession and useEffect in the AppProvider is often preferred.
+// If you *need* data fetched *before* any page renders server-side,
+// you might keep it, but ensure Layout is still outside Component.
 
 export default MyApp;
