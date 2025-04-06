@@ -219,7 +219,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
               <PlayIcon className="h-16 w-16 text-white opacity-80 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-200" />
             </button>
           </div>
-          <div className="sticky top-[348px]">
+          <div>
              <ExternalLinks sourceId={source_id} />
              <Relations
                 instruments={instruments}
