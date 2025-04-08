@@ -2,11 +2,12 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import prisma from "../../lib/prisma";
 import Username from "@components/Username";
-import type { PostProps } from "@components/Post"; 
+import type { PostProps } from "@components/Post";
 import ProfileImage from "@components/ProfileImage";
-import type { User } from "@prisma/client"; 
-import PostList from "@components/PostList";
-import Box from "@components/Box"; 
+import type { User } from "@prisma/client";
+import PostListV3 from "@components/PostListV3";
+import Box from "@components/Box";
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const params = context.params;
 
@@ -58,30 +59,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 type ProfileProps = {
   drafts: PostProps[];
-  user: User; // user should always be present if notFound wasn't returned
+  user: User;
 };
 
 const Profile: React.FC<ProfileProps> = ({ user, drafts }) => {
   const username = user.name;
 
   return (
-    // Use Box or a similar container for consistent padding/margin if desired
     <Box>
-      <div className="py-4 pb-8 flex flex-col items-center sm:flex-row sm:items-center sm:gap-4 border-b border-gray-200 dark:border-gray-700 mb-6"> {/* Added border and margin */}
-        <div className="mb-2 sm:mb-0 flex-shrink-0"> {/* Prevent image shrinking */}
+      <div className="py-4 pb-8 flex flex-col items-center border-b border-gray-200 dark:border-gray-700 text-center"> {/* Added text-center to the parent div */}
+        <div className="mb-2 flex-shrink-0"> {/* Removed sm:mb-0 */}
           <ProfileImage username={username} />
         </div>
         <Username>{username}</Username>
       </div>
       {drafts && drafts.length > 0 ? (
         <div className="w-full">
-          <h2 className="text-2xl font-semibold mb-4">Saved Tracks</h2> {/* Added section title */}
-          <PostList posts={drafts} showAuthor={false} />
+          <PostListV3 posts={drafts} />
         </div>
       ) : (
          <div className="text-center text-gray-500 py-10">
              {username} hasn't saved any tracks yet.
-         </div> // Message when user has no posts
+         </div>
       )}
     </Box>
   );
