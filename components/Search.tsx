@@ -13,7 +13,7 @@ const Search: React.FC = () => {
   };
 
   return (
-    <div className="mt-24 mx-6">
+    <div className="mt-20">
       <Searchbox
         option={option}
         handleChange={goToTrackPage}

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { PrismaClient } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useAppContext } from "../../../context/AppContext";
-import { PlayIcon } from '@heroicons/react/24/solid';
+import { PlayIcon } from "@heroicons/react/24/solid";
 
 import GiantTitle from "@components/GiantTitle";
 import SavedBy from "@components/SavedBy";
@@ -21,7 +21,7 @@ const prisma = new PrismaClient();
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sourceId } = context.params;
-  if (!sourceId || typeof sourceId !== 'string') {
+  if (!sourceId || typeof sourceId !== "string") {
     return { notFound: true };
   }
   const resp = await fetch(
@@ -75,16 +75,16 @@ const Track: React.FC<Props> = ({ track, posts }) => {
 
   const formatReleaseDate = (dateString: string): string => {
     try {
-        const dateObj = new Date(dateString);
-        if (isNaN(dateObj.getTime())) {
-            return "Invalid Date";
-        }
-        const month = dateObj.toLocaleString('default', { month: 'short' });
-        const year = dateObj.getFullYear();
-        return `Released in ${month} ${year}`;
+      const dateObj = new Date(dateString);
+      if (isNaN(dateObj.getTime())) {
+        return "Invalid Date";
+      }
+      const month = dateObj.toLocaleString("default", { month: "short" });
+      const year = dateObj.getFullYear();
+      return `Released in ${month} ${year}`;
     } catch (e) {
-        console.error("Error parsing date:", dateString, e);
-        return "Unknown Release Date";
+      console.error("Error parsing date:", dateString, e);
+      return "Unknown Release Date";
     }
   };
 
@@ -118,23 +118,23 @@ const Track: React.FC<Props> = ({ track, posts }) => {
       },
     };
     try {
-        const response = await fetch(`/api/post`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-        });
-        if (!response.ok) {
-            throw new Error('Failed to save post');
-        }
-        setIsModalOpen(false);
-        setContent("");
+      const response = await fetch(`/api/post`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to save post");
+      }
+      setIsModalOpen(false);
+      setContent("");
     } catch (error) {
-        console.error("Error submitting post:", error);
+      console.error("Error submitting post:", error);
     }
   };
 
   const handlePlayClick = () => {
-    if (spotifyUri && spotifyUri !== 'spotify:track:undefined') {
+    if (spotifyUri && spotifyUri !== "spotify:track:undefined") {
       playTrack(spotifyUri);
     }
   };
@@ -146,16 +146,26 @@ const Track: React.FC<Props> = ({ track, posts }) => {
     <>
       <div className="py-2 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div className="col-span-1 xl:col-span-3">
-          <GiantTitle title={isrc}>{name}</GiantTitle>
-          <Subtitle>{artist}</Subtitle>
-          <Meta>{formatReleaseDate(release_date)}</Meta>
-          <Genres genres={genres} />
+          <div className="relative">
+            {!hideSaveButton && (
+              <button
+                className="absolute top-0 right-0 z-10 cursor-pointer focus:outline-none bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-semibold rounded-full text-2xl text-white w-12 h-12 flex items-center justify-center m-3 transition duration-150 ease-in-out shadow-md"
+                onClick={() => setIsModalOpen(true)}
+              >
+                +
+              </button>
+            )}
+            <GiantTitle title={isrc}>{name}</GiantTitle>
+            <Subtitle>{artist}</Subtitle>
+            <Meta>{formatReleaseDate(release_date)}</Meta>
+            <Genres genres={genres} />
+          </div>
 
           <div className="md:hidden border-b-4 border-gray-300 mb-4 pb-4">
             <div className="relative mb-4 border-4 border-black group">
               <Image
-                src={image || '/placeholder-image.png'}
-                alt={name || 'Track artwork'}
+                src={image || "/placeholder-image.png"}
+                alt={name || "Track artwork"}
                 width={300}
                 height={300}
                 className="object-cover w-full block"
@@ -179,33 +189,22 @@ const Track: React.FC<Props> = ({ track, posts }) => {
           </div>
 
           {posts && posts.length > 0 && (
-            <div className="my-4 py-4 flex items-center">
+            <div className="my-2 py-2 flex items-center">
               <img
-                src={posts[0].author.image || '/default-avatar.png'}
-                alt={posts[0].author.name || 'User'}
+                src={posts[0].author.image || "/default-avatar.png"}
+                alt={posts[0].author.name || "User"}
                 className="w-8 h-8 rounded-full mr-2 border border-gray-300"
               />
               <SavedBy author={author} othersCount={othersCount} />
             </div>
           )}
-
-          {!hideSaveButton && (
-            <div className="pt-4">
-              <button
-                className="cursor-pointer focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 mb-2 transition duration-150 ease-in-out"
-                onClick={() => setIsModalOpen(true)}
-              >
-                Save Track
-              </button>
-            </div>
-          )}
         </div>
 
         <div className="col-span-1 xl:col-span-1 hidden md:block">
-           <div className="relative mb-4 border-4 border-black sticky top-24 group">
+          <div className="relative mb-4 border-4 border-black sticky top-24 group">
             <Image
-              src={image || '/placeholder-image.png'}
-              alt={name || 'Track artwork'}
+              src={image || "/placeholder-image.png"}
+              alt={name || "Track artwork"}
               width={300}
               height={300}
               className="object-cover w-full block"
@@ -220,12 +219,12 @@ const Track: React.FC<Props> = ({ track, posts }) => {
             </button>
           </div>
           <div>
-             <ExternalLinks sourceId={source_id} />
-             <Relations
-                instruments={instruments}
-                production_credits={production_credits}
-                song_credits={song_credits}
-             />
+            <ExternalLinks sourceId={source_id} />
+            <Relations
+              instruments={instruments}
+              production_credits={production_credits}
+              song_credits={song_credits}
+            />
           </div>
         </div>
       </div>

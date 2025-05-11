@@ -1,6 +1,5 @@
 import React from "react";
 import type { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
 import FeedPost from "../components/FeedPost";
 import type { PostProps } from "../components/Post";
 import prisma from "../lib/prisma";
@@ -35,9 +34,8 @@ type Props = {
   feed: PostProps[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const Feed: React.FC<Props> = (props) => {
   return (
-    <Layout>
       <Box>
         <Title>Public Feed</Title>
         <div className="flex flex-col space-y-4 my-4">
@@ -48,8 +46,7 @@ const Blog: React.FC<Props> = (props) => {
           ))}
         </div>
       </Box>
-    </Layout>
   );
 };
 
-export default Blog;
+export default Feed;

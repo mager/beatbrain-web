@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,30 +11,40 @@ interface TrackItemProps {
   };
 }
 
-const TrackItem: React.FC<TrackItemProps> = ({ track }) => (
-  <Link
-    href={`/ext/spotify/${track.source_id}`}
-    key={track.source_id}
-    className="block hover:opacity-75 transition-opacity"
-  >
-    <div className="flex flex-row lg:flex-col max-w-full">
+const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
+  // For mobile tap overlay
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  return (
+    <Link
+      href={`/ext/spotify/${track.source_id}`}
+      key={track.source_id}
+      className="block group relative w-full aspect-square"
+      onTouchStart={() => setShowOverlay((v) => !v)}
+      onMouseLeave={() => setShowOverlay(false)}
+    >
       <Image
         src={track.image}
         alt={track.name}
-        width={300}
-        height={300}
-        className="w-[100px] h-[100px] lg:w-[300px] lg:h-[300px] object-cover"
+        width={600}
+        height={600}
+        className="w-full h-full object-cover"
+        priority
       />
-      <div className="ml-4 lg:ml-0 lg:mt-2 flex flex-col justify-center min-w-0">
-        <div className="font-bold text-xl truncate max-w-full">
+      {/* Overlay: visible on hover (desktop) or tap (mobile) */}
+      <div
+        className={`absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 text-center ${showOverlay ? "opacity-100" : ""}`}
+        style={{ pointerEvents: "none" }}
+      >
+        <div className="font-bold text-base md:text-lg truncate w-full" style={{ pointerEvents: "auto" }}>
           {track.name}
         </div>
-        <div className="text-sm text-gray-600 truncate max-w-full">
+        <div className="text-xs md:text-sm text-gray-200 truncate w-full mt-1" style={{ pointerEvents: "auto" }}>
           {track.artist}
         </div>
       </div>
-    </div>
-  </Link>
-);
+    </Link>
+  );
+};
 
 export default TrackItem;

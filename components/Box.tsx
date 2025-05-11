@@ -6,7 +6,7 @@ interface BoxProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Box: React.FC<BoxProps> = ({ children, className, ...rest }) => {
-  const combinedClassName = classNames("py-4", className);
+  const combinedClassName = classNames("py-2", className);
 
   return (
     <div className={combinedClassName} {...rest}>
