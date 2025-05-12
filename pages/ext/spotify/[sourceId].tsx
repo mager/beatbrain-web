@@ -103,7 +103,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
 
   const author = posts[0]?.author;
   const othersCount = posts.length > 0 ? posts.length - 1 : 0;
-  const hideSaveButton = posts.some((post) => post.author.name === username);
+  const hideSaveButton = !session || posts.some((post) => post.author.name === username);
   const spotifyUri = `spotify:track:${source_id}`;
 
   const submitPost = async () => {
@@ -149,7 +149,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
           <div className="relative">
             {!hideSaveButton && (
               <button
-                className="absolute top-0 right-0 z-10 cursor-pointer focus:outline-none bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-semibold rounded-full text-2xl text-white w-12 h-12 flex items-center justify-center m-3 transition duration-150 ease-in-out shadow-md"
+                className="absolute top-0 right-0 z-10 cursor-pointer focus:outline-none bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-semibold rounded-full text-2xl text-white w-12 h-12 flex items-center justify-center ml-2 mb-2 transition duration-150 ease-in-out shadow-md"
                 onClick={() => setIsModalOpen(true)}
               >
                 +

@@ -60,18 +60,18 @@ const Header: React.FC = () => {
       <div className="flex ml-auto items-center">
         {username && <UsernameLink username={username} />}
         <AuthMenu iconColor="white" />
-        {/* <div className="mx-2 flex items-center">
+        <div className="mx-2 flex items-center">
           <IconLink
             href="/create"
             icon={<PaintBrushIcon className="h-8 w-8" />}
             active={isActive("/create")}
           />
-        </div> */}
+        </div>
       </div>
     );
   }
   return (
-    <nav className="flex items-center p-4 bg-black bg-opacity-50 backdrop-blur-md text-white fixed top-0 w-full z-50 border-b-2 border-b-white">
+    <nav className="flex items-center p-3 bg-black bg-opacity-50 backdrop-blur-md text-white fixed top-0 w-full z-50 border-b-2 border-b-white">
       {left}
       {right}
     </nav>

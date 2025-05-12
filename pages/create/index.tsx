@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Layout from "@components/Layout";
 import Input from "@components/Input";
 import Title from "@components/Title";
 import Router from "next/router";
 import Searchbox, { loadOptions } from "@components/Searchbox";
 import useDebouncedLoadOptions from "../../lib/hooks/useDebouncedLoadOptions";
+import Box from "@components/Box";
 
 const Create: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,8 +45,8 @@ const Create: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className="page bg-white py-8">
+    <Box>
+      <div className="page bg-white py-8 mt-12">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
           <div className="flex flex-col lg:flex-row justify-between my-4 gap-4">
@@ -88,7 +88,7 @@ const Create: React.FC = () => {
           </div>
         </form>
       </div>
-    </Layout>
+    </Box>
   );
 };
 

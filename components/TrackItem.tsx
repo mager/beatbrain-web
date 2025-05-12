@@ -31,7 +31,6 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
         className="w-full h-full object-cover"
         priority
       />
-      {/* Overlay: visible on hover (desktop) or tap (mobile) */}
       <div
         className={`absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 text-center ${showOverlay ? "opacity-100" : ""}`}
         style={{ pointerEvents: "none" }}

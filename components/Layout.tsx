@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
-import React from "react"; // Removed useState, useEffect as they are now in context or not needed here
+import React from "react";
 import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
 import { Chakra_Petch, Ms_Madi } from "next/font/google";
 import { useSession } from "next-auth/react";
 import SpotifyPlayer, { State as SpotifyPlayerCallback } from 'react-spotify-web-playback';
-import { useAppContext } from "../context/AppContext"; // --- Import useAppContext ---
+import { useAppContext } from "../context/AppContext";
+import { PlayIcon } from "@heroicons/react/24/solid";
 
 import Header from "@components/Header";
 import Search from "@components/Search";
@@ -26,28 +27,29 @@ export const logoFont = Ms_Madi({
 });
 
 // Define constants for layout calculation
-const PLAYER_HEIGHT_PX = 80; // Adjust if your player style changes height
-const FOOTER_HEIGHT_PX = 48; // Adjust based on your Footer component's height
+const PLAYER_HEIGHT_PX = 80;
+const FOOTER_HEIGHT_PX = 48;
 
 type Props = {
-  children: ReactNode; // The page component rendered by _app.tsx
+  children: ReactNode;
 };
+
+// Extend the Session type to include accessToken
+interface ExtendedSession {
+  accessToken?: string;
+}
 
 const Layout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
-  const hideSearch = ["/create"].includes(router.pathname); // Example logic to hide search
-  const { data: session } = useSession(); // Get session data for the token
-
+  const hideSearch = ["/create"].includes(router.pathname);
+  const { data: session } = useSession();
   const { state: appState, setPlayerIsPlaying } = useAppContext();
   const { currentTrackUri, isPlaying } = appState;
-
-  // @ts-ignore
-  const spotifyToken = session?.accessToken as string | undefined;
+  const spotifyToken = (session as ExtendedSession)?.accessToken;
 
   // Function to calculate dynamic padding based on player visibility
   const calculatePaddingBottom = () => {
     let totalHeight = FOOTER_HEIGHT_PX;
-    // Use currentTrackUri from context to decide if player is visible
     if (currentTrackUri) {
       totalHeight += PLAYER_HEIGHT_PX;
     }
@@ -55,69 +57,76 @@ const Layout: React.FC<Props> = ({ children }) => {
   };
 
   // Callback function passed to SpotifyPlayer
-  // Updates the global isPlaying state in AppContext
   const handlePlayerCallback = (state: SpotifyPlayerCallback) => {
     setPlayerIsPlaying(state.isPlaying);
-    // You could add more logic here based on other state properties
-    // e.g., console.log('Player Error:', state.error);
   };
 
   return (
-    // Main application wrapper div
     <div
       className={`${bodyFont.variable} ${logoFont.variable} font-sans relative`}
-      style={{ paddingBottom: calculatePaddingBottom() }} // Apply dynamic padding
+      style={{ paddingBottom: calculatePaddingBottom() }}
     >
-      {/* Static layout components */}
       <Header />
       {!hideSearch && <Search />}
-
-      {/* Main content area where the page component is rendered */}
       <Main>{children}</Main>
-
       <Analytics />
 
-      {/* --- Combined Fixed Container for Player and Footer --- */}
-      <div className="fixed bottom-0 left-0 w-full bg-black text-white z-50 shadow-lg flex flex-col">
-        {/* Spotify Player Section - Conditionally Rendered */}
-        {/* Render only if there's a track URI in the context state */}
+      {/* Fixed Container for Player and Footer */}
+      <div className="fixed bottom-0 left-0 w-full bg-black text-white z-50 shadow-lg flex flex-col transition-all duration-300 ease-in-out">
+        {/* Spotify Player Section */}
         {currentTrackUri && (
-          <div className="w-full" style={{ height: `${PLAYER_HEIGHT_PX}px` }}>
+          <div 
+            className="w-full transform transition-all duration-300 ease-in-out"
+            style={{ height: `${PLAYER_HEIGHT_PX}px` }}
+          >
             {spotifyToken ? (
               <SpotifyPlayer
                 token={spotifyToken}
                 key={currentTrackUri}
-                uris={[currentTrackUri]} // Use URI from context
-                play={isPlaying} // Use isPlaying state from context
-                callback={handlePlayerCallback} // Update context state on player changes
-                styles={{ // Customize player appearance
-                  bgColor: 'transparent', // Makes it blend with the black container
+                uris={[currentTrackUri]}
+                play={isPlaying}
+                callback={handlePlayerCallback}
+                styles={{
+                  bgColor: 'transparent',
                   color: '#ffffff',
-                  loaderColor: '#1db954', // Spotify green for loader
-                  sliderColor: '#1db954', // Spotify green for slider progress
-                  sliderHandleColor: '#ffffff', // White handle on slider
-                  trackArtistColor: '#a0a0a0', // Lighter grey for artist name
-                  trackNameColor: '#ffffff', // White for track name
-                  height: PLAYER_HEIGHT_PX, // Ensure consistent height
+                  loaderColor: '#1db954',
+                  sliderColor: '#1db954',
+                  sliderHandleColor: '#ffffff',
+                  trackArtistColor: '#a0a0a0',
+                  trackNameColor: '#ffffff',
+                  height: PLAYER_HEIGHT_PX,
+                  sliderHeight: 4,
+                  sliderTrackBorderRadius: 2,
+                  sliderHandleBorderRadius: 2,
+                  activeColor: '#1db954',
+                  errorColor: '#ff4444',
+                  loaderSize: 24,
                 }}
-                // autoPlay // Uncomment if you want tracks to play automatically when URI changes
-                // other props like name, volume, etc. can be added here
+                layout="responsive"
+                magnifySliderOnHover={true}
+                showSaveIcon={true}
+                inlineVolume={true}
+                persistDeviceSelection={true}
               />
             ) : (
-              // Show a loading/auth message if token isn't ready yet
-              <div className="flex items-center justify-center h-full text-gray-400 text-sm">
-                Authenticating Player...
+              <div className="flex items-center justify-center h-full bg-black/90 backdrop-blur-sm">
+                <div className="flex items-center space-x-3 text-gray-400">
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-500 border-t-transparent"></div>
+                  <span className="text-sm font-medium">Connecting to Spotify...</span>
+                </div>
               </div>
             )}
           </div>
         )}
 
-        {/* Footer Section - Always Rendered */}
-        <div style={{ height: `${FOOTER_HEIGHT_PX}px` }}>
-          <Footer className="border-t border-gray-700"/> {/* Added top border for separation */}
+        {/* Footer Section */}
+        <div 
+          className="transition-all duration-300 ease-in-out"
+          style={{ height: `${FOOTER_HEIGHT_PX}px` }}
+        >
+          <Footer className="border-t border-gray-700"/>
         </div>
       </div>
-      {/* --- End Combined Fixed Container --- */}
     </div>
   );
 };

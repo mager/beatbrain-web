@@ -16,7 +16,8 @@ const styles = {
       borderColor: "#4ade80",
       cursor: "text",
     },
-    padding: "4px",
+    padding: "4px 0px",
+    margin: 0,
   }),
   dropdownIndicator: () => ({
     display: "none",
@@ -53,7 +54,7 @@ const styles = {
 
 const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
   return (
-    <Box>
+    <Box className="px-0 mx-0 w-full">
       <AsyncSelect
         value={option}
         onChange={handleChange}
@@ -66,6 +67,7 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         styles={styles}
         cacheOptions
         classNamePrefix="react-select"
+        className="w-full"
       />
     </Box>
   );
