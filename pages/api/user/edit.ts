@@ -1,8 +1,5 @@
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
-import { options } from "../../api/auth/[...nextauth]";
-import prisma from "../../../lib/prisma";
 import { getToken } from "next-auth/jwt";
 
 import { SERVER_HOST } from "@util";
