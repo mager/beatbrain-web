@@ -70,9 +70,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Main>{children}</Main>
       <Analytics />
 
-      {/* Fixed Container for Player and Footer */}
       <div className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
-        {/* Spotify Player Section */}
         {currentTrackUri && session && (
           <div 
             className="absolute bottom-5 left-3 pointer-events-auto w-[90vw] max-w-[320px] min-w-[180px] h-[80px] sm:w-[300px] sm:h-[90px]"
