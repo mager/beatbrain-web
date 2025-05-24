@@ -75,7 +75,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         {/* Spotify Player Section */}
         {currentTrackUri && session && (
           <div 
-            className="absolute bottom-16 left-8 pointer-events-auto w-[90vw] max-w-[320px] min-w-[180px] h-[80px] sm:w-[300px] sm:h-[90px]"
+            className="absolute bottom-5 left-3 pointer-events-auto w-[90vw] max-w-[320px] min-w-[180px] h-[80px] sm:w-[300px] sm:h-[90px]"
             style={{}}
           >
             <div className="bg-black/95 border-4 border-green-400 rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center p-3 w-full h-full">

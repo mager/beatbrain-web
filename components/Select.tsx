@@ -16,7 +16,7 @@ const styles = {
       borderColor: "#4ade80",
       cursor: "text",
     },
-    padding: "4px 0px",
+    padding: "0px 4px",
     margin: 0,
   }),
   dropdownIndicator: () => ({
