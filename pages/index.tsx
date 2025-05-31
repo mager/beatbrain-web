@@ -3,17 +3,14 @@ import type { RecommendedTracksResp, Track } from "@types";
 import Box from "@components/Box";
 import TrackItem from "../components/TrackItem";
 
-type Props = {
-};
-
+type Props = {};
 const Home: React.FC<Props> = () => {
-  const [tracks, setTracks] = useState<Track[]>([]); // Initialize with empty array
-  const [activeFilter, setActiveFilter] = useState<'hot' | 'new'>('new'); // Default to 'new' and allow 'hot'
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [activeFilter, setActiveFilter] = useState<'hot' | 'new'>('new');
   const [updated, setUpdated] = useState<string | null>(null);
 
   const fetchTracks = async (filter: 'hot' | 'new') => {
     try {
-      console.log('Requesting tracks with mode:', filter);
       const res = await fetch(`/api/discover`, {
         method: "POST",
         headers: {

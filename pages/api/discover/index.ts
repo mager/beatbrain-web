@@ -1,13 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080';
+import { SERVER_HOST } from "@util";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   try {
-    const backendRes = await fetch(`${BACKEND_URL}/discover`, {
+    const backendRes = await fetch(`${SERVER_HOST}/discover`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
