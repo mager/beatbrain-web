@@ -172,13 +172,6 @@ const Track: React.FC<Props> = ({ track, posts }) => {
                 unoptimized
                 priority
               />
-              <button
-                onClick={handlePlayClick}
-                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-60 transition-opacity duration-200 ease-in-out z-10 cursor-pointer"
-                aria-label={`Play ${name}`}
-              >
-                <PlayIcon className="h-16 w-16 text-white opacity-80 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-200" />
-              </button>
             </div>
             <ExternalLinks sourceId={source_id} />
             <Relations
@@ -201,7 +194,7 @@ const Track: React.FC<Props> = ({ track, posts }) => {
         </div>
 
         <div className="col-span-1 xl:col-span-1 hidden md:block">
-          <div className="relative mb-4 border-4 border-black sticky top-24 group">
+          <div className="relative mb-4 border-4 border-black group">
             <Image
               src={image || "/placeholder-image.png"}
               alt={name || "Track artwork"}
@@ -210,13 +203,6 @@ const Track: React.FC<Props> = ({ track, posts }) => {
               className="object-cover w-full block"
               unoptimized
             />
-            <button
-              onClick={handlePlayClick}
-              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-60 transition-opacity duration-200 ease-in-out z-10 cursor-pointer"
-              aria-label={`Play ${name}`}
-            >
-              <PlayIcon className="h-16 w-16 text-white opacity-80 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-200" />
-            </button>
           </div>
           <div>
             <ExternalLinks sourceId={source_id} />
