@@ -27,7 +27,7 @@ export const logoFont = Ms_Madi({
 
 // Define constants for layout calculation
 const PLAYER_HEIGHT_PX = 80;
-const FOOTER_HEIGHT_PX = 48;
+const FOOTER_HEIGHT_PX = 60;
 
 type Props = {
   children: ReactNode;
@@ -49,9 +49,9 @@ const Layout: React.FC<Props> = ({ children }) => {
   // Function to calculate dynamic padding based on player visibility
   const calculatePaddingBottom = () => {
     let totalHeight = FOOTER_HEIGHT_PX;
-    if (currentTrackUri) {
-      totalHeight += PLAYER_HEIGHT_PX;
-    }
+    // if (currentTrackUri) {
+    //   totalHeight += PLAYER_HEIGHT_PX;
+    // }
     return `${totalHeight}px`;
   };
 
@@ -72,8 +72,8 @@ const Layout: React.FC<Props> = ({ children }) => {
 
       {/* Fixed Container for Player and Footer */}
       <div className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
-        {/* Spotify Player Section */}
-        {currentTrackUri && session && (
+        {/* Spotify Player Section - Temporarily Hidden */}
+        {/* {currentTrackUri && session && (
           <div 
             className="absolute bottom-5 left-3 pointer-events-auto w-[90vw] max-w-[320px] min-w-[180px] h-[80px] sm:w-[300px] sm:h-[90px]"
             style={{}}
@@ -96,29 +96,28 @@ const Layout: React.FC<Props> = ({ children }) => {
                   styles={{
                     bgColor: 'transparent',
                     color: '#ffffff',
-                    loaderColor: '#1db954',
-                    sliderColor: '#1db954',
-                    sliderHandleColor: '#ffffff',
                     trackArtistColor: '#a0a0a0',
                     trackNameColor: '#ffffff',
-                    height: 120,
-                    sliderHeight: 4,
-                    sliderTrackBorderRadius: 2,
-                    sliderHandleBorderRadius: 2,
+                    height: 48,
+                    sliderHeight: 2,
+                    sliderTrackBorderRadius: 1,
+                    sliderHandleBorderRadius: 1,
                     activeColor: '#1db954',
                     errorColor: '#ff4444',
-                    loaderSize: 20,
+                    loaderSize: 16,
                   }}
-                  layout="responsive"
-                  magnifySliderOnHover={true}
+                  layout="compact"
+                  magnifySliderOnHover={false}
                   showSaveIcon={false}
                   inlineVolume={false}
                   persistDeviceSelection={false}
+                  hideAttribution={true}
+                  hideCoverArt={true}
                 />
               )}
             </div>
           </div>
-        )}
+        )} */}
         <div 
           className="transition-all duration-300 ease-in-out"
           style={{ height: `${FOOTER_HEIGHT_PX}px` }}
