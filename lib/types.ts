@@ -73,3 +73,12 @@ export type GetTrackResponse = {
 export type Profile = {
   username: string;
 };
+
+export type GetTrackResponseV2 = {
+  track: TrackV2;
+};
+
+export type TrackV2 = {
+  name: string;
+  isrc: string;
+};
