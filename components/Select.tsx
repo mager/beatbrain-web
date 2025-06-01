@@ -61,7 +61,7 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         loadOptions={loadOptions}
         defaultOptions={false}
         isClearable={true}
-        placeholder="Search for a song..."
+        placeholder="Search for a track..."
         noOptionsMessage={noOptionsMessage}
         components={{ DropdownIndicator: () => null }}
         styles={styles}
