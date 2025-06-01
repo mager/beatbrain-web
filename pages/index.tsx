@@ -8,8 +8,10 @@ const Home: React.FC<Props> = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [activeFilter, setActiveFilter] = useState<'hot' | 'new'>('new');
   const [updated, setUpdated] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchTracks = async (filter: 'hot' | 'new') => {
+    setIsLoading(true);
     try {
       const res = await fetch(`/api/discover`, {
         method: "POST",
@@ -34,6 +36,8 @@ const Home: React.FC<Props> = () => {
       console.error("Error fetching tracks:", err);
       setTracks([]);
       setUpdated(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,7 +95,16 @@ const Home: React.FC<Props> = () => {
               HOT
             </button>
           </div>
-          {tracks && tracks.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 p-0 sm:gap-2">
+              {[...Array(64)].map((_, i) => (
+                <div
+                  key={i}
+                  className="aspect-square bg-gray-200 rounded animate-pulse"
+                />
+              ))}
+            </div>
+          ) : tracks && tracks.length > 0 ? (
              <div className="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 p-0 sm:gap-2">
                {tracks.map((track) => (
                  <TrackItem track={track} key={track.source_id} />

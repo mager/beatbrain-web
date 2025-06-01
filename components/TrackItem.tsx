@@ -19,7 +19,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
     <Link
       href={`/ext/spotify/${track.source_id}`}
       key={track.source_id}
-      className="block group relative w-full aspect-square"
+      className="block group relative w-full aspect-square overflow-hidden rounded-md transition-all duration-200 group-hover:ring-2 group-hover:ring-blue-500 group-hover:ring-offset-2 group-hover:ring-offset-black group-hover:scale-105"
       onTouchStart={() => setShowOverlay((v) => !v)}
       onMouseLeave={() => setShowOverlay(false)}
     >
