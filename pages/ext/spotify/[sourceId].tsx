@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { PrismaClient } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useAppContext } from "../../../context/AppContext";
-import { PlayIcon } from "@heroicons/react/24/solid";
 
 import GiantTitle from "@components/GiantTitle";
 import SavedBy from "@components/SavedBy";

@@ -79,6 +79,8 @@ export type GetTrackResponseV2 = {
 };
 
 export type TrackV2 = {
+  artist: string;
   name: string;
   isrc: string;
+  image?: string;
 };

@@ -68,6 +68,7 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         cacheOptions
         classNamePrefix="react-select"
         className="w-full"
+        instanceId="search-select"
       />
     </Box>
   );
