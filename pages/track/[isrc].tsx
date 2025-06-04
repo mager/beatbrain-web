@@ -1,24 +1,35 @@
-import React, { useState } from "react";
-import { GetServerSideProps } from "next";
-import { SERVER_HOST } from "@util";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { GetTrackResponseV2, TrackV2 } from "@types";
 import GiantTitle from "@components/GiantTitle";
 import Box from "@components/Box";
 import Subtitle from "@components/Subtitle";
 import Image from "next/image";
 
+export default function Track() {
+  const router = useRouter();
+  const { isrc } = router.query;
+  const [track, setTrack] = useState<TrackV2 | null>(null);
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { isrc } = context.params;
-  if (!isrc || typeof isrc !== "string") {
-    return { notFound: true };
-  }
-  const resp = await fetch(`${SERVER_HOST}/track?isrc=${isrc}`);
-  const t: GetTrackResponseV2 = await resp.json();
-  return { props: { track: t.track } };
-};
+  useEffect(() => {
+    if (!isrc) return;
+    
+    const fetchTrack = async () => {
+      const resp = await fetch(`/api/track?isrc=${isrc}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await resp.json();
+      setTrack(data);
+    };
 
-export default function Track({ track }: { track: TrackV2 }) {
+    fetchTrack();
+  }, [isrc]);
+
+  if (!track) return <div>Loading...</div>;
+
   return (
     <Box>
       <GiantTitle>{track.name}</GiantTitle>

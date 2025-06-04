@@ -83,4 +83,5 @@ export type TrackV2 = {
   name: string;
   isrc: string;
   image?: string;
+  imagefront?: string;
 };

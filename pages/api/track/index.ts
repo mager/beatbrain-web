@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SERVER_HOST } from "@util";
+import { adaptTrack } from "@adapters/track";
 
-// POST /api/track
-// Required fields in body: isrc
+// GET /api/track
+// Required fields in query: isrc
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -15,5 +16,7 @@ export default async function handle(
   });
 
   const respBody = await resp.json();
-  res.json(respBody);
+  const adapted = adaptTrack(respBody);
+  console.log({ adapted });
+  res.json(adapted);
 }
