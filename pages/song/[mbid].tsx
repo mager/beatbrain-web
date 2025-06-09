@@ -8,14 +8,14 @@ import Image from "next/image";
 
 export default function Track() {
   const router = useRouter();
-  const { isrc } = router.query;
+  const { mbid } = router.query;
   const [track, setTrack] = useState<TrackV2 | null>(null);
 
   useEffect(() => {
-    if (!isrc) return;
+    if (!mbid) return;
     
     const fetchTrack = async () => {
-      const resp = await fetch(`/api/track?isrc=${isrc}`, {
+      const resp = await fetch(`/api/song?mbid=${mbid}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export default function Track() {
     };
 
     fetchTrack();
-  }, [isrc]);
+  }, [mbid]);
 
   if (!track) return <div>Loading...</div>;
 
