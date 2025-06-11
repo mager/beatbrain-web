@@ -85,3 +85,20 @@ export type TrackV2 = {
   image?: string;
   imagefront?: string;
 };
+
+export type TrackV3 = {
+  id: string;
+  artist: string;
+  name: string;
+  image: string;
+  release_date: string;
+  genres: string[];
+  isrc: string;
+  instruments: any | null;
+  production_credits: any | null;
+  song_credits: SongCredit[];
+};
+
+export type GetTrackResponseV3 = {
+  track: TrackV3;
+};

@@ -1,10 +1,16 @@
-import { GetTrackResponseV2, TrackV2 } from "@types";
+import { GetTrackResponseV3, TrackV3 } from "@types";
 
-export const adaptTrack = ({track}: GetTrackResponseV2): TrackV2 => {
+export const adaptTrack = ({track}: GetTrackResponseV3): TrackV3 => {
   return {
+    id: track.id,
     name: track.name,
     artist: track.artist,
-    image: track.image  ? `https://coverartarchive.org/release/${track.image}/front-500.jpg` : "https://placehold.co/300",
+    image: track.image ? `https://coverartarchive.org/release/${track.image}/front-500.jpg` : "https://placehold.co/300",
+    release_date: track.release_date,
+    genres: track.genres,
     isrc: track.isrc,
+    instruments: track.instruments,
+    production_credits: track.production_credits,
+    song_credits: track.song_credits,
   };
 };
