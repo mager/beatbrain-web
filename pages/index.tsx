@@ -12,6 +12,7 @@ const Home: React.FC<Props> = () => {
 
   const fetchTracks = async (filter: 'hot' | 'new') => {
     setIsLoading(true);
+    setTracks([]);
     try {
       const res = await fetch(`/api/discover`, {
         method: "POST",
@@ -24,17 +25,16 @@ const Home: React.FC<Props> = () => {
       });
       if (!res.ok) {
         console.error(`Failed to fetch discover: ${res.status} ${res.statusText}`);
-        setTracks([]);
         setUpdated(null);
         return;
       }
       const resp: RecommendedTracksResp = await res.json();
       console.log('Received tracks response:', resp);
+      console.log('First track data:', resp.tracks[0]);
       setTracks(resp.tracks);
       setUpdated(resp.updated || null);
     } catch (err) {
       console.error("Error fetching tracks:", err);
-      setTracks([]);
       setUpdated(null);
     } finally {
       setIsLoading(false);
@@ -48,7 +48,11 @@ const Home: React.FC<Props> = () => {
   }, []);
 
   const handleFilterChange = (filter: 'hot' | 'new') => {
+    // Reset all states first
+    setTracks([]);
+    setUpdated(null);
     setActiveFilter(filter);
+    // Then fetch new tracks
     fetchTracks(filter);
   };
 
@@ -107,7 +111,7 @@ const Home: React.FC<Props> = () => {
           ) : tracks && tracks.length > 0 ? (
              <div className="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 p-0 sm:gap-2">
                {tracks.map((track) => (
-                 <TrackItem track={track} key={track.source_id} />
+                 <TrackItem track={track} key={track.id} />
                ))}
              </div>
            ) : (

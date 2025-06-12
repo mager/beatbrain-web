@@ -5,6 +5,7 @@ export type Track = {
   source_id: string;
   source: string;
   isrc: string;
+  id: string;
 
   features: Features;
   analysis: Analysis;
