@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
   try {
-    const backendRes = await fetch(`${SERVER_HOST}/discover`, {
+    const backendRes = await fetch(`${SERVER_HOST}/discover/v2`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,8 +15,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       body: JSON.stringify(req.body),
     });
     const data = await backendRes.json();
-    console.log('Backend response data:', data);
-    console.log('First track from backend:', data.tracks?.[0]);
     res.status(backendRes.status).json(data);
   } catch (error) {
     res.status(500).json({ error: 'Proxy error', details: error instanceof Error ? error.message : error });

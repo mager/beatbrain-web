@@ -11,8 +11,6 @@ const Home: React.FC<Props> = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchTracks = async (filter: 'hot' | 'new') => {
-    setIsLoading(true);
-    setTracks([]);
     try {
       const res = await fetch(`/api/discover`, {
         method: "POST",
@@ -44,16 +42,18 @@ const Home: React.FC<Props> = () => {
   // Fetch initial tracks on component mount
   useEffect(() => {
     fetchTracks('new');
-    setActiveFilter('new');
   }, []);
 
   const handleFilterChange = (filter: 'hot' | 'new') => {
-    // Reset all states first
     setTracks([]);
+    setIsLoading(true);
     setUpdated(null);
     setActiveFilter(filter);
-    // Then fetch new tracks
-    fetchTracks(filter);
+    
+    // Use setTimeout to ensure state updates are processed before fetching
+    setTimeout(() => {
+      fetchTracks(filter);
+    }, 0);
   };
 
   const formattedDate = (() => {
@@ -77,28 +77,6 @@ const Home: React.FC<Props> = () => {
     <Box>
       <div className="flex flex-col items-start">
         <div className="w-full">
-          <div className="flex justify-center gap-4 mb-8">
-            <button
-              onClick={() => handleFilterChange('new')}
-              className={`px-6 py-2 rounded-full text-lg font-medium transition-colors ${
-                activeFilter === 'new'
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-              }`}
-            >
-              NEW
-            </button>
-            <button
-              onClick={() => handleFilterChange('hot')}
-              className={`px-6 py-2 rounded-full text-lg font-medium transition-colors ${
-                activeFilter === 'hot'
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-              }`}
-            >
-              HOT
-            </button>
-          </div>
           {isLoading ? (
             <div className="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 p-0 sm:gap-2">
               {[...Array(64)].map((_, i) => (

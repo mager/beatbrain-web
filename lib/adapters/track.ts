@@ -5,7 +5,7 @@ export const adaptTrack = ({track}: GetTrackResponseV3): TrackV3 => {
     id: track.id,
     name: track.name,
     artist: track.artist,
-    image: track.image ? `https://coverartarchive.org/release/${track.image}/front-500.jpg` : "https://placehold.co/300",
+    image: track.image,
     release_date: track.release_date,
     genres: track.genres,
     isrc: track.isrc,

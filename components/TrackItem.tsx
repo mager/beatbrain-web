@@ -31,6 +31,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
         height={600}
         className="w-full h-full object-cover"
         priority
+        unoptimized
       />
       <div
         className={`absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 text-center ${showOverlay ? "opacity-100" : ""}`}
