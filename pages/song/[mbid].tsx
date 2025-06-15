@@ -11,7 +11,6 @@ export default function Track() {
   const router = useRouter();
   const { mbid } = router.query;
   const [track, setTrack] = useState<TrackV3 | null>(null);
-  console.log({track})
   useEffect(() => {
     if (!mbid) return;
     

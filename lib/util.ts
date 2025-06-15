@@ -4,16 +4,6 @@ export const SERVER_HOST =
     : "http://localhost:8080";
 
 /**
- * Constructs a Cover Art Archive image URL from a MusicBrainz ID
- * @param {string} mbid MusicBrainz ID
- * @returns {string} URL to the cover art image
- */
-export const getCoverArtUrl = (mbid: string | null | undefined): string => {
-  console.log("mbid", mbid);
-  return mbid ? `https://coverartarchive.org/release/${mbid}/front-500.jpg` : "https://placehold.co/300";
-};
-
-/**
  * Shuffles array in place. ES6 version
  * @param {Array} a items An array containing the items.
  */

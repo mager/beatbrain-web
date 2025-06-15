@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,6 +15,17 @@ const Header: React.FC = () => {
   const context = useContext(AppContext);
   const { state } = context;
   const router = useRouter();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 75);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
@@ -71,7 +82,7 @@ const Header: React.FC = () => {
     );
   }
   return (
-    <nav className="flex items-center p-3 bg-black bg-opacity-50 backdrop-blur-md text-white fixed top-0 w-full z-50 border-b-2 border-white">
+    <nav className={`flex items-center p-3 bg-black ${isScrolled ? 'bg-opacity-50' : 'bg-opacity-100'} backdrop-blur-md text-white fixed top-0 w-full z-50 border-b-2 border-white transition-all duration-200`}>
       {left}
       {right}
     </nav>
