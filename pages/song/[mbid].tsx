@@ -6,6 +6,7 @@ import Subtitle from "@components/Subtitle";
 import Image from "next/image";
 import Meta from "@components/Meta";
 import Relations from "@components/Relations";
+import Genres from "@components/Genres";
 
 export default function Track() {
   const router = useRouter();
@@ -52,6 +53,7 @@ export default function Track() {
           <GiantTitle title={track.isrc}>{track.name}</GiantTitle>
           <Subtitle>{track.artist}</Subtitle>
           <Meta>{formatReleaseDate(track.release_date)}</Meta>
+          <Genres genres={track.genres || []} />
         </div>
 
         <div className="md:hidden border-b-4 border-gray-300 mb-4 pb-4">
