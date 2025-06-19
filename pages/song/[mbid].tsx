@@ -7,6 +7,7 @@ import Image from "next/image";
 import Meta from "@components/Meta";
 import Relations from "@components/Relations";
 import Genres from "@components/Genres";
+import Releases from "@components/Releases";
 
 export default function Track() {
   const router = useRouter();
@@ -54,9 +55,10 @@ export default function Track() {
           <Subtitle>{track.artist}</Subtitle>
           <Meta>{formatReleaseDate(track.release_date)}</Meta>
           <Genres genres={track.genres || []} />
+          <Releases releases={track.releases|| []} />
         </div>
 
-        <div className="md:hidden border-b-4 border-gray-300 mb-4 pb-4">
+        <div className="md:hidden mt-4 border-b-4 border-gray-300 mb-4 pb-4">
           <div className="relative mb-4 border-4 border-black group">
             <Image
               src={track.image}

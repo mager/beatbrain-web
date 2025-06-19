@@ -75,6 +75,16 @@ export type Profile = {
   username: string;
 };
 
+export type Release = {
+  id: string;
+  image: string;
+};
+
+export type Link = {
+  type: string;
+  url: string;
+};
+
 export type GetTrackResponseV2 = {
   track: TrackV2;
 };
@@ -92,12 +102,14 @@ export type TrackV3 = {
   artist: string;
   name: string;
   image: string;
+  releases: Release[];
   release_date: string;
   genres: string[];
   isrc: string;
   instruments: any | null;
   production_credits: any | null;
   song_credits: SongCredit[];
+  links: Link[];
 };
 
 export type GetTrackResponseV3 = {

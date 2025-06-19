@@ -6,11 +6,13 @@ export const adaptTrack = ({track}: GetTrackResponseV3): TrackV3 => {
     name: track.name,
     artist: track.artist,
     image: track.image,
+    releases: track.releases,
     release_date: track.release_date,
     genres: track.genres,
     isrc: track.isrc,
     instruments: track.instruments,
     production_credits: track.production_credits,
     song_credits: track.song_credits,
+    links: track.links,
   };
 };
