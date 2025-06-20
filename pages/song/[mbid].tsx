@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
-import { TrackV3 } from "@types";
+import { TrackV3, Release } from "@types";
 import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
 import Image from "next/image";
@@ -9,13 +9,73 @@ import Relations from "@components/Relations";
 import Genres from "@components/Genres";
 import Releases from "@components/Releases";
 
+// Utility function to group releases by country
+const groupReleasesByCountry = (releases: Release[]) => {
+  const grouped: { [country: string]: Release[] } = {};
+  releases.forEach((release) => {
+    const country = release.country || "Unknown";
+    if (!grouped[country]) {
+      grouped[country] = [];
+    }
+    grouped[country].push(release);
+  });
+
+  // Sort countries for consistent tab order (optional)
+  const sortedCountries = Object.keys(grouped).sort((a, b) => {
+    if (a === "XW") return -1;
+    if (b === "XW") return 1;
+    if (a === "XE") return -1;
+    if (b === "XE") return 1;
+    return a.localeCompare(b);
+  });
+
+  const sortedGrouped: { [country: string]: Release[] } = {};
+  sortedCountries.forEach(country => {
+    sortedGrouped[country] = grouped[country];
+  });
+
+  return sortedGrouped;
+};
+
+// Helper to format country names for display
+const formatCountryDisplayName = (countryCode: string) => {
+  switch (countryCode) {
+    case "XE":
+      return "Europe";
+    case "XW":
+      return "Worldwide";
+    case "Unknown":
+      return "Unknown Region";
+    default:
+      return countryCode;
+  }
+};
+
+// Helper to get the flag emoji from a country code
+const getFlagEmoji = (countryCode: string) => {
+  if (countryCode === "XE") return "🇪🇺"; // Europe
+  if (countryCode === "XW") return "🌍"; // Worldwide
+  if (countryCode === "Unknown") return "❓"; // Unknown
+  // Convert ISO country code to flag emoji
+  if (countryCode.length === 2) {
+    const codePoints = countryCode
+      .toUpperCase()
+      .split("")
+      .map(char => 127397 + char.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
+  }
+  return "❓";
+};
+
 export default function Track() {
   const router = useRouter();
   const { mbid } = router.query;
   const [track, setTrack] = useState<TrackV3 | null>(null);
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+
   useEffect(() => {
     if (!mbid) return;
-    
+
     const fetchTrack = async () => {
       const resp = await fetch(`/api/song?mbid=${mbid}`, {
         method: "GET",
@@ -25,10 +85,30 @@ export default function Track() {
       });
       const data = await resp.json();
       setTrack(data);
+
+      // After fetching track data, set the initial active tab
+      if (data && data.releases && data.releases.length > 0) {
+        const grouped = groupReleasesByCountry(data.releases);
+        const firstCountry = Object.keys(grouped)[0];
+        if (firstCountry) {
+          setActiveTab(firstCountry);
+        }
+      }
     };
 
     fetchTrack();
   }, [mbid]);
+
+  // Group releases by country whenever `track.releases` changes
+  const groupedReleases = useMemo(() => {
+    if (!track?.releases) {
+      return {};
+    }
+    return groupReleasesByCountry(track.releases);
+  }, [track?.releases]);
+
+  // Extract unique country codes for tabs
+  const countries = useMemo(() => Object.keys(groupedReleases), [groupedReleases]);
 
   if (!track) return <div>Loading...</div>;
 
@@ -55,7 +135,53 @@ export default function Track() {
           <Subtitle>{track.artist}</Subtitle>
           <Meta>{formatReleaseDate(track.release_date)}</Meta>
           <Genres genres={track.genres || []} />
-          <Releases releases={track.releases|| []} />
+
+          {/* New: Country Tabs for Releases */}
+          {countries.length > 0 && (
+            <div className="mt-8">
+              <div>
+                <nav className="flex space-x-2" aria-label="Tabs">
+                  {countries.map((countryCode) => (
+                    <button
+                      key={countryCode}
+                      onClick={() => setActiveTab(countryCode)}
+                      className={`$${
+                        activeTab === countryCode
+                          ? "opacity-100 scale-110"
+                          : "opacity-60 hover:opacity-100"
+                      } p-0 m-0 bg-transparent focus:outline-none transition-transform duration-150 flex items-center justify-center`}
+                      aria-current={activeTab === countryCode ? "page" : undefined}
+                      style={{ border: 'none', boxShadow: 'none', background: 'none' }}
+                    >
+                      <span
+                        className={`flex items-center justify-center transition-colors duration-150 w-8 h-8
+                          ${activeTab === countryCode
+                            ? 'border-b-2 border-gray-300'
+                            : ''}
+                        `}
+                        title={formatCountryDisplayName(countryCode)}
+                        style={{ fontSize: '1.5rem', lineHeight: 1 }}
+                      >
+                        {getFlagEmoji(countryCode)}
+                      </span>
+                    </button>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Display releases for the active tab */}
+              <div className="mt-6">
+                {activeTab && groupedReleases[activeTab] ? (
+                  <Releases releases={groupedReleases[activeTab]} />
+                ) : (
+                  <p>No releases found for this country.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Original Releases component removed or moved */}
+          {/* <Releases releases={track.releases || []} /> */}
         </div>
 
         <div className="md:hidden mt-4 border-b-4 border-gray-300 mb-4 pb-4">

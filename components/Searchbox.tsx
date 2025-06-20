@@ -43,9 +43,10 @@ type Props = {
   handleChange: (option: any) => void;
   loadOptions: any;
   option: string;
+  isDisabled?: boolean;
 };
 
-const Searchbox: React.FC<Props> = ({ handleChange, loadOptions, option }) => {
+const Searchbox: React.FC<Props> = ({ handleChange, loadOptions, option, isDisabled = false }) => {
   return (
     <div className="w-full">
       <Select
@@ -53,6 +54,7 @@ const Searchbox: React.FC<Props> = ({ handleChange, loadOptions, option }) => {
         handleChange={handleChange}
         loadOptions={loadOptions}
         noOptionsMessage={noOptionsMessage}
+        isDisabled={isDisabled}
       />
     </div>
   );

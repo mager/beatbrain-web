@@ -52,7 +52,7 @@ const styles = {
   }),
 };
 
-const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
+const Select = ({ handleChange, loadOptions, noOptionsMessage, option, isDisabled = false }) => {
   return (
     <Box className="px-0 mx-0 w-full">
       <AsyncSelect
@@ -61,7 +61,7 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         loadOptions={loadOptions}
         defaultOptions={false}
         isClearable={true}
-        placeholder="Search for a track..."
+        placeholder="Search temporarily disabled..."
         noOptionsMessage={noOptionsMessage}
         components={{ DropdownIndicator: () => null }}
         styles={styles}
@@ -69,6 +69,7 @@ const Select = ({ handleChange, loadOptions, noOptionsMessage, option }) => {
         classNamePrefix="react-select"
         className="w-full"
         instanceId="search-select"
+        isDisabled={isDisabled}
       />
     </Box>
   );

@@ -78,6 +78,9 @@ export type Profile = {
 export type Release = {
   id: string;
   image: string;
+  disambiguation: string;
+  country: string;
+  date: string;
 };
 
 export type Link = {

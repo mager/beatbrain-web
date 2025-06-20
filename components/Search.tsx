@@ -18,6 +18,8 @@ const Search: React.FC = () => {
         option={option}
         handleChange={goToTrackPage}
         loadOptions={debouncedLoadOptions}
+        // Until migrating to /song
+        isDisabled={true}
       />
     </div>
   );
