@@ -136,52 +136,8 @@ export default function Track() {
           <Meta>{formatReleaseDate(track.release_date)}</Meta>
           <Genres genres={track.genres || []} />
 
-          {/* New: Country Tabs for Releases */}
-          {countries.length > 0 && (
-            <div className="mt-8">
-              <div>
-                <nav className="flex space-x-2" aria-label="Tabs">
-                  {countries.map((countryCode) => (
-                    <button
-                      key={countryCode}
-                      onClick={() => setActiveTab(countryCode)}
-                      className={`$${
-                        activeTab === countryCode
-                          ? "opacity-100 scale-110"
-                          : "opacity-60 hover:opacity-100"
-                      } p-0 m-0 bg-transparent focus:outline-none transition-transform duration-150 flex items-center justify-center`}
-                      aria-current={activeTab === countryCode ? "page" : undefined}
-                      style={{ border: 'none', boxShadow: 'none', background: 'none' }}
-                    >
-                      <span
-                        className={`flex items-center justify-center transition-colors duration-150 w-8 h-8
-                          ${activeTab === countryCode
-                            ? 'border-b-2 border-gray-300'
-                            : ''}
-                        `}
-                        title={formatCountryDisplayName(countryCode)}
-                        style={{ fontSize: '1.5rem', lineHeight: 1 }}
-                      >
-                        {getFlagEmoji(countryCode)}
-                      </span>
-                    </button>
-                  ))}
-                </nav>
-              </div>
-
-              {/* Display releases for the active tab */}
-              <div className="mt-6">
-                {activeTab && groupedReleases[activeTab] ? (
-                  <Releases releases={groupedReleases[activeTab]} />
-                ) : (
-                  <p>No releases found for this country.</p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Original Releases component removed or moved */}
-          {/* <Releases releases={track.releases || []} /> */}
+          {/* Country tabs and grouped releases are now handled inside Releases component */}
+          <Releases releases={track.releases || []} />
         </div>
 
         <div className="md:hidden mt-4 border-b-4 border-gray-300 mb-4 pb-4">

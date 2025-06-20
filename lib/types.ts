@@ -81,6 +81,13 @@ export type Release = {
   disambiguation: string;
   country: string;
   date: string;
+  images: ReleaseImage[];
+};
+
+export type ReleaseImage = {
+  id: number;
+  type: string;
+  image: string;
 };
 
 export type Link = {

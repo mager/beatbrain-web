@@ -3,7 +3,6 @@ import { AppProps } from "next/app";
 import { AppProvider } from "../context/AppContext";
 import Layout from "@components/Layout"; 
 import "./global.css";
-import 'flag-icons/css/flag-icons.min.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
