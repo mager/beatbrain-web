@@ -77,10 +77,11 @@ export type Profile = {
 
 export type Release = {
   id: string;
-  image: string;
-  disambiguation: string;
-  country: string;
   date: string;
+  country: string;
+  title: string;
+  disambiguation: string;
+  image: string;
   images: ReleaseImage[];
 };
 

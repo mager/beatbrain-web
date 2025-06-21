@@ -71,7 +71,7 @@ export default function Track() {
   const router = useRouter();
   const { mbid } = router.query;
   const [track, setTrack] = useState<TrackV3 | null>(null);
-  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [_, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
     if (!mbid) return;
@@ -99,17 +99,6 @@ export default function Track() {
     fetchTrack();
   }, [mbid]);
 
-  // Group releases by country whenever `track.releases` changes
-  const groupedReleases = useMemo(() => {
-    if (!track?.releases) {
-      return {};
-    }
-    return groupReleasesByCountry(track.releases);
-  }, [track?.releases]);
-
-  // Extract unique country codes for tabs
-  const countries = useMemo(() => Object.keys(groupedReleases), [groupedReleases]);
-
   if (!track) return <div>Loading...</div>;
 
   const formatReleaseDate = (dateString: string): string => {
@@ -135,8 +124,6 @@ export default function Track() {
           <Subtitle>{track.artist}</Subtitle>
           <Meta>{formatReleaseDate(track.release_date)}</Meta>
           <Genres genres={track.genres || []} />
-
-          {/* Country tabs and grouped releases are now handled inside Releases component */}
           <Releases releases={track.releases || []} />
         </div>
 

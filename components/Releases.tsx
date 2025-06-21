@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import type { Release } from "@types";
 import { MusicalNoteIcon } from "@heroicons/react/24/solid";
@@ -30,7 +30,13 @@ const groupReleasesByCountry = (releases: Release[]) => {
 
   const sortedGrouped: { [country: string]: Release[] } = {};
   sortedCountries.forEach(country => {
-    sortedGrouped[country] = grouped[country];
+    // Sort releases within each country by date (newest first)
+    sortedGrouped[country] = grouped[country].sort((a, b) => {
+      if (!a.date && !b.date) return 0;
+      if (!a.date) return 1; // Releases without dates go to the end
+      if (!b.date) return -1;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
   });
 
   return sortedGrouped;
@@ -77,6 +83,27 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
 
   // State to track selected main image per release
   const [selectedImages, setSelectedImages] = useState<{ [releaseId: string]: string }>({});
+  
+  // State for modal functionality
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalImage, setModalImage] = useState<string>("");
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && modalOpen) {
+        setModalOpen(false);
+      }
+    };
+
+    if (modalOpen) {
+      document.addEventListener('keydown', handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [modalOpen]);
 
   if (!releases || releases.length === 0) {
     return null;
@@ -124,7 +151,13 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
               <div key={release.id} className="flex flex-col items-start border-b-2 border-gray-200 pb-6">
                 <div className="mb-2">
                   <span className="text-sm text-gray-500">
-                    {release.date}
+                    {release.date && (
+                      <>
+                        <span className="">{release.date}</span>
+                        {" · "}
+                      </>
+                    )}
+                    <strong className="font-semibold text-black">{release.title}</strong>
                     {release.disambiguation && (
                       <>
                         {" "}- {release.disambiguation}
@@ -134,28 +167,90 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                 </div>
                 <div className="flex flex-row gap-4">
                   <div className="w-[250px] h-[250px] relative border border-grey-300 bg-white">
-                    <Image
-                      src={mainImage}
-                      alt="Release cover"
-                      fill
-                      className="object-cover"
-                      unoptimized
-                      sizes="250px"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = "none";
-                        const placeholder = target.parentElement?.querySelector(
-                          ".release-placeholder"
-                        ) as HTMLElement;
-                        if (placeholder) placeholder.style.display = "flex";
+                    <div
+                      className="w-full h-full cursor-pointer group"
+                      onClick={() => {
+                        setModalImage(mainImage.replace(/-(250|1200)\.jpg$/, "-500.jpg"));
+                        setModalOpen(true);
                       }}
-                    />
-                    <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
-                      <MusicalNoteIcon className="h-12 w-12 text-gray-400" />
+                      tabIndex={0}
+                      role="button"
+                      aria-label="Open release cover modal"
+                      onKeyDown={e => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          setModalImage(mainImage.replace(/-(250|1200)\.jpg$/, "-500.jpg"));
+                          setModalOpen(true);
+                        }
+                      }}
+                    >
+                      <Image
+                        src={mainImage}
+                        alt="Release cover"
+                        fill
+                        className="object-cover"
+                        unoptimized
+                        sizes="250px"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const placeholder = target.parentElement?.querySelector(
+                            ".release-placeholder"
+                          ) as HTMLElement;
+                          if (placeholder) placeholder.style.display = "flex";
+                        }}
+                      />
+                      <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
+                        <MusicalNoteIcon className="h-12 w-12 text-gray-400" />
+                      </div>
                     </div>
                   </div>
+                  {/* Modal for zoomed image */}
+                  {modalOpen && modalImage && (
+                    <div
+                      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md"
+                      onClick={() => setModalOpen(false)}
+                      tabIndex={-1}
+                      aria-modal="true"
+                      role="dialog"
+                    >
+                      <div
+                        className="relative bg-white rounded-lg shadow-2xl flex items-center justify-center"
+                        style={{ width: 520, height: 520 }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <Image
+                          src={modalImage}
+                          alt="Release cover zoomed"
+                          fill
+                          className="object-contain"
+                          unoptimized
+                          sizes="500px"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const placeholder = target.parentElement?.querySelector(
+                              ".release-placeholder"
+                            ) as HTMLElement;
+                            if (placeholder) placeholder.style.display = "flex";
+                          }}
+                        />
+                        <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
+                          <MusicalNoteIcon className="h-20 w-20 text-gray-400" />
+                        </div>
+                        <button
+                          className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+                          onClick={() => setModalOpen(false)}
+                          aria-label="Close modal"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 {release.images && release.images.length > 0 ? (
-                  <div className="flex flex-row gap-2">
+                  <div className="flex flex-1 flex-wrap gap-2">
                     {release.images.map((img, idx) => (
                       <div
                         key={img.id ?? idx}
