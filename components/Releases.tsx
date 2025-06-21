@@ -75,6 +75,9 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
   const countries = useMemo(() => Object.keys(groupedReleases), [groupedReleases]);
   const [activeTab, setActiveTab] = useState<string | null>(countries[0] || null);
 
+  // State to track selected main image per release
+  const [selectedImages, setSelectedImages] = useState<{ [releaseId: string]: string }>({});
+
   if (!releases || releases.length === 0) {
     return null;
   }
@@ -114,74 +117,82 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
       )}
       {activeTab && groupedReleases[activeTab] && groupedReleases[activeTab].length > 0 ? (
         <div className="flex flex-col gap-4">
-          {groupedReleases[activeTab].map((release) => (
-            <div key={release.id} className="flex flex-col items-start border-b-2 border-gray-200 pb-6">
-              <div className="mb-2">
-                <span className="text-sm text-gray-500">
-                  {release.date}
-                  {release.disambiguation && (
-                    <>
-                      {" "}- {release.disambiguation}
-                    </>
-                  )}
-                </span>
-              </div>
-              <div className="flex flex-row gap-4">
-                <div className="w-[128px] h-[128px] relative border border-grey-300 bg-white">
-                  <Image
-                    src={release.image}
-                    alt="Release cover"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                    sizes="128px"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = "none";
-                      const placeholder = target.parentElement?.querySelector(
-                        ".release-placeholder"
-                      ) as HTMLElement;
-                      if (placeholder) placeholder.style.display = "flex";
-                    }}
-                  />
-                  <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
-                    <MusicalNoteIcon className="h-12 w-12 text-gray-400" />
-                  </div>
+          {groupedReleases[activeTab].map((release) => {
+            // Determine which image to show as main
+            const mainImage = selectedImages[release.id] || release.image;
+            return (
+              <div key={release.id} className="flex flex-col items-start border-b-2 border-gray-200 pb-6">
+                <div className="mb-2">
+                  <span className="text-sm text-gray-500">
+                    {release.date}
+                    {release.disambiguation && (
+                      <>
+                        {" "}- {release.disambiguation}
+                      </>
+                    )}
+                  </span>
                 </div>
-              {release.images && release.images.length > 0 ? (
-                <div className="flex flex-row gap-2">
-                  {release.images.map((img, idx) => (
-                    <div
-                      key={img.id ?? idx}
-                      className="w-[64px] h-[64px] relative border border-grey-300 bg-white"
-                      style={{ flex: "0 0 auto" }}
-                    >
-                      <Image
-                        src={img.image}
-                        alt={`Release image ${idx + 1}`}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                        sizes="64px"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = "none";
-                          const placeholder = target.parentElement?.querySelector(
-                            ".release-placeholder"
-                          ) as HTMLElement;
-                          if (placeholder) placeholder.style.display = "flex";
-                        }}
-                      />
-                      <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
-                        <MusicalNoteIcon className="h-8 w-8 text-gray-400" />
-                      </div>
+                <div className="flex flex-row gap-4">
+                  <div className="w-[250px] h-[250px] relative border border-grey-300 bg-white">
+                    <Image
+                      src={mainImage}
+                      alt="Release cover"
+                      fill
+                      className="object-cover"
+                      unoptimized
+                      sizes="250px"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = "none";
+                        const placeholder = target.parentElement?.querySelector(
+                          ".release-placeholder"
+                        ) as HTMLElement;
+                        if (placeholder) placeholder.style.display = "flex";
+                      }}
+                    />
+                    <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
+                      <MusicalNoteIcon className="h-12 w-12 text-gray-400" />
                     </div>
-                  ))}
+                  </div>
+                {release.images && release.images.length > 0 ? (
+                  <div className="flex flex-row gap-2">
+                    {release.images.map((img, idx) => (
+                      <div
+                        key={img.id ?? idx}
+                        className={`w-[64px] h-[64px] relative border border-grey-300 bg-white cursor-pointer ${selectedImages[release.id] === img.image ? 'ring-2 ring-blue-400' : ''}`}
+                        style={{ flex: "0 0 auto" }}
+                        onClick={() => {
+                          setSelectedImages(prev => ({ ...prev, [release.id]: img.image }));
+                        }}
+                        title="Set as main image"
+                      >
+                        <Image
+                          src={img.image}
+                          alt={`Release image ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                          sizes="64px"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const placeholder = target.parentElement?.querySelector(
+                              ".release-placeholder"
+                            ) as HTMLElement;
+                            if (placeholder) placeholder.style.display = "flex";
+                          }}
+                        />
+                        <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
+                          <MusicalNoteIcon className="h-8 w-8 text-gray-400" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
                 </div>
-              ) : null}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <p>No releases found for this country.</p>
