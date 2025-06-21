@@ -36,35 +36,37 @@ const Settings: React.FC = () => {
   return (
     <Layout>
       <Box>
-        <GiantTitle>Settings</GiantTitle>
-        <Box>
-          <Subtitle>Username</Subtitle>
-          {!isEditing ? (
-            <div className="flex items-center space-x-4">
-              <span>{username || "No username set"}</span>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="text-blue-500 hover:text-blue-700"
-              >
-                {username ? "Edit" : "Set Username"}
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                placeholder="Choose a username"
-                value={username}
-                setValue={setUsername}
-              />
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Save
-              </button>
-            </form>
-          )}
-        </Box>
+        <div className="w-full pt-20">
+          <GiantTitle>Settings</GiantTitle>
+          <div className="mt-6">
+            <Subtitle>Username</Subtitle>
+            {!isEditing ? (
+              <div className="flex items-center space-x-4 mt-2">
+                <span>{username || "No username set"}</span>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  {username ? "Edit" : "Set Username"}
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+                <Input
+                  placeholder="Choose a username"
+                  value={username}
+                  setValue={setUsername}
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Save
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
       </Box>
     </Layout>
   );

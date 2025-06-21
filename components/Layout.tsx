@@ -40,7 +40,7 @@ interface ExtendedSession {
 
 const Layout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
-  const hideSearch = ["/create"].includes(router.pathname);
+  const hideSearch = ["/create", "/settings"].includes(router.pathname);
   const { data: session } = useSession();
   const { state: appState, setPlayerIsPlaying } = useAppContext();
   const { currentTrackUri, isPlaying } = appState;
