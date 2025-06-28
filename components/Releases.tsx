@@ -72,6 +72,25 @@ const getFlagEmoji = (countryCode: string) => {
   return "❓";
 };
 
+// Helper to format release date nicely
+const formatReleaseDate = (dateString?: string): string => {
+  if (!dateString) return "Unknown Date";
+  const dateObj = new Date(dateString);
+  if (isNaN(dateObj.getTime())) return "Invalid Date";
+  // If day is present, show full date, else just month/year
+  if (/\d{4}-\d{2}-\d{2}/.test(dateString)) {
+    return dateObj.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
+  return dateObj.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+  });
+};
+
 const Releases: React.FC<Props> = ({ releases, className = "" }) => {
   const groupedReleases = useMemo(() => {
     if (!releases) return {};
@@ -153,11 +172,11 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                   <span className="text-sm text-gray-500">
                     {release.date && (
                       <>
-                        <span className="">{release.date}</span>
+                        <span className="font-medium text-gray-700">{formatReleaseDate(release.date)}</span>
                         {" · "}
                       </>
                     )}
-                    <strong className="font-semibold text-black">{release.title}</strong>
+                    <strong className="font-bold text-lg md:text-xl text-black">{release.title}</strong>
                     {release.disambiguation && (
                       <>
                         {" "}- {release.disambiguation}
