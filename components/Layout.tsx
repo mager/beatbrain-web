@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
 import { Chakra_Petch, Ms_Madi } from "next/font/google";
@@ -44,9 +44,32 @@ const Layout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const hideSearch = ["/create", "/settings"].includes(router.pathname);
   const { data: session } = useSession();
-  const { state: appState, setPlayerIsPlaying } = useAppContext();
-  const { currentTrackUri, isPlaying, tracks } = appState;
+  const { state: appState, setPlayerIsPlaying, setTracks, setTracksLoading } = useAppContext();
+  const { currentTrackUri, isPlaying, tracks, tracksLoading } = appState;
   const spotifyToken = (session as ExtendedSession)?.accessToken;
+
+  useEffect(() => {
+    if (tracksLoading || (tracks && tracks.length > 0)) return;
+    setTracksLoading(true);
+    const fetchTracks = async () => {
+      try {
+        console.log("Fetching discover tracks...");
+        const res = await fetch(`/api/discover`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mode: "new" }),
+        });
+        if (!res.ok) return;
+        const resp = await res.json();
+        setTracks(resp.tracks);
+      } catch (err) {
+        // handle error
+      } finally {
+        setTracksLoading(false);
+      }
+    };
+    fetchTracks();
+  }, [setTracks, setTracksLoading, tracks, tracksLoading]);
 
   // Function to calculate dynamic padding based on player visibility
   const calculatePaddingBottom = () => {

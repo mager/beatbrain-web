@@ -8,6 +8,7 @@ interface AppState {
   currentTrackUri: string | null;
   isPlaying: boolean;
   tracks: Track[];
+  tracksLoading: boolean;
 }
 
 interface AppContextType {
@@ -16,6 +17,7 @@ interface AppContextType {
   playTrack: (uri: string) => void;
   setPlayerIsPlaying: (playing: boolean) => void;
   setTracks: (tracks: Track[]) => void;
+  setTracksLoading: (loading: boolean) => void;
 }
 
 interface AppProviderProps {
@@ -38,6 +40,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     currentTrackUri: null,
     isPlaying: false,
     tracks: [],
+    tracksLoading: false,
   });
   const { data: session, status } = useSession();
 
@@ -87,8 +90,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setState(prevState => ({ ...prevState, tracks }));
   };
 
+  const setTracksLoading = (loading: boolean) => {
+    setState(prevState => ({ ...prevState, tracksLoading: loading }));
+  };
+
   return (
-    <AppContext.Provider value={{ state, setState, playTrack, setPlayerIsPlaying, setTracks }}>
+    <AppContext.Provider value={{ state, setState, playTrack, setPlayerIsPlaying, setTracks, setTracksLoading }}>
       {children}
     </AppContext.Provider>
   );
