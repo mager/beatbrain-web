@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { RecommendedTracksResp, Track } from "@types";
 import Box from "@components/Box";
 import TrackItem from "../components/TrackItem";
+import { useAppContext } from "../context/AppContext";
 
 type Props = {};
 const Home: React.FC<Props> = () => {
@@ -9,6 +10,7 @@ const Home: React.FC<Props> = () => {
   const [activeFilter, setActiveFilter] = useState<'hot' | 'new'>('new');
   const [updated, setUpdated] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { setTracks: setContextTracks } = useAppContext();
 
   const fetchTracks = async (filter: 'hot' | 'new') => {
     try {
@@ -30,6 +32,7 @@ const Home: React.FC<Props> = () => {
       console.log('Received tracks response:', resp);
       console.log('First track data:', resp.tracks[0]);
       setTracks(resp.tracks);
+      setContextTracks(resp.tracks);
       setUpdated(resp.updated || null);
     } catch (err) {
       console.error("Error fetching tracks:", err);

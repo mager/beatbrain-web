@@ -1,11 +1,13 @@
 import React, { createContext, useEffect, useState, ReactNode, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { User } from "@prisma/client";
+import type { Track } from "@types";
 
 interface AppState {
   user: User | null;
   currentTrackUri: string | null;
   isPlaying: boolean;
+  tracks: Track[];
 }
 
 interface AppContextType {
@@ -13,6 +15,7 @@ interface AppContextType {
   setState: React.Dispatch<React.SetStateAction<AppState>>;
   playTrack: (uri: string) => void;
   setPlayerIsPlaying: (playing: boolean) => void;
+  setTracks: (tracks: Track[]) => void;
 }
 
 interface AppProviderProps {
@@ -34,6 +37,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     user: null,
     currentTrackUri: null,
     isPlaying: false,
+    tracks: [],
   });
   const { data: session, status } = useSession();
 
@@ -79,8 +83,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setState(prevState => ({ ...prevState, isPlaying: playing }));
   };
 
+  const setTracks = (tracks: Track[]) => {
+    setState(prevState => ({ ...prevState, tracks }));
+  };
+
   return (
-    <AppContext.Provider value={{ state, setState, playTrack, setPlayerIsPlaying }}>
+    <AppContext.Provider value={{ state, setState, playTrack, setPlayerIsPlaying, setTracks }}>
       {children}
     </AppContext.Provider>
   );

@@ -6,11 +6,13 @@ import { Chakra_Petch, Ms_Madi } from "next/font/google";
 import { useSession } from "next-auth/react";
 import SpotifyPlayer, { State as SpotifyPlayerCallback } from 'react-spotify-web-playback';
 import { useAppContext } from "../context/AppContext";
+import type { Track } from "@types";
 
 import Header from "@components/Header";
 import Search from "@components/Search";
 import Main from "@components/Main";
 import Footer from "@components/Footer";
+import Marquee from "@components/Marquee";
 
 // Define or import your fonts
 export const bodyFont = Chakra_Petch({
@@ -43,7 +45,7 @@ const Layout: React.FC<Props> = ({ children }) => {
   const hideSearch = ["/create", "/settings"].includes(router.pathname);
   const { data: session } = useSession();
   const { state: appState, setPlayerIsPlaying } = useAppContext();
-  const { currentTrackUri, isPlaying } = appState;
+  const { currentTrackUri, isPlaying, tracks } = appState;
   const spotifyToken = (session as ExtendedSession)?.accessToken;
 
   // Function to calculate dynamic padding based on player visibility
@@ -67,6 +69,7 @@ const Layout: React.FC<Props> = ({ children }) => {
     >
       <Header />
       {!hideSearch && <Search />}
+      <Marquee tracks={tracks} speed={450} className="mb-6" />
       <Main>{children}</Main>
       <Analytics />
 

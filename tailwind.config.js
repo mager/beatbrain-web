@@ -15,6 +15,15 @@ module.exports = {
         mono: ['var(--font-mono)'],
         logo: ['var(--font-logo)'],
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee var(--marquee-duration, 20s) linear infinite',
+      },
     },
   },
   plugins: [],
