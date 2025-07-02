@@ -92,7 +92,7 @@ const Layout: React.FC<Props> = ({ children }) => {
     >
       <Header />
       {!hideSearch && <Search />}
-      <Marquee tracks={tracks} speed={450} className="mb-6" />
+      <Marquee tracks={tracks} speed={200} className="mb-6" />
       <Main>{children}</Main>
       <Analytics />
 

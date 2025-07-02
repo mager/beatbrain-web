@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { Track } from "@types";
+import { bodyFont } from "./Layout";
 
 interface MarqueeProps {
   tracks?: Track[];
@@ -10,7 +11,7 @@ interface MarqueeProps {
 
 const Marquee: React.FC<MarqueeProps> = ({ 
   tracks = [], 
-  speed = 20, 
+  speed = 200, 
   className = "" 
 }) => {
   const generateTickerContent = () => {
@@ -27,6 +28,9 @@ const Marquee: React.FC<MarqueeProps> = ({
         🎵 BEATBRAIN DISCOVER FEED •{" "}
         {tracks.map((track, index) => (
           <React.Fragment key={track.id}>
+            <span className="text-green-400 font-bold mr-1">
+              {index + 1}
+            </span>
             <Link 
               href={`/song/${track.id}`}
               className="underline hover:no-underline transition-colors duration-200"
@@ -44,9 +48,9 @@ const Marquee: React.FC<MarqueeProps> = ({
   const tickerContent = generateTickerContent();
 
   return (
-    <div className={`overflow-hidden whitespace-nowrap bg-black border-t-2 border-b-2 mt-4 border-yellow-400 ${className}`}>
+    <div className={`overflow-hidden whitespace-nowrap bg-black border-t-2 border-b-2 mt-4 border-green-400 ${className}`}>
       <div 
-        className="inline-block animate-marquee text-yellow-300 font-bold text-lg tracking-wider drop-shadow-[0_0_6px_rgba(253,224,71,0.8)] py-3 px-4 leading-tight"
+        className={`inline-block animate-marquee text-white font-bold text-lg tracking-wider py-3 px-4 leading-tight ${bodyFont.variable}`}
         style={{ 
           animationDuration: `${speed}s`,
           animationTimingFunction: 'linear',
