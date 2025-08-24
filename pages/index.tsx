@@ -80,7 +80,7 @@ const Home: React.FC<Props> = () => {
       <div className="flex flex-col items-start">
         <div className="w-full">
           {isLoading ? (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 p-0">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-0.5 p-0">
               {[...Array(96)].map((_, i) => (
                 <div
                   key={i}
@@ -89,7 +89,7 @@ const Home: React.FC<Props> = () => {
               ))}
             </div>
           ) : tracks && tracks.length > 0 ? (
-             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 p-0">
+             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-0.5 p-0">
                {tracks.map((track) => (
                  <TrackItem track={track} key={track.id} />
                ))}

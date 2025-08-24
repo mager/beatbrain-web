@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       body: JSON.stringify(req.body),
     });
     const data = await backendRes.json();
+    console.log({ data });
     res.status(backendRes.status).json(data);
   } catch (error) {
     res.status(500).json({ error: 'Proxy error', details: error instanceof Error ? error.message : error });
