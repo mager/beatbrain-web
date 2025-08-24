@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Star Field Background */
+body {
+  background-color: black;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#star-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  perspective: 800px;
+  transform-style: preserve-3d;
+  z-index: -1;
+}
+
+/* Base styles for all star layers */
+#stars1, #stars2, #stars3 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+}
+
+/* Layer 1: Small, distant stars that move slowly */
+#stars1 {
+  transform: translateZ(-300px);
+}
+
+/* Layer 2: Medium stars with moderate speed */
+#stars2 {
+  transform: translateZ(-150px);
+}
+
+/* Layer 3: Large, close stars that move fastest */
+#stars3 {
+  transform: translateZ(-50px);
+}
+
+/* Ensure proper scrolling and prevent horizontal overflow */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Add some animation to make stars twinkle slightly */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+#stars1 div, #stars2 div, #stars3 div {
+  animation: twinkle 3s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+/* Ensure content is above the star field */
+#star-container + * {
+  position: relative;
+  z-index: 1;
+}

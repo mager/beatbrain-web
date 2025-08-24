@@ -20,7 +20,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
     <Link
       href={`/song/${track.id}`}
       key={track.id}
-      className="block group relative w-full aspect-square overflow-hidden transition-all duration-200 group-hover:ring-2 group-hover:ring-blue-500 group-hover:ring-offset-2 group-hover:ring-offset-black group-hover:scale-105"
+      className="block group relative w-full aspect-square overflow-hidden"
       onTouchStart={() => setShowOverlay((v) => !v)}
       onMouseLeave={() => setShowOverlay(false)}
     >
@@ -29,18 +29,19 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
         alt={track.name}
         width={600}
         height={600}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
         priority
         unoptimized
       />
       <div
-        className={`absolute inset-0 flex flex-col items-center justify-center bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 text-center ${showOverlay ? "opacity-100" : ""}`}
-        style={{ pointerEvents: "none" }}
+        className={`absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white transition-all duration-300 ease-in-out transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 ${
+          showOverlay ? "translate-y-0 opacity-100" : ""
+        }`}
       >
-        <div className="font-bold text-base md:text-lg truncate w-full" style={{ pointerEvents: "auto" }}>
+        <div className="font-bold text-base md:text-lg truncate w-full">
           {track.name}
         </div>
-        <div className="text-xs md:text-sm text-gray-200 truncate w-full mt-1" style={{ pointerEvents: "auto" }}>
+        <div className="text-xs md:text-sm text-gray-200 truncate w-full mt-1">
           {track.artist}
         </div>
       </div>

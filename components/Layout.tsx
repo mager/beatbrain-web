@@ -71,6 +71,58 @@ const Layout: React.FC<Props> = ({ children }) => {
     fetchTracks();
   }, [setTracks, setTracksLoading, tracks, tracksLoading]);
 
+  // Star field generation effect
+  useEffect(() => {
+    const generateStars = (containerId: string, count: number, size: number) => {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      // Clear existing stars
+      container.innerHTML = '';
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.style.position = 'absolute';
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.backgroundColor = 'white';
+        star.style.borderRadius = '50%';
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.opacity = '0.8';
+        star.style.boxShadow = `0 0 ${size * 2}px ${size}px rgba(255, 255, 255, 0.3)`;
+        
+        // Add twinkling animation delay
+        star.style.setProperty('--i', i.toString());
+        
+        container.appendChild(star);
+      }
+    };
+
+    // Generate stars for each layer
+    generateStars('stars1', 700, 1);  // Small, distant stars
+    generateStars('stars2', 200, 2);  // Medium stars
+    generateStars('stars3', 100, 3);  // Large, close stars
+
+    // Add scroll event listener for parallax effect
+    const handleScroll = () => {
+      const scrolled = window.pageYOffset;
+      const stars1 = document.getElementById('stars1');
+      const stars2 = document.getElementById('stars2');
+      const stars3 = document.getElementById('stars3');
+
+      if (stars1) stars1.style.transform = `translateZ(-300px) translateY(${scrolled * 0.1}px)`;
+      if (stars2) stars2.style.transform = `translateZ(-150px) translateY(${scrolled * 0.2}px)`;
+      if (stars3) stars3.style.transform = `translateZ(-50px) translateY(${scrolled * 0.3}px)`;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   // Function to calculate dynamic padding based on player visibility
   const calculatePaddingBottom = () => {
     let totalHeight = FOOTER_HEIGHT_PX;
@@ -90,6 +142,13 @@ const Layout: React.FC<Props> = ({ children }) => {
       className={`${bodyFont.variable} ${logoFont.variable} font-sans relative`}
       style={{ paddingBottom: calculatePaddingBottom() }}
     >
+      {/* Star Field Background */}
+      <div id="star-container">
+        <div id="stars1"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+      </div>
+      
       <Header />
       {!hideSearch && <Search />}
       <Marquee tracks={tracks} speed={200} className="mb-6" />
