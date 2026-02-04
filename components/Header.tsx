@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         ? 'bg-terminal-bg/95 backdrop-blur-sm border-b border-terminal-border' 
         : 'bg-transparent'
     }`}>
-      <nav className="flex items-center justify-between px-4 md:px-8 lg:px-12 py-3">
+      <nav className="bb-container flex items-center justify-between py-3">
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-1">
           <span className="font-display text-lg text-accent group-hover:text-glow-accent transition-all duration-300">

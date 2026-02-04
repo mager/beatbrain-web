@@ -8,27 +8,29 @@ interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
   return (
     <Box
-      className={`flex items-center justify-between px-4 md:px-8 lg:px-12 w-full h-full bg-terminal-bg/95 backdrop-blur-sm border-t border-terminal-border font-mono text-[10px] ${className}`}
+      className={`w-full h-full bg-terminal-bg/95 backdrop-blur-sm border-t border-terminal-border font-mono text-[10px] ${className}`}
       {...rest}
     >
-      <div className="flex items-center gap-4 text-phosphor-dim">
-        <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent/70" />
-          <span>beatbrain</span>
-        </span>
-      </div>
-      
-      <div className="flex items-center gap-4 text-phosphor-dim">
-        <a 
-          href="https://twitter.com/mager"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-phosphor-dim hover:text-accent transition-colors"
-        >
-          @mager
-        </a>
-        <span className="text-terminal-border">·</span>
-        <span className="tabular-nums">{new Date().getFullYear()}</span>
+      <div className="bb-container flex items-center justify-between">
+        <div className="flex items-center gap-4 text-phosphor-dim">
+          <span className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent/70" />
+            <span>beatbrain</span>
+          </span>
+        </div>
+        
+        <div className="flex items-center gap-4 text-phosphor-dim">
+          <a 
+            href="https://twitter.com/mager"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-phosphor-dim hover:text-accent transition-colors"
+          >
+            @mager
+          </a>
+          <span className="text-terminal-border">·</span>
+          <span className="tabular-nums">{new Date().getFullYear()}</span>
+        </div>
       </div>
     </Box>
   );

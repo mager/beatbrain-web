@@ -51,6 +51,23 @@
 }
 
 @layer components {
+  /* ===== UNIFIED CONTAINER ===== */
+  .bb-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;   /* 20px — mobile */
+    padding-right: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .bb-container {
+      padding-left: 2rem;    /* 32px — tablet+ */
+      padding-right: 2rem;
+    }
+  }
+
   /* ===== TEXT GLOW (subtle) ===== */
   .text-glow-accent {
     text-shadow:

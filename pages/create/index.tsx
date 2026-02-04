@@ -46,7 +46,7 @@ const Create: React.FC = () => {
 
   return (
     <Box>
-      <div className="page bg-white py-8 mt-12">
+      <div className="bb-container py-8 pt-24">
         <form onSubmit={submitData} className="w-full">
           <Title>Share a beat</Title>
           <div className="flex flex-col lg:flex-row justify-between my-4 gap-4">

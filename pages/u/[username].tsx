@@ -57,7 +57,7 @@ const Profile: React.FC<ProfileProps> = ({ user, posts }) => {
 
   return (
     <Box className="min-h-screen">
-      <div className="relative max-w-5xl mx-auto px-4 md:px-8 pt-24 pb-16">
+      <div className="relative bb-container pt-24 pb-16">
         {/* Profile Header */}
         <div className="terminal-window mb-10">
           <div className="terminal-titlebar">{user.username || 'profile'}</div>

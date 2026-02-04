@@ -6,7 +6,7 @@ interface MainProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Main: React.FC<MainProps> = ({ children, className, ...rest }) => {
-  const combinedClassName = classNames("px-3 pb-16 flex flex-col", className);
+  const combinedClassName = classNames("pb-16 flex flex-col", className);
 
   return (
     <div className={combinedClassName} {...rest}>

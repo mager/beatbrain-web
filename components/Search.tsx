@@ -13,7 +13,7 @@ const Search: React.FC = () => {
   };
 
   return (
-    <div className="pt-16 px-4 md:px-8 lg:px-12 pb-2">
+    <div className="pt-16 pb-2 bb-container">
       <Searchbox
         option={option}
         handleChange={goToTrackPage}

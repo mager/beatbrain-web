@@ -46,7 +46,7 @@ type Props = {
 const Feed: React.FC<Props> = (props) => {
   return (
     <Box className="min-h-screen">
-      <div className="relative max-w-3xl mx-auto px-4 md:px-8 pt-24 pb-16">
+      <div className="relative bb-container max-w-3xl pt-24 pb-16">
         {/* Header */}
         <div className="mb-10 border-b border-terminal-border pb-4">
           <h1 className="font-display text-2xl md:text-3xl text-phosphor tracking-tight mb-2">

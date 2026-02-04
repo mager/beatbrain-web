@@ -50,7 +50,7 @@ const Home: React.FC = () => {
   return (
     <Box className="min-h-screen relative">
       {/* Hero Section */}
-      <section className="relative flex flex-col px-4 md:px-8 lg:px-12 pt-24">
+      <section className="relative flex flex-col bb-container pt-24">
         {/* Title */}
         <div className="mb-8">
           <h1 className="font-display text-massive leading-none tracking-tight">
@@ -158,7 +158,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Track Grid */}
-      <section className="relative px-4 md:px-8 lg:px-12 py-16">
+      <section className="relative bb-container py-16">
         {/* Section Header */}
         <div className="flex items-end justify-between mb-6 border-b border-terminal-border pb-3">
           <div className="font-mono">
@@ -225,7 +225,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Bottom CTA */}
-      <section className="relative px-4 md:px-8 lg:px-12 py-16">
+      <section className="relative bb-container py-16">
         <div className="max-w-2xl mx-auto">
           <div className="terminal-window">
             <div className="terminal-titlebar">beatbrain</div>

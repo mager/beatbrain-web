@@ -117,7 +117,7 @@ export default function Track() {
   };
 
   return (
-    <div className="py-2 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div className="bb-container pt-20 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <div className="col-span-1 xl:col-span-3">
         <div className="relative">
           <GiantTitle title={track.isrc}>{track.name}</GiantTitle>
