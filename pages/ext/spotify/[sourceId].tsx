@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import { PrismaClient } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import prisma from "../../../lib/prisma";
 import { useAppContext } from "../../../context/AppContext";
 
 import GiantTitle from "@components/GiantTitle";
@@ -15,8 +15,6 @@ import Genres from "@components/Genres";
 import type { GetTrackResponse, Track as TrackType } from "@types";
 import { SERVER_HOST } from "@util";
 import SaveModal from "@components/SaveModal";
-
-const prisma = new PrismaClient();
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sourceId } = context.params;
@@ -180,11 +178,11 @@ const Track: React.FC<Props> = ({ track, posts }) => {
             />
           </div>
 
-          {posts && posts.length > 0 && (
+          {posts && posts.length > 0 && author && (
             <div className="my-2 py-2 flex items-center">
               <img
-                src={posts[0].author.image || "/default-avatar.png"}
-                alt={posts[0].author.name || "User"}
+                src={author.image || "/default-avatar.png"}
+                alt={author.name || "User"}
                 className="w-8 h-8 rounded-full mr-2 border border-gray-300"
               />
               <SavedBy author={author} othersCount={othersCount} />
