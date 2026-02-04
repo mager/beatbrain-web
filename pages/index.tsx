@@ -4,12 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import Box from "@components/Box";
 
+const FEATURED_COUNT = 4;
+
 const Home: React.FC = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [activeFilter, setActiveFilter] = useState<'hot' | 'new'>('new');
   const [updated, setUpdated] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [featuredTrack, setFeaturedTrack] = useState<Track | null>(null);
   const [hoveredTrack, setHoveredTrack] = useState<string | null>(null);
 
   const fetchTracks = async (filter: 'hot' | 'new') => {
@@ -22,7 +23,6 @@ const Home: React.FC = () => {
       if (!res.ok) return;
       const resp: RecommendedTracksResp = await res.json();
       setTracks(resp.tracks);
-      setFeaturedTrack(resp.tracks[0] || null);
       setUpdated(resp.updated || null);
     } catch (err) {
       console.error("Error fetching tracks:", err);
@@ -39,17 +39,18 @@ const Home: React.FC = () => {
     if (filter === activeFilter) return;
     setTracks([]);
     setIsLoading(true);
-    setFeaturedTrack(null);
     setActiveFilter(filter);
     fetchTracks(filter);
   };
 
-  const restTracks = tracks.slice(1, 25);
+  const featuredTracks = tracks.slice(0, FEATURED_COUNT);
+  const restTracks = tracks.slice(FEATURED_COUNT, FEATURED_COUNT + 24);
+  const isNew = activeFilter === 'new';
 
   return (
     <Box className="min-h-screen relative">
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex flex-col justify-center px-4 md:px-8 lg:px-12 pt-20">
+      <section className="relative flex flex-col px-4 md:px-8 lg:px-12 pt-24">
         {/* Title */}
         <div className="mb-8">
           <h1 className="font-display text-massive text-phosphor leading-none tracking-tight">
@@ -84,88 +85,75 @@ const Home: React.FC = () => {
           </button>
         </div>
 
-        {/* Featured Track */}
+        {/* Featured Tracks — top picks */}
         {isLoading ? (
-          <div className="terminal-window max-w-3xl">
-            <div className="terminal-titlebar">loading</div>
-            <div className="p-6 flex flex-col sm:flex-row gap-6">
-              <div className="w-48 h-48 sm:w-64 sm:h-64 bg-terminal-bg animate-pulse rounded" />
-              <div className="space-y-3 flex-1">
-                <div className="h-4 w-3/4 bg-terminal-border animate-pulse rounded" />
-                <div className="h-3 w-1/2 bg-terminal-border animate-pulse rounded" />
-                <div className="h-3 w-1/3 bg-terminal-border animate-pulse rounded" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[...Array(FEATURED_COUNT)].map((_, i) => (
+              <div key={i} className="terminal-window">
+                <div className="terminal-titlebar">loading</div>
+                <div className="p-4">
+                  <div className="aspect-square bg-terminal-bg animate-pulse rounded mb-3" />
+                  <div className="h-4 w-3/4 bg-terminal-border animate-pulse rounded mb-2" />
+                  <div className="h-3 w-1/2 bg-terminal-border animate-pulse rounded" />
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ) : featuredTrack ? (
-          <Link 
-            href={`/song/${featuredTrack.id}`}
-            className="group terminal-window max-w-3xl hover:border-accent/30 transition-all duration-500"
-          >
-            <div className="terminal-titlebar">
-              <span>now playing</span>
-              <span className={`ml-auto ${activeFilter === 'new' ? 'text-accent' : 'text-warm'}`}>●</span>
-            </div>
-            <div className="p-4 sm:p-6 flex flex-col sm:flex-row gap-6">
-              {/* Album Cover */}
-              <div className="relative flex-shrink-0">
-                <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded overflow-hidden">
-                  <Image
-                    src={featuredTrack.image}
-                    alt={featuredTrack.name}
-                    fill
-                    className="object-cover transition-all duration-500 group-hover:scale-[1.03]"
-                    priority
-                    unoptimized
-                  />
+        ) : featuredTracks.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {featuredTracks.map((track, index) => (
+              <Link
+                key={track.id}
+                href={`/song/${track.id}`}
+                className={`group terminal-window ${isNew ? 'hover:border-accent/30' : 'hover:border-warm/30'} transition-all duration-400 opacity-0 animate-fadeUp`}
+                style={{ animationDelay: `${index * 80}ms`, animationFillMode: 'forwards' }}
+              >
+                <div className="terminal-titlebar">
+                  <span className="truncate">
+                    {index === 0 ? 'now playing' : `#${index + 1}`}
+                  </span>
+                  {index === 0 && (
+                    <span className={`ml-auto ${isNew ? 'text-accent' : 'text-warm'}`}>●</span>
+                  )}
                 </div>
-              </div>
+                <div className="p-3">
+                  {/* Album Cover */}
+                  <div className="relative aspect-square rounded overflow-hidden mb-3">
+                    <Image
+                      src={track.image}
+                      alt={track.name}
+                      fill
+                      className="object-cover transition-all duration-500 group-hover:scale-[1.04]"
+                      priority={index === 0}
+                      unoptimized
+                    />
+                  </div>
 
-              {/* Track Data */}
-              <div className="flex-1 flex flex-col justify-center font-mono">
-                <div className="data-label mb-1">
-                  {activeFilter === 'new' ? 'fresh discovery' : 'trending now'}
-                </div>
-                <h2 className="text-xl sm:text-2xl text-phosphor font-semibold leading-tight mb-2 group-hover:text-accent transition-colors duration-300">
-                  {featuredTrack.name}
-                </h2>
-                <p className="text-sm text-phosphor-dim mb-4">
-                  {featuredTrack.artist}
-                </p>
-                
-                {/* Metadata */}
-                <div className="space-y-1.5 text-[11px] border-t border-terminal-border pt-3">
-                  {featuredTrack.isrc && (
-                    <div className="flex gap-2">
-                      <span className="text-phosphor-dim">isrc</span>
-                      <span className="text-cool">{featuredTrack.isrc}</span>
-                    </div>
-                  )}
-                  {featuredTrack.source && (
-                    <div className="flex gap-2">
-                      <span className="text-phosphor-dim">source</span>
-                      <span className="text-phosphor">{featuredTrack.source}</span>
-                    </div>
-                  )}
-                  {featuredTrack.genres && featuredTrack.genres.length > 0 && (
-                    <div className="flex gap-2">
-                      <span className="text-phosphor-dim">genres</span>
-                      <span className="text-phosphor">
-                        {featuredTrack.genres.slice(0, 3).join(' · ')}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                  {/* Track info */}
+                  <h2 className={`font-mono text-sm text-phosphor leading-tight mb-1 line-clamp-1 ${isNew ? 'group-hover:text-accent' : 'group-hover:text-warm'} transition-colors duration-300`}>
+                    {track.name}
+                  </h2>
+                  <p className="font-mono text-xs text-phosphor-dim line-clamp-1">
+                    {track.artist}
+                  </p>
 
-                {/* CTA */}
-                <div className={`mt-4 text-xs ${
-                  activeFilter === 'new' ? 'text-accent' : 'text-warm'
-                } opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
-                  explore →
+                  {/* Metadata */}
+                  <div className="mt-2 pt-2 border-t border-terminal-border space-y-1">
+                    {track.genres && track.genres.length > 0 && (
+                      <p className="font-mono text-[10px] text-phosphor-dim line-clamp-1">
+                        {track.genres.slice(0, 2).join(' · ')}
+                      </p>
+                    )}
+                    {track.source && (
+                      <p className="font-mono text-[10px] text-phosphor-dim/60">
+                        {track.source}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          </Link>
+              </Link>
+            ))}
+          </div>
         ) : null}
       </section>
 
