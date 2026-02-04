@@ -29,11 +29,14 @@ const Header: React.FC = () => {
     }`}>
       <nav className="flex items-center justify-between px-4 md:px-8 lg:px-12 py-3">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-1.5">
-          <span className="font-display text-base text-accent tracking-wide">
-            beatbrain
+        <Link href="/" className="group flex items-center gap-1">
+          <span className="font-display text-lg text-accent group-hover:text-glow-accent transition-all duration-300">
+            beat
           </span>
-          <span className="text-accent/50 animate-blink font-mono text-sm">_</span>
+          <span className="font-display text-lg text-phosphor group-hover:text-accent/80 transition-all duration-300">
+            brain
+          </span>
+          <span className="text-warm animate-blink font-mono text-base ml-0.5">_</span>
         </Link>
 
         {/* Nav Links */}

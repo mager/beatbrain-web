@@ -53,8 +53,8 @@ const Home: React.FC = () => {
       <section className="relative flex flex-col px-4 md:px-8 lg:px-12 pt-24">
         {/* Title */}
         <div className="mb-8">
-          <h1 className="font-display text-massive text-phosphor leading-none tracking-tight">
-            beatbrain<span className="text-accent">.</span>
+          <h1 className="font-display text-massive leading-none tracking-tight">
+            <span className="text-accent">beat</span><span className="text-phosphor">brain</span><span className="text-warm">_</span>
           </h1>
           <p className="font-mono text-sm text-phosphor-dim mt-4 max-w-md">
             discover music · dig deeper
