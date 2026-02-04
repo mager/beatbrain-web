@@ -14,12 +14,13 @@ export type AuthorProps = {
   name?: string;
   email?: string;
   image?: string;
+  username?: string;
 };
 
 export type PostProps = {
   id: number;
   title?: string;
-  createdAt: Date;
+  createdAt: Date | string;
   author: AuthorProps | null;
   track: TrackProps | null;
   content: string;
