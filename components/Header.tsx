@@ -2,14 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  PaintBrushIcon,
-  ArrowRightStartOnRectangleIcon,
-  NewspaperIcon,
-} from "@heroicons/react/24/solid";
 import AuthMenu from "@components/AuthMenu";
-import UsernameLink from "@components/UsernameLink";
-import IconLink from "@components/IconLink";
 
 const Header: React.FC = () => {
   const context = useContext(AppContext);
@@ -19,73 +12,72 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 75);
+      setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isActive: (pathname: string) => boolean = (pathname) =>
-    router.pathname === pathname;
-
   const user = state?.user;
   const username = user?.username;
 
-  let left = (
-    <div className="flex justify-center items-center">
-      <div className="cursor-pointer mr-4">
-        <Link
-          href="/"
-          className="font-logo text-5xl hover:text-green-500 transition-all duration-200"
-        >
-          beatbrain
-        </Link>
-      </div>
-      <div className="mx-2">
-        <IconLink
-          href="/feed"
-          icon={<NewspaperIcon className="h-8 w-8" />}
-          active={isActive("/feed")}
-        />
-      </div>
-    </div>
-  );
-
-  let right = null;
-
-  if (!user) {
-    right = (
-      <div className="ml-auto flex items-center">
-        <Link href="/api/auth/signin" legacyBehavior>
-          <a className="text-white hover:text-green-500 transform hover:scale-150 hover:drop-shadow-lg transition-all duration-200">
-            <ArrowRightStartOnRectangleIcon className="h-8 w-8" />
-          </a>
-        </Link>
-      </div>
-    );
-  }
-
-  if (user) {
-    right = (
-      <div className="flex ml-auto items-center">
-        {username && <UsernameLink username={username} />}
-        <AuthMenu iconColor="white" />
-        {/* <div className="mx-2 flex items-center">
-          <IconLink
-            href="/create"
-            icon={<PaintBrushIcon className="h-8 w-8" />}
-            active={isActive("/create")}
-          />
-        </div> */}
-      </div>
-    );
-  }
   return (
-    <nav className={`flex items-center p-3 bg-black ${isScrolled ? 'bg-opacity-50' : 'bg-opacity-100'} backdrop-blur-md text-white fixed top-0 w-full z-50 border-b-2 border-white transition-all duration-200`}>
-      {left}
-      {right}
-    </nav>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-terminal-bg/95 backdrop-blur-sm border-b border-terminal-border' 
+        : 'bg-transparent'
+    }`}>
+      <nav className="flex items-center justify-between px-4 md:px-8 lg:px-12 py-3">
+        {/* Logo */}
+        <Link href="/" className="group flex items-center gap-2">
+          <span className="text-matrix text-sm font-mono">{'>'}</span>
+          <span className="font-display text-base text-matrix text-glow-green tracking-wider">
+            BEATBRAIN
+          </span>
+          <span className="text-matrix animate-blink font-mono">_</span>
+        </Link>
+
+        {/* Nav Links - shell commands */}
+        <div className="flex items-center gap-6">
+          <Link 
+            href="/feed"
+            className={`font-mono text-xs transition-colors duration-300 ${
+              router.pathname === '/feed' 
+                ? 'text-matrix text-glow-green' 
+                : 'text-phosphor-dim hover:text-phosphor'
+            }`}
+          >
+            <span className="text-phosphor-dim mr-1">$</span>feed
+          </Link>
+
+          {!user ? (
+            <Link 
+              href="/api/auth/signin"
+              className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-matrix text-phosphor-dim hover:text-matrix font-mono text-xs transition-all duration-300"
+            >
+              <span className="text-matrix">{'>'}</span>
+              <span>login</span>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-4">
+              {username && (
+                <Link
+                  href={`/u/${username}`}
+                  className={`font-mono text-xs transition-colors duration-300 ${
+                    router.pathname === '/u/[username]' 
+                      ? 'text-cyber text-glow-cyan' 
+                      : 'text-phosphor-dim hover:text-phosphor'
+                  }`}
+                >
+                  <span className="text-phosphor-dim mr-1">~</span>{username}
+                </Link>
+              )}
+              <AuthMenu iconColor="var(--phosphor)" />
+            </div>
+          )}
+        </div>
+      </nav>
+    </header>
   );
 };
 

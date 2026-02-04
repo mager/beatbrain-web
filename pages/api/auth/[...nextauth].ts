@@ -8,6 +8,14 @@ const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
 
 export default authHandler;
 
+// Helper to create a URL-safe username from Spotify display name
+const sanitizeUsername = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, '') // Remove special chars
+    .slice(0, 30); // Limit length
+};
+
 export const options: NextAuthOptions = {
   providers: [
     SpotifyProvider({
@@ -16,9 +24,65 @@ export const options: NextAuthOptions = {
       authorization: {
         params: { scope: "streaming user-read-playback-state user-read-email user-read-private" },
       },
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.display_name,
+          email: profile.email,
+          image: profile.images?.[0]?.url,
+          // Pass Spotify ID through for later use
+          spotifyId: profile.id,
+        };
+      },
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // On sign in, auto-populate username and spotifyId if not set
+      if (account?.provider === "spotify" && profile) {
+        const spotifyProfile = profile as { id: string; display_name?: string };
+        const spotifyId = spotifyProfile.id;
+        
+        // Find the user and update if username/spotifyId not set
+        const existingUser = await prisma.user.findFirst({
+          where: { email: user.email },
+        });
+
+        if (existingUser) {
+          const updates: { username?: string; spotifyId?: string } = {};
+          
+          // Set spotifyId if not already set
+          if (!existingUser.spotifyId) {
+            updates.spotifyId = spotifyId;
+          }
+          
+          // Set username if not already set
+          if (!existingUser.username) {
+            // Prefer display_name, fallback to Spotify ID
+            const baseUsername = spotifyProfile.display_name 
+              ? sanitizeUsername(spotifyProfile.display_name)
+              : spotifyId;
+            
+            // Check if username is taken, append numbers if needed
+            let finalUsername = baseUsername;
+            let counter = 1;
+            while (await prisma.user.findUnique({ where: { username: finalUsername } })) {
+              finalUsername = `${baseUsername}${counter}`;
+              counter++;
+            }
+            updates.username = finalUsername;
+          }
+          
+          if (Object.keys(updates).length > 0) {
+            await prisma.user.update({
+              where: { id: existingUser.id },
+              data: updates,
+            });
+          }
+        }
+      }
+      return true;
+    },
     async session({ session, token, user }) {
       // Add access token to the session
       // @ts-ignore
@@ -31,9 +95,9 @@ export const options: NextAuthOptions = {
     async jwt({ token, account }) {
       // Persist the access token to the token object
       if (account) {
-        token.accessToken = account.access_token
+        token.accessToken = account.access_token;
       }
-      return token
+      return token;
     },
   },
   session: {

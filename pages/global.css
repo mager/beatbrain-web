@@ -3,54 +3,261 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --terminal-bg: #0a0a0a;
+    --terminal-surface: #111111;
+    --terminal-border: #1a1a1a;
+    --phosphor: #c8c8c8;
+    --phosphor-dim: #4a4a4a;
+    --matrix: #00ff41;
+    --hotpink: #ff3366;
+    --cyber: #00d4ff;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-black text-white antialiased;
+    background-color: var(--terminal-bg);
+    color: var(--phosphor);
+    font-family: var(--font-body), 'JetBrains Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  
-  /* Custom scrollbar */
+
+  /* Terminal-style selection */
+  ::selection {
+    background: var(--matrix);
+    color: var(--terminal-bg);
+  }
+
+  /* Custom scrollbar - terminal style */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
   }
-  
+
   ::-webkit-scrollbar-track {
-    @apply bg-black;
+    background: var(--terminal-bg);
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/20 rounded-full;
+    background: #222;
+    border-radius: 0;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/30;
+    background: var(--matrix);
   }
 }
 
 @layer components {
-  /* Glow effect for featured items */
-  .glow-green {
-    box-shadow: 0 0 40px rgba(34, 197, 94, 0.3);
+  /* ===== SCANLINE OVERLAY ===== */
+  .scanlines {
+    position: relative;
   }
-  
-  .glow-orange {
-    box-shadow: 0 0 40px rgba(249, 115, 22, 0.3);
+
+  .scanlines::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== CRT GLOW EFFECT ===== */
+  .crt-glow {
+    text-shadow:
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 20px currentColor;
+  }
+
+  .text-glow-green {
+    text-shadow:
+      0 0 7px var(--matrix),
+      0 0 20px rgba(0, 255, 65, 0.4),
+      0 0 40px rgba(0, 255, 65, 0.1);
+  }
+
+  .text-glow-pink {
+    text-shadow:
+      0 0 7px var(--hotpink),
+      0 0 20px rgba(255, 51, 102, 0.4),
+      0 0 40px rgba(255, 51, 102, 0.1);
+  }
+
+  .text-glow-cyan {
+    text-shadow:
+      0 0 7px var(--cyber),
+      0 0 20px rgba(0, 212, 255, 0.4),
+      0 0 40px rgba(0, 212, 255, 0.1);
+  }
+
+  /* ===== BLINKING CURSOR ===== */
+  .cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    color: var(--matrix);
+    margin-left: 2px;
+  }
+
+  /* ===== TERMINAL WINDOW ===== */
+  .terminal-window {
+    background: var(--terminal-surface);
+    border: 1px solid var(--terminal-border);
+    position: relative;
+  }
+
+  .terminal-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--terminal-border);
+    font-size: 11px;
+    color: var(--phosphor-dim);
+    font-family: var(--font-body), monospace;
+  }
+
+  .terminal-titlebar::before {
+    content: '● ● ●';
+    letter-spacing: 4px;
+    font-size: 8px;
+    color: var(--phosphor-dim);
+    margin-right: 8px;
+  }
+
+  /* ===== GRID OVERLAY ===== */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* ===== TERMINAL CARD ===== */
+  .card-terminal {
+    background: var(--terminal-surface);
+    border: 1px solid var(--terminal-border);
+  }
+
+  .card-terminal:hover {
+    border-color: #222;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
+  }
+
+  /* ===== DATA LABEL ===== */
+  .data-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--phosphor-dim);
+    font-family: var(--font-body), monospace;
+  }
+
+  /* ===== HOVER SCANLINE ===== */
+  .hover-scanline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hover-scanline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--matrix);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.3s;
+    z-index: 10;
+  }
+
+  .hover-scanline:hover::before {
+    opacity: 0.6;
+    animation: scanline 2s linear infinite;
+  }
+
+  /* ===== NOISE TEXTURE ===== */
+  .noise {
+    position: relative;
+  }
+
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Legacy class aliases */
+  .card-glass {
+    @apply card-terminal;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    border-color: var(--matrix);
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
   }
 }
 
 @layer utilities {
-  /* Fade in animation with stagger support */
-  .animate-fadeIn {
-    opacity: 0;
-    animation: fadeIn 0.5s ease-out forwards;
+  /* Gradient texts */
+  .text-gradient-warm {
+    background: linear-gradient(135deg, var(--matrix), var(--cyber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  
-  /* Gradient text */
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-500;
+
+  .text-gradient-cool {
+    background: linear-gradient(135deg, var(--cyber), var(--matrix));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  
-  /* Glass effect */
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+
+  /* Mask utilities */
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  .mask-fade-r {
+    mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  }
+
+  /* Line clamp */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

@@ -9,62 +9,78 @@ interface TrackItemProps {
     image: string;
     name: string;
     artist: string;
+    isrc?: string;
+    source?: string;
   };
+  rank?: number;
 }
 
-const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
-  const [showOverlay, setShowOverlay] = useState(false);
+const TrackItem: React.FC<TrackItemProps> = ({ track, rank }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Link
       href={`/song/${track.id}`}
-      key={track.id}
-      className="block group relative w-full aspect-square overflow-hidden bg-white/5 rounded-sm"
-      onTouchStart={() => setShowOverlay((v) => !v)}
-      onMouseLeave={() => setShowOverlay(false)}
+      className="group relative aspect-square overflow-hidden border border-terminal-border hover:border-matrix/50 transition-all duration-300 bg-terminal-surface"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Album art */}
       <Image
         src={track.image}
         alt={track.name}
-        width={300}
-        height={300}
-        className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+        fill
+        className={`object-cover transition-all duration-500 group-hover:opacity-70 group-hover:scale-105 ${
           imageLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         onLoad={() => setImageLoaded(true)}
         unoptimized
       />
       
-      {/* Hover overlay with gradient */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-          showOverlay ? "opacity-100" : ""
-        }`}
+      {/* Loading state */}
+      {!imageLoaded && (
+        <div className="absolute inset-0 bg-terminal-surface animate-pulse" />
+      )}
+
+      {/* Scanline overlay on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)',
+        }}
       />
       
-      {/* Track info */}
-      <div
-        className={`absolute inset-0 flex flex-col items-center justify-end p-2 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-          showOverlay ? "opacity-100" : ""
-        }`}
-      >
-        <div className="w-full">
-          <div className="font-bold text-xs md:text-sm truncate leading-tight drop-shadow-lg">
-            {track.name}
-          </div>
-          <div className="text-[10px] md:text-xs text-white/70 truncate mt-0.5 drop-shadow-lg">
-            {track.artist}
-          </div>
+      {/* Bottom gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-terminal-bg via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+      
+      {/* Rank number - top left */}
+      {rank !== undefined && (
+        <div className="absolute top-2 left-2 font-mono text-[10px] text-matrix/80 bg-terminal-bg/80 px-1.5 py-0.5 border border-terminal-border z-10">
+          {String(rank).padStart(2, '0')}
         </div>
+      )}
+
+      {/* Track info on hover */}
+      <div className="absolute inset-x-0 bottom-0 p-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
+        <p className="font-mono text-xs text-phosphor line-clamp-1 mb-0.5">
+          {track.name}
+        </p>
+        <p className="font-mono text-[10px] text-phosphor-dim line-clamp-1">
+          {track.artist}
+        </p>
+        {/* ISRC data readout */}
+        {track.isrc && isHovered && (
+          <p className="font-mono text-[9px] text-matrix/60 mt-1">
+            ISRC:{track.isrc}
+          </p>
+        )}
       </div>
 
-      {/* Play indicator on hover */}
-      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-green-500/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300 shadow-lg ${showOverlay ? "opacity-100 scale-100" : ""}`}>
-        <svg className="w-4 h-4 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </div>
+      {/* Corner brackets on hover */}
+      <div className="absolute top-1 left-1 w-3 h-3 border-t border-l border-matrix/0 group-hover:border-matrix/60 transition-all duration-300" />
+      <div className="absolute top-1 right-1 w-3 h-3 border-t border-r border-matrix/0 group-hover:border-matrix/60 transition-all duration-300" />
+      <div className="absolute bottom-1 left-1 w-3 h-3 border-b border-l border-matrix/0 group-hover:border-matrix/60 transition-all duration-300" />
+      <div className="absolute bottom-1 right-1 w-3 h-3 border-b border-r border-matrix/0 group-hover:border-matrix/60 transition-all duration-300" />
     </Link>
   );
 };
