@@ -51,23 +51,22 @@ type ProfileProps = {
 };
 
 const Profile: React.FC<ProfileProps> = ({ user, posts }) => {
-  const memberSince = new Date(user.createdAt).toISOString().substring(0, 10);
+  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', { 
+    month: 'short', day: 'numeric', year: 'numeric' 
+  });
 
   return (
     <Box className="min-h-screen">
-      {/* Grid overlay */}
-      <div className="fixed inset-0 pointer-events-none grid-overlay opacity-30" />
-      
       <div className="relative max-w-5xl mx-auto px-4 md:px-8 pt-24 pb-16">
-        {/* Profile Header - Terminal Style */}
+        {/* Profile Header */}
         <div className="terminal-window mb-10">
-          <div className="terminal-titlebar">user_profile --user={user.username || 'unknown'}</div>
+          <div className="terminal-titlebar">{user.username || 'profile'}</div>
           <div className="p-6 font-mono">
             <div className="flex flex-col sm:flex-row items-start gap-6">
               {/* Avatar */}
               <div className="relative flex-shrink-0">
                 {user.image ? (
-                  <div className="w-24 h-24 border border-terminal-border overflow-hidden">
+                  <div className="w-24 h-24 rounded overflow-hidden">
                     <Image
                       src={user.image}
                       alt={user.name || user.username || "User"}
@@ -76,45 +75,40 @@ const Profile: React.FC<ProfileProps> = ({ user, posts }) => {
                       className="w-full h-full object-cover"
                       unoptimized
                     />
-                    {/* Surveillance corners */}
-                    <div className="absolute top-0.5 left-0.5 w-2 h-2 border-t border-l border-matrix/60" />
-                    <div className="absolute top-0.5 right-0.5 w-2 h-2 border-t border-r border-matrix/60" />
-                    <div className="absolute bottom-0.5 left-0.5 w-2 h-2 border-b border-l border-matrix/60" />
-                    <div className="absolute bottom-0.5 right-0.5 w-2 h-2 border-b border-r border-matrix/60" />
                   </div>
                 ) : (
-                  <div className="w-24 h-24 border border-terminal-border bg-terminal-bg flex items-center justify-center text-3xl font-display text-matrix">
+                  <div className="w-24 h-24 rounded bg-terminal-bg flex items-center justify-center text-3xl font-display text-accent">
                     {(user.name || user.username || "?").charAt(0).toUpperCase()}
                   </div>
                 )}
               </div>
 
-              {/* User Data Readout */}
+              {/* User Data */}
               <div className="flex-1 space-y-2 text-xs">
-                <h1 className="text-xl text-phosphor font-bold mb-3">
+                <h1 className="text-xl text-phosphor font-semibold mb-3">
                   {user.name || user.username}
                 </h1>
                 
                 {user.username && (
                   <div className="flex gap-4">
-                    <span className="text-phosphor-dim w-20">HANDLE:</span>
-                    <span className="text-cyber">@{user.username}</span>
+                    <span className="text-phosphor-dim w-20">handle</span>
+                    <span className="text-cool">@{user.username}</span>
                   </div>
                 )}
                 <div className="flex gap-4">
-                  <span className="text-phosphor-dim w-20">TRACKS:</span>
-                  <span className="text-matrix">{posts.length}</span>
+                  <span className="text-phosphor-dim w-20">tracks</span>
+                  <span className="text-accent">{posts.length}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="text-phosphor-dim w-20">JOINED:</span>
+                  <span className="text-phosphor-dim w-20">joined</span>
                   <span className="text-phosphor">{memberSince}</span>
                 </div>
                 {user.spotifyId && (
                   <div className="flex gap-4">
-                    <span className="text-phosphor-dim w-20">SPOTIFY:</span>
-                    <span className="text-matrix flex items-center gap-1.5">
-                      CONNECTED
-                      <span className="w-1.5 h-1.5 rounded-full bg-matrix animate-pulse inline-block" />
+                    <span className="text-phosphor-dim w-20">spotify</span>
+                    <span className="text-accent flex items-center gap-1.5">
+                      connected
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent/70 inline-block" />
                     </span>
                   </div>
                 )}
@@ -127,77 +121,60 @@ const Profile: React.FC<ProfileProps> = ({ user, posts }) => {
         {posts.length > 0 ? (
           <>
             <div className="mb-6 border-b border-terminal-border pb-3 font-mono">
-              <span className="text-[10px] text-phosphor-dim block mb-1">
-                // COLLECTION — {posts.length} tracks indexed
+              <span className="text-[10px] text-phosphor-dim block mb-1 uppercase tracking-wider">
+                {posts.length} tracks
               </span>
               <h2 className="text-sm text-phosphor">
-                <span className="text-matrix mr-2">$</span>
-                ls ~/collection/
+                collection
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
               {posts.map((post, index) => (
                 <Link
                   key={post.id}
                   href={`/ext/spotify/${post.track?.sourceId || ""}`}
-                  className="group relative aspect-square overflow-hidden border border-terminal-border hover:border-matrix/50 transition-all duration-300 bg-terminal-surface opacity-0 animate-fadeUp"
-                  style={{ animationDelay: `${index * 30}ms`, animationFillMode: 'forwards' }}
+                  className="group relative aspect-square overflow-hidden rounded bg-terminal-surface opacity-0 animate-fadeUp"
+                  style={{ animationDelay: `${index * 25}ms`, animationFillMode: 'forwards' }}
                 >
                   {post.track?.image ? (
                     <Image
                       src={post.track.image}
                       alt={post.track?.title || "Track"}
                       fill
-                      className="object-cover transition-all duration-500 group-hover:opacity-70 group-hover:scale-105"
+                      className="object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-75"
                       unoptimized
                     />
                   ) : (
                     <div className="w-full h-full bg-terminal-bg flex items-center justify-center">
-                      <span className="font-mono text-[10px] text-phosphor-dim">NO_DATA</span>
+                      <span className="font-mono text-[10px] text-phosphor-dim">—</span>
                     </div>
                   )}
                   
-                  {/* Scanline overlay */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                    style={{
-                      background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px)',
-                    }}
-                  />
-                  
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-terminal-bg via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-terminal-bg/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* Info */}
-                  <div className="absolute inset-x-0 bottom-0 p-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
+                  <div className="absolute inset-x-0 bottom-0 p-2.5 translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
                     <p className="font-mono text-[11px] text-phosphor line-clamp-1">
                       {post.track?.title}
                     </p>
-                    <p className="font-mono text-[9px] text-phosphor-dim line-clamp-1">
+                    <p className="font-mono text-[9px] text-phosphor-dim line-clamp-1 mt-0.5">
                       {post.track?.artist}
                     </p>
                   </div>
-
-                  {/* Corner brackets */}
-                  <div className="absolute top-0.5 left-0.5 w-2 h-2 border-t border-l border-matrix/0 group-hover:border-matrix/50 transition-all duration-300" />
-                  <div className="absolute top-0.5 right-0.5 w-2 h-2 border-t border-r border-matrix/0 group-hover:border-matrix/50 transition-all duration-300" />
-                  <div className="absolute bottom-0.5 left-0.5 w-2 h-2 border-b border-l border-matrix/0 group-hover:border-matrix/50 transition-all duration-300" />
-                  <div className="absolute bottom-0.5 right-0.5 w-2 h-2 border-b border-r border-matrix/0 group-hover:border-matrix/50 transition-all duration-300" />
                 </Link>
               ))}
             </div>
           </>
         ) : (
           <div className="terminal-window">
-            <div className="terminal-titlebar">collection.log</div>
+            <div className="terminal-titlebar">collection</div>
             <div className="p-8 text-center font-mono">
-              <div className="text-phosphor-dim text-sm mb-2">
-                $ ls ~/collection/
-              </div>
-              <p className="text-phosphor-dim text-xs">
-                EMPTY_DIRECTORY — no tracks indexed yet
+              <p className="text-phosphor-dim text-sm">
+                no tracks saved yet
               </p>
-              <p className="text-matrix text-xs mt-4 animate-blink">_</p>
+              <p className="text-accent text-xs mt-4 animate-blink">_</p>
             </div>
           </div>
         )}

@@ -29,34 +29,32 @@ const Header: React.FC = () => {
     }`}>
       <nav className="flex items-center justify-between px-4 md:px-8 lg:px-12 py-3">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-2">
-          <span className="text-matrix text-sm font-mono">{'>'}</span>
-          <span className="font-display text-base text-matrix text-glow-green tracking-wider">
-            BEATBRAIN
+        <Link href="/" className="group flex items-center gap-1.5">
+          <span className="font-display text-base text-accent tracking-wide">
+            beatbrain
           </span>
-          <span className="text-matrix animate-blink font-mono">_</span>
+          <span className="text-accent/50 animate-blink font-mono text-sm">_</span>
         </Link>
 
-        {/* Nav Links - shell commands */}
+        {/* Nav Links */}
         <div className="flex items-center gap-6">
           <Link 
             href="/feed"
             className={`font-mono text-xs transition-colors duration-300 ${
               router.pathname === '/feed' 
-                ? 'text-matrix text-glow-green' 
+                ? 'text-accent' 
                 : 'text-phosphor-dim hover:text-phosphor'
             }`}
           >
-            <span className="text-phosphor-dim mr-1">$</span>feed
+            feed
           </Link>
 
           {!user ? (
             <Link 
               href="/api/auth/signin"
-              className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-matrix text-phosphor-dim hover:text-matrix font-mono text-xs transition-all duration-300"
+              className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-accent/50 text-phosphor-dim hover:text-accent font-mono text-xs transition-all duration-300 rounded"
             >
-              <span className="text-matrix">{'>'}</span>
-              <span>login</span>
+              login
             </Link>
           ) : (
             <div className="flex items-center gap-4">
@@ -65,11 +63,11 @@ const Header: React.FC = () => {
                   href={`/u/${username}`}
                   className={`font-mono text-xs transition-colors duration-300 ${
                     router.pathname === '/u/[username]' 
-                      ? 'text-cyber text-glow-cyan' 
+                      ? 'text-cool' 
                       : 'text-phosphor-dim hover:text-phosphor'
                   }`}
                 >
-                  <span className="text-phosphor-dim mr-1">~</span>{username}
+                  {username}
                 </Link>
               )}
               <AuthMenu iconColor="var(--phosphor)" />

@@ -23,19 +23,17 @@ const Marquee: React.FC<MarqueeProps> = ({
           href={`/song/${track.id}`}
           className="inline-flex items-center gap-2 group"
         >
-          <span className="text-phosphor-dim font-mono text-[10px]">[</span>
-          <span className="font-mono text-[10px] text-matrix/60 tabular-nums">
+          <span className="font-mono text-[10px] text-phosphor-dim/50 tabular-nums">
             {String(index + 1).padStart(2, '0')}
           </span>
-          <span className="text-phosphor-dim font-mono text-[10px]">]</span>
-          <span className="text-phosphor/60 group-hover:text-matrix transition-colors duration-200 text-xs font-mono">
+          <span className="text-phosphor/50 group-hover:text-accent transition-colors duration-200 text-xs font-mono">
             {track.name}
           </span>
-          <span className="text-phosphor-dim text-[10px]">—</span>
+          <span className="text-phosphor-dim/40 text-[10px]">—</span>
           <span className="text-phosphor-dim group-hover:text-phosphor/60 transition-colors duration-200 text-xs font-mono">
             {track.artist}
           </span>
-          <span className="text-terminal-border mx-2">│</span>
+          <span className="text-terminal-border mx-2">·</span>
         </Link>
       ))}
     </span>

@@ -13,25 +13,21 @@ const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
     >
       <div className="flex items-center gap-4 text-phosphor-dim">
         <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-matrix animate-pulse" />
-          <span>CONNECTED</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-accent/70" />
+          <span>beatbrain</span>
         </span>
-        <span className="text-terminal-border">│</span>
-        <span>SYS:BEATBRAIN v2.0</span>
       </div>
       
       <div className="flex items-center gap-4 text-phosphor-dim">
-        <span>
-          <a 
-            href="https://twitter.com/mager"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-phosphor-dim hover:text-cyber transition-colors"
-          >
-            @mager
-          </a>
-        </span>
-        <span className="text-terminal-border">│</span>
+        <a 
+          href="https://twitter.com/mager"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-phosphor-dim hover:text-accent transition-colors"
+        >
+          @mager
+        </a>
+        <span className="text-terminal-border">·</span>
         <span className="tabular-nums">{new Date().getFullYear()}</span>
       </div>
     </Box>

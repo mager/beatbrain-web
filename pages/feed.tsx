@@ -46,20 +46,14 @@ type Props = {
 const Feed: React.FC<Props> = (props) => {
   return (
     <Box className="min-h-screen">
-      {/* Grid overlay */}
-      <div className="fixed inset-0 pointer-events-none grid-overlay opacity-30" />
-      
       <div className="relative max-w-3xl mx-auto px-4 md:px-8 pt-24 pb-16">
-        {/* Terminal Header */}
+        {/* Header */}
         <div className="mb-10 border-b border-terminal-border pb-4">
-          <div className="font-mono text-[10px] text-phosphor-dim mb-2">
-            root@beatbrain:~$ cat /var/log/feed.log
-          </div>
-          <h1 className="font-display text-2xl md:text-3xl text-matrix text-glow-green tracking-wider mb-2">
-            FEED
+          <h1 className="font-display text-2xl md:text-3xl text-phosphor tracking-tight mb-2">
+            feed
           </h1>
           <p className="font-mono text-xs text-phosphor-dim">
-            // {props.feed.length} entries found — streaming community activity
+            {props.feed.length} discoveries
           </p>
         </div>
 
@@ -78,15 +72,12 @@ const Feed: React.FC<Props> = (props) => {
           </div>
         ) : (
           <div className="terminal-window">
-            <div className="terminal-titlebar">feed.log</div>
+            <div className="terminal-titlebar">feed</div>
             <div className="p-8 text-center font-mono">
-              <div className="text-phosphor-dim text-sm mb-2">
-                $ tail -f /var/log/feed.log
-              </div>
-              <p className="text-phosphor-dim text-xs">
-                NO_ENTRIES_FOUND — waiting for signals...
+              <p className="text-phosphor-dim text-sm">
+                nothing here yet
               </p>
-              <p className="text-matrix text-xs mt-4 animate-blink">_</p>
+              <p className="text-accent text-xs mt-4 animate-blink">_</p>
             </div>
           </div>
         )}

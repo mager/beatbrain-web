@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
-import { JetBrains_Mono, Silkscreen } from "next/font/google";
+import { JetBrains_Mono, IBM_Plex_Mono } from "next/font/google";
 import { useSession } from "next-auth/react";
 import SpotifyPlayer, { State as SpotifyPlayerCallback } from 'react-spotify-web-playback';
 import { useAppContext } from "../context/AppContext";
@@ -14,16 +14,16 @@ import Main from "@components/Main";
 import Footer from "@components/Footer";
 import Marquee from "@components/Marquee";
 
-// Body: JetBrains Mono - real monospace for terminal feel
+// Body: JetBrains Mono — clean developer monospace
 const bodyFont = JetBrains_Mono({
   weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-body",
 });
 
-// Display: Silkscreen - pixelated, retro terminal display font
-const displayFont = Silkscreen({
-  weight: ["400", "700"],
+// Display: IBM Plex Mono — slightly different character for headings
+const displayFont = IBM_Plex_Mono({
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-display",
 });
@@ -72,20 +72,18 @@ const Layout: React.FC<Props> = ({ children }) => {
     fetchTracks();
   }, [setTracks, setTracksLoading, tracks, tracksLoading]);
 
-  // Function to calculate dynamic padding based on player visibility
   const calculatePaddingBottom = () => {
     let totalHeight = FOOTER_HEIGHT_PX;
     return `${totalHeight}px`;
   };
 
-  // Callback function passed to SpotifyPlayer
   const handlePlayerCallback = (state: SpotifyPlayerCallback) => {
     setPlayerIsPlaying(state.isPlaying);
   };
 
   return (
     <div
-      className={`${bodyFont.variable} ${displayFont.variable} font-mono relative scanlines`}
+      className={`${bodyFont.variable} ${displayFont.variable} font-mono relative`}
       style={{ paddingBottom: calculatePaddingBottom() }}
     >
       <Header />

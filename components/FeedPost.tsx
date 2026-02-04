@@ -35,11 +35,6 @@ const FeedPost: React.FC<Props> = ({ post }) => {
   const authorName = post.author?.name || "Anonymous";
   const authorUsername = post.author?.username;
   
-  const timestamp = (() => {
-    const date = new Date(post.createdAt);
-    return date.toISOString().replace('T', ' ').substring(0, 19);
-  })();
-
   const timeAgo = (() => {
     const date = new Date(post.createdAt);
     const now = new Date();
@@ -59,63 +54,50 @@ const FeedPost: React.FC<Props> = ({ post }) => {
     <article className="group relative">
       <Link 
         href={`/ext/spotify/${post.track?.sourceId || ""}`}
-        className="block border border-terminal-border hover:border-terminal-border-bright bg-terminal-surface p-4 transition-all duration-300 hover:shadow-terminal"
+        className="block border border-terminal-border hover:border-terminal-border-bright bg-terminal-surface rounded p-4 transition-all duration-300"
       >
-        {/* Terminal log line header */}
+        {/* Header */}
         <div className="flex items-center gap-2 mb-3 font-mono text-[10px]">
-          <span className="text-phosphor-dim">[{timestamp}]</span>
-          <span className="text-cyber">
+          <span className="text-cool">
             {authorUsername ? `@${authorUsername}` : authorName}
           </span>
-          <span className="text-phosphor-dim">saved track</span>
-          <span className="text-matrix ml-auto">{timeAgo}</span>
+          <span className="text-phosphor-dim">saved</span>
+          <span className="text-accent ml-auto">{timeAgo}</span>
         </div>
 
         <div className="flex gap-4">
-          {/* Album Art - surveillance monitor style */}
+          {/* Album Art */}
           <div className="relative flex-shrink-0">
-            <div className="w-20 h-20 md:w-24 md:h-24 overflow-hidden border border-terminal-border bg-terminal-bg">
+            <div className="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded bg-terminal-bg">
               {post.track?.image ? (
                 <Image
                   src={post.track.image}
                   alt={post.track?.title || "Track"}
                   width={96}
                   height={96}
-                  className="w-full h-full object-cover transition-all duration-500 group-hover:opacity-80"
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:brightness-90"
                   unoptimized
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-phosphor-dim font-mono text-xs">NO_IMG</span>
+                  <span className="text-phosphor-dim font-mono text-xs">—</span>
                 </div>
               )}
-              {/* Corner brackets */}
-              <div className="absolute top-0.5 left-0.5 w-2 h-2 border-t border-l border-matrix/40" />
-              <div className="absolute top-0.5 right-0.5 w-2 h-2 border-t border-r border-matrix/40" />
-              <div className="absolute bottom-0.5 left-0.5 w-2 h-2 border-b border-l border-matrix/40" />
-              <div className="absolute bottom-0.5 right-0.5 w-2 h-2 border-b border-r border-matrix/40" />
             </div>
           </div>
 
           {/* Content */}
           <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <h3 className="font-mono text-sm text-phosphor line-clamp-1 group-hover:text-matrix transition-colors duration-300">
-              &quot;{post.track?.title || "Unknown Track"}&quot;
+            <h3 className="font-mono text-sm text-phosphor line-clamp-1 group-hover:text-accent transition-colors duration-300">
+              {post.track?.title || "Unknown Track"}
             </h3>
             <p className="font-mono text-xs text-phosphor-dim line-clamp-1 mt-1">
-              by {post.track?.artist || "Unknown Artist"}
+              {post.track?.artist || "Unknown Artist"}
             </p>
             
             {post.content && (
               <p className="font-mono text-[11px] text-phosphor-dim/60 mt-2 line-clamp-1">
-                <span className="text-phosphor-dim">// </span>{post.content}
-              </p>
-            )}
-
-            {/* Source ID */}
-            {post.track?.sourceId && (
-              <p className="font-mono text-[9px] text-phosphor-dim/40 mt-2">
-                SRC:{post.track.sourceId}
+                {post.content}
               </p>
             )}
           </div>

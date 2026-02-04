@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Searchbox, { loadOptions } from "@components/Searchbox";
 import useDebouncedLoadOptions from "../lib/hooks/useDebouncedLoadOptions";
 import { useRouter } from "next/router";
@@ -13,13 +13,11 @@ const Search: React.FC = () => {
   };
 
   return (
-    <div className="mt-20">
+    <div className="mt-16 px-4 md:px-8 lg:px-12">
       <Searchbox
         option={option}
         handleChange={goToTrackPage}
         loadOptions={debouncedLoadOptions}
-        // Until migrating to /song
-        isDisabled={true}
       />
     </div>
   );
