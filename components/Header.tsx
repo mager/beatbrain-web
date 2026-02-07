@@ -23,17 +23,17 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-terminal-bg/95 backdrop-blur-sm border-b border-terminal-border' 
+      isScrolled
+        ? 'bg-terminal-bg/95 backdrop-blur-sm border-b border-terminal-border/60'
         : 'bg-transparent'
     }`}>
       <nav className="bb-container flex items-center justify-between py-3">
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-1">
-          <span className="font-display text-lg text-accent group-hover:text-glow-accent transition-all duration-300">
+          <span className="font-display text-lg text-accent text-glow-accent group-hover:brightness-125 transition-all duration-300">
             beat
           </span>
-          <span className="font-display text-lg text-phosphor group-hover:text-accent/80 transition-all duration-300">
+          <span className="font-display text-lg text-white group-hover:text-accent/80 transition-all duration-300">
             brain
           </span>
           <span className="text-warm animate-blink font-mono text-base ml-0.5">_</span>
@@ -41,21 +41,21 @@ const Header: React.FC = () => {
 
         {/* Nav Links */}
         <div className="flex items-center gap-6">
-          <Link 
+          <Link
             href="/feed"
             className={`font-mono text-xs transition-colors duration-300 ${
-              router.pathname === '/feed' 
-                ? 'text-accent' 
-                : 'text-phosphor-dim hover:text-phosphor'
+              router.pathname === '/feed'
+                ? 'text-accent'
+                : 'text-phosphor hover:text-white'
             }`}
           >
             feed
           </Link>
 
           {!user ? (
-            <Link 
+            <Link
               href="/api/auth/signin"
-              className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-accent/50 text-phosphor-dim hover:text-accent font-mono text-xs transition-all duration-300 rounded"
+              className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-accent/50 text-phosphor hover:text-accent font-mono text-xs transition-all duration-300 rounded"
             >
               login
             </Link>
@@ -65,9 +65,9 @@ const Header: React.FC = () => {
                 <Link
                   href={`/u/${username}`}
                   className={`font-mono text-xs transition-colors duration-300 ${
-                    router.pathname === '/u/[username]' 
-                      ? 'text-cool' 
-                      : 'text-phosphor-dim hover:text-phosphor'
+                    router.pathname === '/u/[username]'
+                      ? 'text-cool'
+                      : 'text-phosphor hover:text-white'
                   }`}
                 >
                   {username}

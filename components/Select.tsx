@@ -32,7 +32,7 @@ const styles = {
   }),
   placeholder: (provided) => ({
     ...provided,
-    color: '#52526e',
+    color: '#7a7a96',
     fontSize: '14px',
     fontFamily: 'var(--font-body), JetBrains Mono, monospace',
     letterSpacing: '-0.01em',
@@ -99,7 +99,7 @@ const styles = {
 };
 
 const SearchIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52526e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7a7a96" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
     <circle cx="11" cy="11" r="8" />
     <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
