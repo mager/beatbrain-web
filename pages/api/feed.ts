@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const limit = Math.min(Number(req.query.limit) || 8, 20);
+  const limit = Math.min(Number(req.query.limit) || 8, 50);
 
   try {
     const feed = await prisma.post.findMany({

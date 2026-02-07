@@ -61,7 +61,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         });
         if (!res.ok) return;
         const resp = await res.json();
-        setTracks(resp.tracks);
+        setTracks(resp.tracks, resp.updated || null);
       } catch (err) {
         // handle error
       } finally {
@@ -87,7 +87,7 @@ const Layout: React.FC<Props> = ({ children }) => {
     >
       <Header />
       {!hideSearch && <Search />}
-      <Marquee tracks={tracks} speed={250} className="mb-6" />
+      <Marquee tracks={tracks} speed={50} className="mb-6" />
       <Main>{children}</Main>
       <Analytics />
 

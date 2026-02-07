@@ -9,6 +9,7 @@ interface AppState {
   isPlaying: boolean;
   tracks: Track[];
   tracksLoading: boolean;
+  tracksUpdated: string | null;
 }
 
 interface AppContextType {
@@ -16,7 +17,7 @@ interface AppContextType {
   setState: React.Dispatch<React.SetStateAction<AppState>>;
   playTrack: (uri: string) => void;
   setPlayerIsPlaying: (playing: boolean) => void;
-  setTracks: (tracks: Track[]) => void;
+  setTracks: (tracks: Track[], updated?: string | null) => void;
   setTracksLoading: (loading: boolean) => void;
 }
 
@@ -41,6 +42,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     isPlaying: false,
     tracks: [],
     tracksLoading: false,
+    tracksUpdated: null,
   });
   const { data: session, status } = useSession();
 
@@ -86,8 +88,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setState(prevState => ({ ...prevState, isPlaying: playing }));
   };
 
-  const setTracks = (tracks: Track[]) => {
-    setState(prevState => ({ ...prevState, tracks }));
+  const setTracks = (tracks: Track[], updated?: string | null) => {
+    setState(prevState => ({ ...prevState, tracks, tracksUpdated: updated ?? prevState.tracksUpdated }));
   };
 
   const setTracksLoading = (loading: boolean) => {

@@ -10,7 +10,7 @@ interface MarqueeProps {
 
 const Marquee: React.FC<MarqueeProps> = ({ 
   tracks = [], 
-  speed = 60, 
+  speed = 50, 
   className = "" 
 }) => {
   if (tracks.length === 0) return null;
@@ -40,7 +40,7 @@ const Marquee: React.FC<MarqueeProps> = ({
   );
 
   return (
-    <div className={`overflow-hidden whitespace-nowrap py-2 border-y border-terminal-border bg-terminal-bg/80 ${className}`}>
+    <div className={`overflow-hidden whitespace-nowrap py-2 mt-4 border-y border-terminal-border bg-terminal-bg/80 ${className}`}>
       <div 
         className="inline-flex animate-marquee"
         style={{ 
