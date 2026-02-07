@@ -7,17 +7,16 @@ import Image from "next/image";
 const Home: React.FC = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [feed, setFeed] = useState<PostProps[]>([]);
-  const [activeFilter, setActiveFilter] = useState<"hot" | "new">("new");
   const [updated, setUpdated] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [feedLoading, setFeedLoading] = useState(true);
 
-  const fetchTracks = async (filter: "hot" | "new") => {
+  const fetchTracks = async () => {
     try {
       const res = await fetch(`/api/discover`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: filter }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) return;
       const resp: RecommendedTracksResp = await res.json();
@@ -44,23 +43,13 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchTracks("new");
+    fetchTracks();
     fetchFeed();
   }, []);
-
-  const handleFilterChange = (filter: "hot" | "new") => {
-    if (filter === activeFilter) return;
-    setTracks([]);
-    setIsLoading(true);
-    setActiveFilter(filter);
-    fetchTracks(filter);
-  };
 
   const heroTrack = tracks[0];
   const sideTracks = tracks.slice(1, 3);
   const gridTracks = tracks.slice(3, 27);
-  const isNew = activeFilter === "new";
-  const accentColor = isNew ? "accent" : "warm";
 
   const timeAgo = (dateStr: string | Date) => {
     const date = new Date(dateStr);
@@ -102,28 +91,6 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => handleFilterChange("new")}
-              className={`font-mono text-[11px] px-3.5 py-1.5 border rounded transition-all duration-300 ${
-                activeFilter === "new"
-                  ? "border-accent text-accent bg-accent/5"
-                  : "border-terminal-border text-phosphor-dim hover:border-terminal-border-bright hover:text-phosphor"
-              }`}
-            >
-              fresh
-            </button>
-            <button
-              onClick={() => handleFilterChange("hot")}
-              className={`font-mono text-[11px] px-3.5 py-1.5 border rounded transition-all duration-300 ${
-                activeFilter === "hot"
-                  ? "border-warm text-warm bg-warm/5"
-                  : "border-terminal-border text-phosphor-dim hover:border-terminal-border-bright hover:text-phosphor"
-              }`}
-            >
-              trending
-            </button>
-          </div>
         </div>
       </section>
 
@@ -159,10 +126,10 @@ const Home: React.FC = () => {
                 <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <span
-                      className={`w-2 h-2 rounded-full bg-${accentColor} animate-pulse`}
+                      className="w-2 h-2 rounded-full bg-accent animate-pulse"
                     />
-                    <span className={`font-mono text-[10px] text-${accentColor} uppercase tracking-wider`}>
-                      {isNew ? "latest" : "trending"}
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider">
+                      featured
                     </span>
                   </div>
                   <h2 className="font-mono text-lg md:text-xl text-phosphor leading-tight line-clamp-2 group-hover:text-white transition-colors duration-300">

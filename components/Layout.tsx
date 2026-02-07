@@ -54,11 +54,10 @@ const Layout: React.FC<Props> = ({ children }) => {
     setTracksLoading(true);
     const fetchTracks = async () => {
       try {
-        console.log("Fetching discover tracks...");
         const res = await fetch(`/api/discover`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mode: "new" }),
+          body: JSON.stringify({}),
         });
         if (!res.ok) return;
         const resp = await res.json();
