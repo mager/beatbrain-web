@@ -2,6 +2,8 @@ import { NextApiHandler } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import SpotifyProvider from "next-auth/providers/spotify";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 import prisma from "../../../lib/prisma";
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
@@ -18,6 +20,32 @@ const sanitizeUsername = (name: string): string => {
 
 export const options: NextAuthOptions = {
   providers: [
+    CredentialsProvider({
+      name: "Email",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user || !user.password) return null;
+
+        const valid = await bcrypt.compare(credentials.password, user.password);
+        if (!valid) return null;
+
+        return {
+          id: String(user.id),
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        };
+      },
+    }),
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
@@ -30,12 +58,14 @@ export const options: NextAuthOptions = {
           name: profile.display_name,
           email: profile.email,
           image: profile.images?.[0]?.url,
-          // Pass Spotify ID through for later use
           spotifyId: profile.id,
         };
       },
     }),
   ],
+  pages: {
+    signIn: "/auth/signin",
+  },
   callbacks: {
     async signIn({ user, account, profile }) {
       // On sign in, auto-populate username and spotifyId if not set
