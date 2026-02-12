@@ -75,6 +75,32 @@ export type Profile = {
   username: string;
 };
 
+// Post-related types (formerly in components/Post.tsx)
+export type TrackProps = {
+  id?: number;
+  title?: string;
+  artist?: string;
+  image?: string;
+  source?: string;
+  sourceId?: string;
+};
+
+export type AuthorProps = {
+  name?: string;
+  email?: string;
+  image?: string;
+  username?: string;
+};
+
+export type PostProps = {
+  id: number;
+  title?: string;
+  createdAt: Date | string;
+  author: AuthorProps | null;
+  track: TrackProps | null;
+  content: string;
+};
+
 export type Release = {
   id: string;
   date: string;

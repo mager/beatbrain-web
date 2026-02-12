@@ -7,21 +7,22 @@ type Props = {
 
 const ExternalLinks = ({ sourceId }: Props) => {
   return (
-    <div className="flex justify-center">
+    <div className="flex items-center gap-2">
       <a
         target="_blank"
         href={getSpotifyTrackURL(sourceId)}
         rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 border border-terminal-border rounded px-3 py-1.5 font-mono text-[10px] text-phosphor-dim hover:border-accent/50 hover:text-accent transition-all"
       >
         <Image
           src={`/images/icon-spotify.png`}
-          width={32}
-          height={32}
-          alt="Listen on Spotify"
-          title="Listen on Spotify"
+          width={16}
+          height={16}
+          alt="Spotify"
           unoptimized
-          className="hover:scale-110 transition-transform"
+          className="w-4 h-4"
         />
+        <span>Spotify</span>
       </a>
     </div>
   );

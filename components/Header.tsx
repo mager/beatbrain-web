@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import AuthMenu from "@components/AuthMenu";
+import Logo from "@components/Logo";
 
 const Header: React.FC = () => {
   const context = useContext(AppContext);
@@ -29,15 +30,7 @@ const Header: React.FC = () => {
     }`}>
       <nav className="bb-container flex items-center justify-between py-3">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-1">
-          <span className="font-display text-lg text-accent text-glow-accent group-hover:brightness-125 transition-all duration-300">
-            beat
-          </span>
-          <span className="font-display text-lg text-white group-hover:text-accent/80 transition-all duration-300">
-            brain
-          </span>
-          <span className="text-warm animate-blink font-mono text-base ml-0.5">_</span>
-        </Link>
+        <Logo size="md" />
 
         {/* Nav Links */}
         <div className="flex items-center gap-6">

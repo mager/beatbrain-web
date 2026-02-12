@@ -19,7 +19,6 @@ const groupReleasesByCountry = (releases: Release[]) => {
     grouped[country].push(release);
   });
 
-  // Sort countries for consistent tab order (optional)
   const sortedCountries = Object.keys(grouped).sort((a, b) => {
     if (a === "XW") return -1;
     if (b === "XW") return 1;
@@ -30,10 +29,9 @@ const groupReleasesByCountry = (releases: Release[]) => {
 
   const sortedGrouped: { [country: string]: Release[] } = {};
   sortedCountries.forEach(country => {
-    // Sort releases within each country by date (newest first)
     sortedGrouped[country] = grouped[country].sort((a, b) => {
       if (!a.date && !b.date) return 0;
-      if (!a.date) return 1; // Releases without dates go to the end
+      if (!a.date) return 1;
       if (!b.date) return -1;
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
@@ -42,26 +40,19 @@ const groupReleasesByCountry = (releases: Release[]) => {
   return sortedGrouped;
 };
 
-// Helper to format country names for display
 const formatCountryDisplayName = (countryCode: string) => {
   switch (countryCode) {
-    case "XE":
-      return "Europe";
-    case "XW":
-      return "Worldwide";
-    case "Unknown":
-      return "Unknown Region";
-    default:
-      return countryCode;
+    case "XE": return "Europe";
+    case "XW": return "Worldwide";
+    case "Unknown": return "Unknown Region";
+    default: return countryCode;
   }
 };
 
-// Helper to get the flag emoji from a country code
 const getFlagEmoji = (countryCode: string) => {
-  if (countryCode === "XE") return "🇪🇺"; // Europe
-  if (countryCode === "XW") return "🌍"; // Worldwide
-  if (countryCode === "Unknown") return "❓"; // Unknown
-  // Convert ISO country code to flag emoji
+  if (countryCode === "XE") return "🇪🇺";
+  if (countryCode === "XW") return "🌍";
+  if (countryCode === "Unknown") return "❓";
   if (countryCode.length === 2) {
     const codePoints = countryCode
       .toUpperCase()
@@ -72,12 +63,10 @@ const getFlagEmoji = (countryCode: string) => {
   return "❓";
 };
 
-// Helper to format release date nicely
 const formatReleaseDate = (dateString?: string): string => {
   if (!dateString) return "Unknown Date";
   const dateObj = new Date(dateString);
   if (isNaN(dateObj.getTime())) return "Invalid Date";
-  // If day is present, show full date, else just month/year
   if (/\d{4}-\d{2}-\d{2}/.test(dateString)) {
     return dateObj.toLocaleDateString(undefined, {
       year: "numeric",
@@ -99,15 +88,10 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
 
   const countries = useMemo(() => Object.keys(groupedReleases), [groupedReleases]);
   const [activeTab, setActiveTab] = useState<string | null>(countries[0] || null);
-
-  // State to track selected main image per release
   const [selectedImages, setSelectedImages] = useState<{ [releaseId: string]: string }>({});
-  
-  // State for modal functionality
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState<string>("");
 
-  // Handle ESC key to close modal
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && modalOpen) {
@@ -131,29 +115,21 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
   return (
     <div className={`flex flex-col ${className}`}>
       {countries.length > 0 && (
-        <div className="mb-8">
-          <nav className="flex space-x-2" aria-label="Tabs">
+        <div className="mb-6">
+          <nav className="flex items-center gap-1" aria-label="Tabs">
             {countries.map((countryCode) => (
               <button
                 key={countryCode}
                 onClick={() => setActiveTab(countryCode)}
-                className={`$${
+                className={`flex items-center justify-center w-10 h-10 rounded transition-all duration-150 ${
                   activeTab === countryCode
-                    ? "opacity-100 scale-110"
-                    : "opacity-60 hover:opacity-100"
-                } p-0 m-0 bg-transparent focus:outline-none transition-transform duration-150 flex items-center justify-center`}
+                    ? "bg-terminal-surface border border-accent/30 scale-110"
+                    : "opacity-60 hover:opacity-100 border border-transparent hover:border-terminal-border"
+                }`}
                 aria-current={activeTab === countryCode ? "page" : undefined}
-                style={{ border: 'none', boxShadow: 'none', background: 'none' }}
+                title={formatCountryDisplayName(countryCode)}
               >
-                <span
-                  className={`flex items-center justify-center transition-colors duration-150 w-8 h-8
-                    ${activeTab === countryCode
-                      ? 'border-b-2 border-gray-300'
-                      : ''}
-                  `}
-                  title={formatCountryDisplayName(countryCode)}
-                  style={{ fontSize: '1.5rem', lineHeight: 1 }}
-                >
+                <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>
                   {getFlagEmoji(countryCode)}
                 </span>
               </button>
@@ -164,28 +140,22 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
       {activeTab && groupedReleases[activeTab] && groupedReleases[activeTab].length > 0 ? (
         <div className="flex flex-col gap-4">
           {groupedReleases[activeTab].map((release) => {
-            // Determine which image to show as main
             const mainImage = selectedImages[release.id] || release.image;
             return (
-              <div key={release.id} className="flex flex-col items-start border-b-2 border-gray-200 pb-6">
-                <div className="mb-2">
-                  <span className="text-sm text-gray-500">
-                    {release.date && (
-                      <>
-                        <span className="font-medium text-gray-700">{formatReleaseDate(release.date)}</span>
-                        {" · "}
-                      </>
-                    )}
-                    <strong className="font-bold text-lg md:text-xl text-black">{release.title}</strong>
-                    {release.disambiguation && (
-                      <>
-                        {" "}- {release.disambiguation}
-                      </>
-                    )}
-                  </span>
+              <div key={release.id} className="flex flex-col items-start border-b border-terminal-border pb-6">
+                <div className="mb-3">
+                  <strong className="font-display text-lg text-white">{release.title}</strong>
+                  {release.disambiguation && (
+                    <span className="text-phosphor-dim font-mono text-xs ml-2">— {release.disambiguation}</span>
+                  )}
+                  {release.date && (
+                    <div className="font-mono text-xs text-phosphor-dim mt-1">
+                      {formatReleaseDate(release.date)}
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-row gap-4">
-                  <div className="w-[250px] h-[250px] relative border border-grey-300 bg-white">
+                  <div className="w-[250px] h-[250px] relative border border-terminal-border bg-terminal-surface rounded overflow-hidden">
                     <div
                       className="w-full h-full cursor-pointer group"
                       onClick={() => {
@@ -218,22 +188,22 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                           if (placeholder) placeholder.style.display = "flex";
                         }}
                       />
-                      <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
-                        <MusicalNoteIcon className="h-12 w-12 text-gray-400" />
+                      <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-terminal-surface">
+                        <MusicalNoteIcon className="h-12 w-12 text-phosphor-dim" />
                       </div>
                     </div>
                   </div>
                   {/* Modal for zoomed image */}
                   {modalOpen && modalImage && (
                     <div
-                      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md"
+                      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
                       onClick={() => setModalOpen(false)}
                       tabIndex={-1}
                       aria-modal="true"
                       role="dialog"
                     >
                       <div
-                        className="relative bg-white rounded-lg shadow-2xl flex items-center justify-center"
+                        className="relative bg-terminal-surface border border-terminal-border rounded shadow-2xl flex items-center justify-center"
                         style={{ width: 520, height: 520 }}
                         onClick={e => e.stopPropagation()}
                       >
@@ -241,7 +211,7 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                           src={modalImage}
                           alt="Release cover zoomed"
                           fill
-                          className="object-contain"
+                          className="object-contain rounded"
                           unoptimized
                           sizes="500px"
                           onError={(e) => {
@@ -253,15 +223,15 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                             if (placeholder) placeholder.style.display = "flex";
                           }}
                         />
-                        <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
-                          <MusicalNoteIcon className="h-20 w-20 text-gray-400" />
+                        <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-terminal-surface">
+                          <MusicalNoteIcon className="h-20 w-20 text-phosphor-dim" />
                         </div>
                         <button
-                          className="absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+                          className="absolute top-3 right-3 bg-terminal-bg border border-terminal-border rounded-sm p-1.5 hover:border-accent/50 transition-colors"
                           onClick={() => setModalOpen(false)}
                           aria-label="Close modal"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-phosphor-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
@@ -273,7 +243,11 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                     {release.images.map((img, idx) => (
                       <div
                         key={img.id ?? idx}
-                        className={`w-[64px] h-[64px] relative border border-grey-300 bg-white cursor-pointer ${selectedImages[release.id] === img.image ? 'ring-2 ring-blue-400' : ''}`}
+                        className={`w-[64px] h-[64px] relative border bg-terminal-surface cursor-pointer rounded overflow-hidden transition-all ${
+                          selectedImages[release.id] === img.image
+                            ? 'border-accent ring-1 ring-accent'
+                            : 'border-terminal-border hover:border-accent/50'
+                        }`}
                         style={{ flex: "0 0 auto" }}
                         onClick={() => {
                           setSelectedImages(prev => ({ ...prev, [release.id]: img.image }));
@@ -296,8 +270,8 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
                             if (placeholder) placeholder.style.display = "flex";
                           }}
                         />
-                        <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-gray-100">
-                          <MusicalNoteIcon className="h-8 w-8 text-gray-400" />
+                        <div className="release-placeholder absolute inset-0 hidden items-center justify-center bg-terminal-surface">
+                          <MusicalNoteIcon className="h-8 w-8 text-phosphor-dim" />
                         </div>
                       </div>
                     ))}
@@ -309,7 +283,7 @@ const Releases: React.FC<Props> = ({ releases, className = "" }) => {
           })}
         </div>
       ) : (
-        <p>No releases found for this country.</p>
+        <p className="text-phosphor-dim font-mono text-xs">No releases found for this region.</p>
       )}
     </div>
   );

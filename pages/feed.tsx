@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import type { GetServerSideProps } from "next";
-import type { PostProps } from "../components/Post";
+import type { PostProps } from "@types";
 import prisma from "../lib/prisma";
 import Link from "next/link";
 import Image from "next/image";

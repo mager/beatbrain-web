@@ -9,7 +9,9 @@ const GiantTitle: React.FC<Props> = ({ children, title = "" }) => {
   return (
     <h1
       title={title}
-      className="text-5xl md:text-6xl lg:text-7xl font-bold mb-2 break-words"
+      className={`font-display text-white text-massive font-bold mb-2 break-words tracking-tight ${
+        title ? "hover:text-glow-accent" : ""
+      }`}
     >
       {children}
     </h1>

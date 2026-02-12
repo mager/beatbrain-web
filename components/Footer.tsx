@@ -1,5 +1,5 @@
 import React from "react";
-import Box from "./Box";
+import Logo from "@components/Logo";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -7,16 +7,13 @@ interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
   return (
-    <Box
-      className={`w-full h-full bg-terminal-bg/95 backdrop-blur-sm border-t border-terminal-border font-mono text-[10px] ${className}`}
+    <div
+      className={`py-2 w-full h-full bg-terminal-bg/95 backdrop-blur-sm border-t border-terminal-border font-mono text-[10px] ${className}`}
       {...rest}
     >
       <div className="bb-container flex items-center justify-between">
         <div className="flex items-center gap-4 text-phosphor-dim">
-          <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent/70" />
-            <span>beatbrain</span>
-          </span>
+          <Logo size="sm" />
         </div>
         
         <div className="flex items-center gap-4 text-phosphor-dim">
@@ -32,7 +29,7 @@ const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
           <span className="tabular-nums">{new Date().getFullYear()}</span>
         </div>
       </div>
-    </Box>
+    </div>
   );
 };
 

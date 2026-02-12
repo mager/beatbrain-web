@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import Box from "@components/Box";
+
 
 const Settings: React.FC = () => {
   const context = useContext(AppContext);
@@ -37,16 +37,16 @@ const Settings: React.FC = () => {
 
   if (!user) {
     return (
-      <Box className="min-h-screen flex items-center justify-center font-mono">
+      <div className="min-h-screen flex items-center justify-center font-mono">
         <div className="text-center">
           <p className="text-phosphor-dim text-sm">please log in to continue</p>
         </div>
-      </Box>
+      </div>
     );
   }
 
   return (
-    <Box className="min-h-screen">
+    <div className="min-h-screen">
       <div className="relative bb-container max-w-2xl pt-24 pb-16">
         {/* Header */}
         <div className="mb-10 border-b border-terminal-border pb-4">
@@ -142,7 +142,7 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
-    </Box>
+    </div>
   );
 };
 

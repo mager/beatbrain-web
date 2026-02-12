@@ -5,9 +5,9 @@ type Props = {
 };
 
 const Genres = ({ genres }: Props) => (
-  <div className="my-4">
+  <div className="my-4 flex flex-wrap">
     {genres.map((genre) => (
-      <Tag name={genre}>{genre}</Tag>
+      <Tag key={genre} name={genre}>{genre}</Tag>
     ))}
   </div>
 );

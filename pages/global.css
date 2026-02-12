@@ -162,6 +162,39 @@
     box-shadow: 0 0 24px rgba(201, 164, 97, 0.06);
   }
 
+  /* ===== TAB BAR ===== */
+  .tab-bar {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid var(--terminal-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tab-item {
+    font-family: var(--font-body), monospace;
+    font-size: 11px;
+    color: var(--phosphor-dim);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -0.5rem;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .tab-item:hover {
+    color: var(--phosphor);
+  }
+
+  .tab-item.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
   /* ===== NOISE TEXTURE (very subtle) ===== */
   .noise {
     position: relative;

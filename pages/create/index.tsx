@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import Input from "@components/Input";
-import Title from "@components/Title";
 import Router from "next/router";
 import Searchbox, { loadOptions } from "@components/Searchbox";
 import useDebouncedLoadOptions from "../../lib/hooks/useDebouncedLoadOptions";
-import Box from "@components/Box";
 
 const Create: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,8 +27,6 @@ const Create: React.FC = () => {
       };
       const body = { content, track };
 
-      // TODO: Send JWT
-
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,50 +41,48 @@ const Create: React.FC = () => {
   };
 
   return (
-    <Box>
-      <div className="bb-container py-8 pt-24">
-        <form onSubmit={submitData} className="w-full">
-          <Title>Share a beat</Title>
-          <div className="flex flex-col lg:flex-row justify-between my-4 gap-4">
-            <div className="w-full lg:w-1/2 flex items-center">
-              <Searchbox
-                option={option}
-                handleChange={handleChange}
-                loadOptions={debouncedLoadOptions}
-              />
-            </div>
-            <div className="w-full lg:w-1/2 flex items-center">
-              <Input
-                placeholder="How does it make you feel?"
-                value={content}
-                setValue={setContent}
-              />
-            </div>
+    <div className="bb-container pt-24 pb-16">
+      <form onSubmit={submitData} className="w-full max-w-3xl">
+        <h1 className="font-display text-3xl text-white tracking-tight mb-8">Share a beat</h1>
+        <div className="flex flex-col lg:flex-row justify-between my-4 gap-4">
+          <div className="w-full lg:w-1/2 flex items-center">
+            <Searchbox
+              option={option}
+              handleChange={handleChange}
+              loadOptions={debouncedLoadOptions}
+            />
           </div>
-
-          <div className="flex items-center">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline mr-4 ${
-                isSubmitting
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-500 hover:bg-green-600"
-              }`}
-            >
-              {isSubmitting ? "Creating..." : "Create"}
-            </button>
-
-            <a
-              className="text-gray-400 hover:text-gray-500 cursor-pointer"
-              onClick={() => Router.push("/create")}
-            >
-              Cancel
-            </a>
+          <div className="w-full lg:w-1/2 flex items-center">
+            <Input
+              placeholder="How does it make you feel?"
+              value={content}
+              setValue={setContent}
+            />
           </div>
-        </form>
-      </div>
-    </Box>
+        </div>
+
+        <div className="flex items-center gap-4 mt-6">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`font-mono text-xs rounded px-6 py-2.5 transition-colors ${
+              isSubmitting
+                ? "border border-terminal-border text-phosphor-dim cursor-not-allowed"
+                : "border border-accent bg-accent/10 text-accent hover:bg-accent/20"
+            }`}
+          >
+            {isSubmitting ? "Creating..." : "Create"}
+          </button>
+
+          <a
+            className="text-phosphor-dim hover:text-phosphor cursor-pointer font-mono text-xs transition-colors"
+            onClick={() => Router.push("/create")}
+          >
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
   );
 };
 

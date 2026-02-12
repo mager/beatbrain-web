@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import Logo from "@components/Logo";
 
 const SignIn: React.FC = () => {
   const router = useRouter();
@@ -56,11 +57,7 @@ const SignIn: React.FC = () => {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <h1 className="font-display text-2xl">
-            <span className="text-accent text-glow-accent">beat</span>
-            <span className="text-white">brain</span>
-            <span className="text-warm animate-blink font-mono ml-0.5">_</span>
-          </h1>
+          <Logo size="lg" linked={false} className="justify-center" />
         </div>
 
         {/* Card */}

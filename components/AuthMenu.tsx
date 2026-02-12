@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import Dropdown from "@components/Dropdown";
 import { Bars3Icon, Cog6ToothIcon } from "@heroicons/react/24/solid";
-import IconLink from "@components/IconLink";
 
 type Props = {
   iconColor?: string;
@@ -19,28 +18,27 @@ const AuthMenu = ({ iconColor = "white" }: Props) => {
       <div className="mx-2 flex items-center">
         <button
           onClick={toggleDropdown}
-          className={`text-${iconColor} bg-transparent border-none p-0 m-0 focus:outline-none`}
+          className="text-phosphor-dim hover:text-phosphor bg-transparent border-none p-0 m-0 focus:outline-none transition-colors"
         >
-          <Bars3Icon className="h-8 w-8" />
+          <Bars3Icon className="h-6 w-6" />
         </button>
       </div>
       <Dropdown isOpen={isOpen}>
-        <div className="flex flex-col min-w-[120px] bg-white text-sm">
+        <div className="flex flex-col min-w-[140px] bg-terminal-surface border border-terminal-border rounded shadow-lg overflow-hidden">
           <button
-            className="flex items-center gap-2 px-3 py-2 text-gray-700 bg-transparent border-none text-left hover:bg-gray-100 focus:bg-gray-100"
-            style={{fontWeight: 400}}
+            className="flex items-center gap-2 px-4 py-2.5 text-phosphor font-mono text-xs bg-transparent border-none text-left hover:bg-terminal-bg focus:bg-terminal-bg transition-colors"
             onClick={() => {
               window.location.href = "/settings";
               setIsOpen(false);
             }}
           >
-            <Cog6ToothIcon className="h-4 w-4 text-gray-400" />
+            <Cog6ToothIcon className="h-3.5 w-3.5 text-phosphor-dim" />
             Settings
           </button>
+          <div className="border-t border-terminal-border" />
           <button
             onClick={() => signOut()}
-            className="px-3 py-2 text-gray-700 bg-transparent border-none text-left hover:bg-gray-100 focus:bg-gray-100"
-            style={{fontWeight: 400}}
+            className="px-4 py-2.5 text-phosphor font-mono text-xs bg-transparent border-none text-left hover:bg-terminal-bg focus:bg-terminal-bg transition-colors"
           >
             Logout
           </button>

@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import prisma from "../../../lib/prisma";
 import { useAppContext } from "../../../context/AppContext";
 
-import GiantTitle from "@components/GiantTitle";
+import TrackHero from "@components/TrackHero";
 import SavedBy from "@components/SavedBy";
-import Subtitle from "@components/Subtitle";
 import Relations from "@components/Relations";
 import ExternalLinks from "@components/ExternalLinks";
-import Meta from "@components/Meta";
-import Genres from "@components/Genres";
 import type { GetTrackResponse, Track as TrackType } from "@types";
 import { SERVER_HOST } from "@util";
 import SaveModal from "@components/SaveModal";
@@ -37,29 +33,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const posts = await prisma.post.findMany({
-    where: {
-      track: {
-        sourceId: sourceId,
-      },
-    },
-    select: {
-      author: true,
-    },
+    where: { track: { sourceId } },
+    select: { author: true },
   });
 
-  return {
-    props: { track: response.track, posts },
-  };
+  return { props: { track: response.track, posts } };
 };
 
 type Props = {
   track: TrackType;
-  posts: {
-    author: {
-      name: string;
-      image: string;
-    };
-  }[];
+  posts: { author: { name: string; image: string } }[];
 };
 
 const Track: React.FC<Props> = ({ track, posts }) => {
@@ -68,61 +51,22 @@ const Track: React.FC<Props> = ({ track, posts }) => {
   const { data: session } = useSession();
   const { state: appState, playTrack } = useAppContext();
   const { user } = appState;
-  const username = user?.name;
 
-  const formatReleaseDate = (dateString: string): string => {
-    try {
-      const dateObj = new Date(dateString);
-      if (isNaN(dateObj.getTime())) {
-        return "Invalid Date";
-      }
-      const month = dateObj.toLocaleString("default", { month: "short" });
-      const year = dateObj.getFullYear();
-      return `Released in ${month} ${year}`;
-    } catch (e) {
-      console.error("Error parsing date:", dateString, e);
-      return "Unknown Release Date";
-    }
-  };
-
-  const {
-    artist,
-    genres,
-    image,
-    instruments,
-    isrc,
-    name,
-    production_credits,
-    song_credits,
-    release_date,
-    source_id,
-  } = track;
-
+  const { artist, genres, image, instruments, isrc, name, production_credits, song_credits, release_date, source_id } = track;
   const author = posts[0]?.author;
   const othersCount = posts.length > 0 ? posts.length - 1 : 0;
-  const hideSaveButton = !session || posts.some((post) => post.author.name === username);
+  const hideSaveButton = !session || posts.some((post) => post.author.name === user?.name);
   const spotifyUri = `spotify:track:${source_id}`;
 
   const submitPost = async () => {
-    const body = {
-      content,
-      track: {
-        source: "SPOTIFY",
-        sourceId: source_id,
-        artist,
-        title: name,
-        image,
-      },
-    };
+    const body = { content, track: { source: "SPOTIFY", sourceId: source_id, artist, title: name, image } };
     try {
       const response = await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (!response.ok) {
-        throw new Error("Failed to save post");
-      }
+      if (!response.ok) throw new Error("Failed to save post");
       setIsModalOpen(false);
       setContent("");
     } catch (error) {
@@ -130,95 +74,60 @@ const Track: React.FC<Props> = ({ track, posts }) => {
     }
   };
 
-  const handlePlayClick = () => {
-    if (spotifyUri && spotifyUri !== "spotify:track:undefined") {
-      playTrack(spotifyUri);
-    }
-  };
-
-  // Removed the useEffect that automatically played the track on load.
-  // Playback is now triggered by the handlePlayClick function via the button.
-
   return (
     <>
-      <div className="bb-container pt-4 pb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <div className="col-span-1 xl:col-span-3">
-          <div className="relative">
-            {!hideSaveButton && (
-              <button
-                className="absolute top-0 right-0 z-10 cursor-pointer focus:outline-none bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-semibold rounded-full text-2xl text-white w-12 h-12 flex items-center justify-center ml-2 mb-2 transition duration-150 ease-in-out shadow-md"
-                onClick={() => setIsModalOpen(true)}
-              >
-                +
-              </button>
-            )}
-            <GiantTitle title={isrc}>{name}</GiantTitle>
-            <Subtitle>{artist}</Subtitle>
-            <Meta>{formatReleaseDate(release_date)}</Meta>
-            <Genres genres={genres} />
-          </div>
-
-          <div className="md:hidden border-b-4 border-gray-300 mb-4 pb-4">
-            <div className="relative mb-4 border-4 border-black group">
-              <Image
-                src={image || "/placeholder-image.png"}
-                alt={name || "Track artwork"}
-                width={300}
-                height={300}
-                className="object-cover w-full block"
-                unoptimized
-                priority
-              />
-            </div>
-            <ExternalLinks sourceId={source_id} />
-            <Relations
-              instruments={instruments}
-              production_credits={production_credits}
-              song_credits={song_credits}
-            />
-          </div>
-
-          {posts && posts.length > 0 && author && (
-            <div className="my-2 py-2 flex items-center">
-              <img
-                src={author.image || "/default-avatar.png"}
-                alt={author.name || "User"}
-                className="w-8 h-8 rounded-full mr-2 border border-gray-300"
-              />
-              <SavedBy author={author} othersCount={othersCount} />
-            </div>
+      <TrackHero
+        name={name}
+        artist={artist}
+        image={image}
+        isrc={isrc}
+        releaseDate={release_date}
+        genres={genres}
+      >
+        {/* Action Row */}
+        <div className="flex items-center gap-3 mt-6 flex-wrap">
+          {!hideSaveButton && (
+            <button
+              className="border border-accent text-accent hover:bg-accent/10 font-mono text-xs px-4 py-2 rounded flex items-center gap-2 transition-colors"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <span className="text-sm">+</span>
+              Save
+            </button>
           )}
+          <ExternalLinks sourceId={source_id} />
+          <button
+            onClick={() => playTrack(spotifyUri)}
+            className="border border-terminal-border text-phosphor-dim hover:border-accent/50 hover:text-accent font-mono text-[10px] rounded px-3 py-1.5 transition-all flex items-center gap-1.5"
+          >
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+            Play
+          </button>
         </div>
 
-        <div className="col-span-1 xl:col-span-1 hidden md:block">
-          <div className="relative mb-4 border-4 border-black group">
-            <Image
-              src={image || "/placeholder-image.png"}
-              alt={name || "Track artwork"}
-              width={300}
-              height={300}
-              className="object-cover w-full block"
-              unoptimized
-            />
+        {/* Saved By */}
+        {posts.length > 0 && author && (
+          <div className="mt-6 flex items-center gap-3">
+            <img src={author.image || "/default-avatar.png"} alt={author.name || "User"} className="w-7 h-7 rounded-sm border border-terminal-border" />
+            <SavedBy author={author} othersCount={othersCount} />
           </div>
-          <div>
-            <ExternalLinks sourceId={source_id} />
-            <Relations
-              instruments={instruments}
-              production_credits={production_credits}
-              song_credits={song_credits}
-            />
+        )}
+      </TrackHero>
+
+      {/* Credits */}
+      <div className="bb-container pb-16">
+        {(instruments?.length > 0 || production_credits?.length > 0 || song_credits?.length > 0) && (
+          <div className="terminal-window mt-8">
+            <div className="terminal-titlebar">credits</div>
+            <div className="p-5">
+              <Relations instruments={instruments} production_credits={production_credits} song_credits={song_credits} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {isModalOpen && (
-        <SaveModal
-          content={content}
-          setContent={setContent}
-          submitPost={submitPost}
-          setIsModalOpen={setIsModalOpen}
-        />
+        <SaveModal content={content} setContent={setContent} submitPost={submitPost} setIsModalOpen={setIsModalOpen} />
       )}
     </>
   );

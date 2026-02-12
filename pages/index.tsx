@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import type { PostProps } from "@components/Post";
+import type { PostProps } from "@types";
 import Link from "next/link";
 import Image from "next/image";
 import { useAppContext } from "../context/AppContext";
