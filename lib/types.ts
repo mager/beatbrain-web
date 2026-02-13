@@ -53,17 +53,17 @@ export type CreditArtist = {
 };
 
 export type Instrument = {
-  artists: CreditArtist[];
+  artists: (CreditArtist | string)[];
   instrument: string;
 };
 
 export type ProductionCredit = {
-  artists: CreditArtist[];
+  artists: (CreditArtist | string)[];
   credit: string;
 };
 
 export type SongCredit = {
-  artists: CreditArtist[];
+  artists: (CreditArtist | string)[];
   credit: string;
 };
 

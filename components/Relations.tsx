@@ -18,7 +18,7 @@ const Relations: React.FC<Props> = ({
   production_credits,
   song_credits,
 }) => {
-  const renderArtists = (artists: CreditArtist[]) => {
+  const renderArtists = (artists: (CreditArtist | string)[]) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const maxVisible = 2;
 
@@ -29,18 +29,29 @@ const Relations: React.FC<Props> = ({
 
     return (
       <div onClick={toggleExpanded} className="cursor-pointer text-phosphor font-mono text-xs">
-        {visibleArtists.map((artist, i) => (
-          <span key={artist.id}>
-            {i > 0 && ", "}
-            <Link
-              href={`/creator/${artist.id}`}
-              className="text-phosphor hover:text-accent transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {artist.name}
-            </Link>
-          </span>
-        ))}
+        {visibleArtists.map((artist, i) => {
+          // Handle both old format (string) and new format (CreditArtist)
+          const isObject = typeof artist === "object" && artist !== null;
+          const name = isObject ? (artist as CreditArtist).name : (artist as string);
+          const id = isObject ? (artist as CreditArtist).id : null;
+
+          return (
+            <span key={id || `artist-${i}`}>
+              {i > 0 && ", "}
+              {id ? (
+                <Link
+                  href={`/creator/${id}`}
+                  className="text-phosphor hover:text-accent transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {name}
+                </Link>
+              ) : (
+                <span>{name}</span>
+              )}
+            </span>
+          );
+        })}
         {remainingCount > 0 && (
           <>
             {" "}
