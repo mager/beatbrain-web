@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import RelationIcon from "@components/RelationIcon";
 import type {
   Instrument as InstrumentT,
   ProductionCredit as ProductionCreditT,
   SongCredit as SongCreditT,
+  CreditArtist,
 } from "@types";
 type Props = {
   instruments: InstrumentT[];
@@ -16,7 +18,7 @@ const Relations: React.FC<Props> = ({
   production_credits,
   song_credits,
 }) => {
-  const renderArtists = (artists: string[]) => {
+  const renderArtists = (artists: CreditArtist[]) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const maxVisible = 2;
 
@@ -27,7 +29,18 @@ const Relations: React.FC<Props> = ({
 
     return (
       <div onClick={toggleExpanded} className="cursor-pointer text-phosphor font-mono text-xs">
-        {visibleArtists.join(", ")}
+        {visibleArtists.map((artist, i) => (
+          <span key={artist.id}>
+            {i > 0 && ", "}
+            <Link
+              href={`/creator/${artist.id}`}
+              className="text-phosphor hover:text-accent transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {artist.name}
+            </Link>
+          </span>
+        ))}
         {remainingCount > 0 && (
           <>
             {" "}

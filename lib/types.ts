@@ -47,18 +47,23 @@ export type Features = {
   time_signature: number;
 };
 
+export type CreditArtist = {
+  id: string;
+  name: string;
+};
+
 export type Instrument = {
-  artists: string[];
+  artists: CreditArtist[];
   instrument: string;
 };
 
 export type ProductionCredit = {
-  artists: string[];
+  artists: CreditArtist[];
   credit: string;
 };
 
 export type SongCredit = {
-  artists: string[];
+  artists: CreditArtist[];
   credit: string;
 };
 
@@ -151,4 +156,38 @@ export type TrackV3 = {
 
 export type GetTrackResponseV3 = {
   track: TrackV3;
+};
+
+export type Creator = {
+  id: string;
+  name: string;
+  type: string;
+  disambiguation?: string;
+  country?: string;
+  area?: string;
+  begin_area?: string;
+  active_years?: ActiveYears;
+  genres: string[];
+  links: Link[];
+  credits: CreatorCredit[];
+};
+
+export type ActiveYears = {
+  begin?: string;
+  end?: string;
+  ended: boolean;
+};
+
+export type CreatorCredit = {
+  type: string;
+  recordings: CreatorRecording[];
+};
+
+export type CreatorRecording = {
+  id: string;
+  title: string;
+};
+
+export type GetCreatorResponse = {
+  creator: Creator;
 };
