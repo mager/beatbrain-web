@@ -26,7 +26,7 @@ export default function CreatorPage() {
   if (!creator) {
     return (
       <div className="bb-container pt-24 pb-8">
-        <div className="font-mono text-xs text-phosphor-dim animate-pulse">Loading...</div>
+        <div className="font-mono text-sm text-phosphor-dim animate-pulse">Loading...</div>
       </div>
     );
   }
@@ -49,56 +49,65 @@ export default function CreatorPage() {
         genres={creator.genres || []}
       />
 
-      <div className="bb-container pb-16">
-        {/* Highlights — Known For */}
+      <div className="bb-container pb-20 space-y-12">
+        {/* Known For — Highlights */}
         {creator.highlights && creator.highlights.length > 0 && (
-          <div className="terminal-window mt-8">
-            <div className="terminal-titlebar">known for</div>
-            <div className="p-5">
-              <CreatorHighlights highlights={creator.highlights} />
+          <section>
+            <div className="terminal-window">
+              <div className="terminal-titlebar">
+                <span>known for</span>
+              </div>
+              <div className="p-6">
+                <CreatorHighlights highlights={creator.highlights} />
+              </div>
             </div>
-          </div>
+          </section>
         )}
 
         {/* Full Credits */}
         {creator.credits?.length > 0 && (
-          <div className="terminal-window mt-8">
-            <div className="terminal-titlebar">
-              credits
-              <span className="ml-2 text-phosphor-dim font-normal">
-                ({totalCredits} recordings)
-              </span>
+          <section>
+            <div className="terminal-window">
+              <div className="terminal-titlebar">
+                <span>credits</span>
+                <span className="text-phosphor-dim/50 font-normal ml-1">
+                  — {totalCredits.toLocaleString()} recordings across {creator.credits.length} roles
+                </span>
+              </div>
+              <div className="p-4 md:p-6">
+                <CreatorCredits credits={creator.credits} />
+              </div>
             </div>
-            <div className="p-5">
-              <CreatorCredits credits={creator.credits} />
-            </div>
-          </div>
+          </section>
         )}
 
         {/* Links */}
         {creator.links?.length > 0 && (
-          <div className="terminal-window mt-8">
-            <div className="terminal-titlebar">links</div>
-            <div className="p-5">
-              <div className="space-y-2">
-                {creator.links.map((link, index) => (
-                  <div key={`link-${index}`} className="flex items-center gap-3">
-                    <span className="font-mono text-[10px] text-phosphor-dim uppercase tracking-wider w-20">
-                      {link.type}
-                    </span>
+          <section>
+            <div className="terminal-window">
+              <div className="terminal-titlebar">links</div>
+              <div className="p-6">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {creator.links.map((link, index) => (
                     <a
+                      key={`link-${index}`}
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-phosphor hover:text-accent transition-colors truncate"
+                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/[0.03] transition-colors group"
                     >
-                      {link.url}
+                      <span className="font-mono text-[11px] text-phosphor-dim uppercase tracking-widest w-24 flex-shrink-0 group-hover:text-phosphor transition-colors">
+                        {link.type}
+                      </span>
+                      <span className="font-mono text-sm text-phosphor/70 group-hover:text-accent transition-colors truncate">
+                        {link.url.replace(/^https?:\/\/(www\.)?/, '').split('/').slice(0, 2).join('/')}
+                      </span>
                     </a>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          </section>
         )}
       </div>
     </>
