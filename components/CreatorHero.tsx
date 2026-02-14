@@ -1,7 +1,6 @@
 import React from "react";
 import GiantTitle from "@components/GiantTitle";
 import Subtitle from "@components/Subtitle";
-import Meta from "@components/Meta";
 import Genres from "@components/Genres";
 import type { ActiveYears } from "@types";
 
@@ -23,18 +22,28 @@ const formatActiveYears = (ay: ActiveYears): string => {
   return `${begin} – ${end}`;
 };
 
-const typeGradients: Record<string, string> = {
-  Person: "from-indigo-600/20 via-purple-600/10 to-transparent",
-  Group: "from-emerald-600/20 via-teal-600/10 to-transparent",
-  Orchestra: "from-amber-600/20 via-orange-600/10 to-transparent",
-  Choir: "from-rose-600/20 via-pink-600/10 to-transparent",
-};
-
-const typeAccents: Record<string, string> = {
-  Person: "from-indigo-500/30 to-purple-500/10",
-  Group: "from-emerald-500/30 to-teal-500/10",
-  Orchestra: "from-amber-500/30 to-orange-500/10",
-  Choir: "from-rose-500/30 to-pink-500/10",
+// Each type gets a distinct color vibe
+const typeConfig: Record<string, { gradient: string; glow: string; badge: string }> = {
+  Person: {
+    gradient: "from-violet/15 via-cool/8 to-transparent",
+    glow: "from-violet/25 to-cool/10",
+    badge: "text-violet border-violet/30",
+  },
+  Group: {
+    gradient: "from-mint/15 via-cool/8 to-transparent",
+    glow: "from-mint/25 to-cool/10",
+    badge: "text-mint border-mint/30",
+  },
+  Orchestra: {
+    gradient: "from-accent/15 via-warm/8 to-transparent",
+    glow: "from-accent/25 to-warm/10",
+    badge: "text-accent border-accent/30",
+  },
+  Choir: {
+    gradient: "from-rose/15 via-violet/8 to-transparent",
+    glow: "from-rose/25 to-violet/10",
+    badge: "text-rose border-rose/30",
+  },
 };
 
 const CreatorHero: React.FC<Props> = ({
@@ -47,8 +56,7 @@ const CreatorHero: React.FC<Props> = ({
   activeYears,
   genres,
 }) => {
-  const gradient = typeGradients[type] || typeGradients.Person;
-  const accentGrad = typeAccents[type] || typeAccents.Person;
+  const config = typeConfig[type] || typeConfig.Person;
 
   const locationParts = [beginArea, area, country].filter(Boolean);
   const location = locationParts.length > 0 ? locationParts.join(" · ") : null;
@@ -56,24 +64,24 @@ const CreatorHero: React.FC<Props> = ({
   return (
     <div className="relative overflow-hidden">
       {/* Layered gradient background */}
-      <div className={`absolute inset-0 z-0 bg-gradient-to-b ${gradient}`} />
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-terminal-bg/0 via-terminal-bg/50 to-terminal-bg" />
+      <div className={`absolute inset-0 z-0 bg-gradient-to-b ${config.gradient}`} />
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-terminal-bg/0 via-terminal-bg/40 to-terminal-bg" />
 
-      {/* Subtle radial glow behind the icon */}
-      <div className="absolute top-16 left-1/2 -translate-x-1/2 md:left-[180px] md:translate-x-0 w-[400px] h-[400px] z-0">
-        <div className={`w-full h-full rounded-full bg-gradient-to-br ${accentGrad} blur-3xl opacity-40`} />
+      {/* Diffused color glow */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 md:left-[200px] md:translate-x-0 w-[500px] h-[500px] z-0">
+        <div className={`w-full h-full rounded-full bg-gradient-to-br ${config.glow} blur-3xl opacity-50`} />
       </div>
 
       <div className="relative z-10 bb-container pt-24 pb-16">
         <div className="flex flex-col md:flex-row gap-10 md:gap-14 items-start">
-          {/* Type badge as a large monogram */}
+          {/* Large monogram */}
           <div className="flex-shrink-0 w-full md:w-auto flex justify-center md:justify-start">
-            <div className="relative w-[200px] h-[200px] md:w-[260px] md:h-[260px] border border-terminal-border/50 rounded-lg overflow-hidden flex items-center justify-center bg-terminal-surface/30 backdrop-blur-sm">
-              <span className="font-display text-[7rem] md:text-[9rem] text-white/10 select-none leading-none">
+            <div className="relative w-[200px] h-[200px] md:w-[260px] md:h-[260px] border border-terminal-border/40 rounded-xl overflow-hidden flex items-center justify-center bg-terminal-surface/40 backdrop-blur-sm">
+              <span className="font-display text-[7rem] md:text-[9rem] text-white/8 select-none leading-none">
                 {name.charAt(0).toUpperCase()}
               </span>
-              <div className="absolute bottom-3 left-0 right-0 flex justify-center">
-                <span className="bg-terminal-surface/80 backdrop-blur border border-terminal-border rounded px-3 py-1 font-mono text-[11px] text-phosphor-dim uppercase tracking-widest">
+              <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                <span className={`bg-terminal-bg/60 backdrop-blur border rounded-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest ${config.badge}`}>
                   {type || "Artist"}
                 </span>
               </div>
@@ -85,15 +93,15 @@ const CreatorHero: React.FC<Props> = ({
             <GiantTitle>{name}</GiantTitle>
             {disambiguation && <Subtitle>{disambiguation}</Subtitle>}
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 mb-4">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mt-4 mb-5">
               {location && (
                 <span className="font-mono text-sm text-phosphor-dim tracking-wide">
-                  {location}
+                  📍 {location}
                 </span>
               )}
               {activeYears && formatActiveYears(activeYears) && (
                 <span className="font-mono text-sm text-phosphor-dim tracking-wide">
-                  {formatActiveYears(activeYears)}
+                  🎵 {formatActiveYears(activeYears)}
                 </span>
               )}
             </div>

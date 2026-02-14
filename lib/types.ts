@@ -194,6 +194,7 @@ export type CreatorCredit = {
 export type CreatorRecording = {
   id: string;
   title: string;
+  artist?: string;
 };
 
 export type GetCreatorResponse = {

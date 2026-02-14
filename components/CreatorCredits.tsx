@@ -64,12 +64,19 @@ const CreditGroup: React.FC<{ credit: CreatorCredit; defaultExpanded: boolean }>
       {isGroupExpanded && (
         <div className="pl-[4.25rem] pr-4 pb-4 space-y-0.5">
           {visibleRecordings.map((recording) => (
-            <div key={recording.id}>
+            <div key={recording.id} className="py-1">
               <Link
                 href={`/song/${recording.id}`}
-                className="font-mono text-sm text-phosphor/80 hover:text-accent transition-colors inline-block py-0.5 leading-relaxed"
+                className="group/rec inline-flex flex-col hover:bg-white/[0.02] -mx-2 px-2 py-1 rounded transition-colors"
               >
-                {recording.title}
+                <span className="font-mono text-sm text-phosphor group-hover/rec:text-accent transition-colors leading-snug">
+                  {recording.title}
+                </span>
+                {recording.artist && (
+                  <span className="font-mono text-xs text-phosphor-dim leading-snug">
+                    {recording.artist}
+                  </span>
+                )}
               </Link>
             </div>
           ))}

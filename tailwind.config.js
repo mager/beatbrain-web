@@ -9,23 +9,28 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Developer + Music palette
+        // Rich dark foundation — not a dungeon, more like a midnight lounge
         'terminal': {
-          bg: '#0d0d12',
-          surface: '#15151c',
-          border: '#23233a',
-          'border-bright': '#2e2e44',
+          bg: '#0c0c14',
+          surface: '#13131f',
+          border: '#1f1f35',
+          'border-bright': '#2d2d4a',
         },
-        'phosphor': '#bfc0cb',
-        'phosphor-dim': '#52526e',
-        'accent': '#c9a461',        // warm amber — primary
-        'warm': '#c75d4d',           // coral — hot/trending
-        'cool': '#7b8ec8',           // muted blue — secondary
+        // Text palette — brighter, more readable
+        'phosphor': '#d4d4e8',
+        'phosphor-dim': '#6b6b8a',
+        // Vibrant accent palette
+        'accent': '#e8a948',           // golden amber — warm & inviting
+        'warm': '#f06449',             // punchy coral-red
+        'cool': '#7c8fff',             // electric periwinkle
+        'mint': '#5ce0b8',             // fresh mint
+        'violet': '#b07cff',           // playful violet
+        'rose': '#ff6b9d',             // hot pink
         // Legacy aliases
-        'ink': '#0d0d12',
-        'vinyl': '#15151c',
-        'groove': '#23233a',
-        'sleeve': '#bfc0cb',
+        'ink': '#0c0c14',
+        'vinyl': '#13131f',
+        'groove': '#1f1f35',
+        'sleeve': '#d4d4e8',
       },
       fontFamily: {
         sans: ['var(--font-body)'],
@@ -61,6 +66,10 @@ module.exports = {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
       },
       animation: {
         marquee: 'marquee var(--marquee-duration, 30s) linear infinite',
@@ -69,12 +78,15 @@ module.exports = {
         'blink': 'blink 1.1s step-end infinite',
         'pulse': 'pulse 2.5s ease-in-out infinite',
         'shimmer': 'shimmer 2.5s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite',
       },
       boxShadow: {
-        'glow-accent': '0 0 20px rgba(201, 164, 97, 0.15), 0 0 60px rgba(201, 164, 97, 0.05)',
-        'glow-warm': '0 0 20px rgba(199, 93, 77, 0.15), 0 0 60px rgba(199, 93, 77, 0.05)',
-        'glow-cool': '0 0 20px rgba(123, 142, 200, 0.15), 0 0 60px rgba(123, 142, 200, 0.05)',
-        'terminal': 'inset 0 0 80px rgba(201, 164, 97, 0.02)',
+        'glow-accent': '0 0 20px rgba(232, 169, 72, 0.2), 0 0 60px rgba(232, 169, 72, 0.06)',
+        'glow-warm': '0 0 20px rgba(240, 100, 73, 0.2), 0 0 60px rgba(240, 100, 73, 0.06)',
+        'glow-cool': '0 0 20px rgba(124, 143, 255, 0.2), 0 0 60px rgba(124, 143, 255, 0.06)',
+        'glow-mint': '0 0 20px rgba(92, 224, 184, 0.2), 0 0 60px rgba(92, 224, 184, 0.06)',
+        'glow-violet': '0 0 20px rgba(176, 124, 255, 0.2), 0 0 60px rgba(176, 124, 255, 0.06)',
+        'terminal': 'inset 0 0 80px rgba(124, 143, 255, 0.02)',
       },
     },
   },

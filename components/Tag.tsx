@@ -8,7 +8,7 @@ type Props = {
 const Tag: React.FC<Props> = ({ children, name }) => (
   <div
     key={name}
-    className="inline-block bg-terminal-surface border border-terminal-border rounded-sm px-2.5 py-1 font-mono text-[10px] text-phosphor hover:border-accent/50 hover:text-accent transition-all mr-1.5 mb-2"
+    className="inline-block bg-white/[0.04] border border-terminal-border rounded-full px-3.5 py-1.5 font-mono text-[11px] text-phosphor hover:border-cool/40 hover:text-cool hover:bg-cool/[0.06] transition-all mr-2 mb-2 cursor-default"
   >
     {children}
   </div>

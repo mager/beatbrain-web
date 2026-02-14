@@ -4,14 +4,17 @@
 
 @layer base {
   :root {
-    --terminal-bg: #0d0d12;
-    --terminal-surface: #15151c;
-    --terminal-border: #23233a;
-    --phosphor: #bfc0cb;
-    --phosphor-dim: #52526e;
-    --accent: #c9a461;
-    --warm: #c75d4d;
-    --cool: #7b8ec8;
+    --terminal-bg: #0c0c14;
+    --terminal-surface: #13131f;
+    --terminal-border: #1f1f35;
+    --phosphor: #d4d4e8;
+    --phosphor-dim: #6b6b8a;
+    --accent: #e8a948;
+    --warm: #f06449;
+    --cool: #7c8fff;
+    --mint: #5ce0b8;
+    --violet: #b07cff;
+    --rose: #ff6b9d;
   }
 
   html {
@@ -41,7 +44,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2a2a40;
+    background: #2a2a45;
     border-radius: 2px;
   }
 
@@ -57,34 +60,34 @@
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1.25rem;   /* 20px — mobile */
+    padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
 
   @media (min-width: 768px) {
     .bb-container {
-      padding-left: 2rem;    /* 32px — tablet+ */
+      padding-left: 2rem;
       padding-right: 2rem;
     }
   }
 
-  /* ===== TEXT GLOW (subtle) ===== */
+  /* ===== TEXT GLOW (vibrant) ===== */
   .text-glow-accent {
     text-shadow:
-      0 0 8px rgba(201, 164, 97, 0.3),
-      0 0 24px rgba(201, 164, 97, 0.1);
+      0 0 8px rgba(232, 169, 72, 0.35),
+      0 0 24px rgba(232, 169, 72, 0.12);
   }
 
   .text-glow-warm {
     text-shadow:
-      0 0 8px rgba(199, 93, 77, 0.3),
-      0 0 24px rgba(199, 93, 77, 0.1);
+      0 0 8px rgba(240, 100, 73, 0.35),
+      0 0 24px rgba(240, 100, 73, 0.12);
   }
 
   .text-glow-cool {
     text-shadow:
-      0 0 8px rgba(123, 142, 200, 0.3),
-      0 0 24px rgba(123, 142, 200, 0.1);
+      0 0 8px rgba(124, 143, 255, 0.35),
+      0 0 24px rgba(124, 143, 255, 0.12);
   }
 
   /* ===== BLINKING CURSOR ===== */
@@ -100,54 +103,61 @@
   .terminal-window {
     background: var(--terminal-surface);
     border: 1px solid var(--terminal-border);
-    border-radius: 4px;
+    border-radius: 8px;
     position: relative;
+    overflow: hidden;
   }
 
   .terminal-titlebar {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
-    background: rgba(255, 255, 255, 0.015);
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.02);
     border-bottom: 1px solid var(--terminal-border);
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 500;
     color: var(--phosphor-dim);
     font-family: var(--font-body), monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   .terminal-titlebar::before {
-    content: '● ● ●';
-    letter-spacing: 4px;
-    font-size: 8px;
-    color: var(--phosphor-dim);
-    opacity: 0.5;
-    margin-right: 10px;
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.6;
+    margin-right: 8px;
+    flex-shrink: 0;
   }
 
   /* ===== CARD ===== */
   .card-terminal {
     background: var(--terminal-surface);
     border: 1px solid var(--terminal-border);
-    border-radius: 4px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   }
 
   .card-terminal:hover {
-    border-color: #2e2e44;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    border-color: #2d2d4a;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
   }
 
-  /* Legacy alias */
   .card-glass {
     @apply card-terminal;
   }
 
   /* ===== DATA LABEL ===== */
   .data-label {
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     color: var(--phosphor-dim);
     font-family: var(--font-body), monospace;
   }
@@ -159,7 +169,7 @@
 
   .hover-glow:hover {
     border-color: var(--accent);
-    box-shadow: 0 0 24px rgba(201, 164, 97, 0.06);
+    box-shadow: 0 0 24px rgba(232, 169, 72, 0.08);
   }
 
   /* ===== TAB BAR ===== */
@@ -173,7 +183,7 @@
 
   .tab-item {
     font-family: var(--font-body), monospace;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--phosphor-dim);
     cursor: pointer;
     transition: color 0.2s ease;
@@ -220,7 +230,14 @@
   }
 
   .text-gradient-cool {
-    background: linear-gradient(135deg, var(--cool), var(--accent));
+    background: linear-gradient(135deg, var(--cool), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-fun {
+    background: linear-gradient(135deg, var(--mint), var(--cool));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
