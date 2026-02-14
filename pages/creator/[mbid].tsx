@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import type { Creator } from "@types";
 import CreatorHero from "@components/CreatorHero";
+import CreatorHighlights from "@components/CreatorHighlights";
 import CreatorCredits from "@components/CreatorCredits";
 
 export default function CreatorPage() {
@@ -30,6 +31,11 @@ export default function CreatorPage() {
     );
   }
 
+  const totalCredits = creator.credits?.reduce(
+    (sum, c) => sum + c.recordings.length,
+    0
+  ) ?? 0;
+
   return (
     <>
       <CreatorHero
@@ -44,15 +50,32 @@ export default function CreatorPage() {
       />
 
       <div className="bb-container pb-16">
+        {/* Highlights — Known For */}
+        {creator.highlights && creator.highlights.length > 0 && (
+          <div className="terminal-window mt-8">
+            <div className="terminal-titlebar">known for</div>
+            <div className="p-5">
+              <CreatorHighlights highlights={creator.highlights} />
+            </div>
+          </div>
+        )}
+
+        {/* Full Credits */}
         {creator.credits?.length > 0 && (
           <div className="terminal-window mt-8">
-            <div className="terminal-titlebar">credits</div>
+            <div className="terminal-titlebar">
+              credits
+              <span className="ml-2 text-phosphor-dim font-normal">
+                ({totalCredits} recordings)
+              </span>
+            </div>
             <div className="p-5">
               <CreatorCredits credits={creator.credits} />
             </div>
           </div>
         )}
 
+        {/* Links */}
         {creator.links?.length > 0 && (
           <div className="terminal-window mt-8">
             <div className="terminal-titlebar">links</div>

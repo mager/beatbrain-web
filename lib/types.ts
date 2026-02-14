@@ -170,6 +170,14 @@ export type Creator = {
   genres: string[];
   links: Link[];
   credits: CreatorCredit[];
+  highlights?: CreatorHighlight[];
+};
+
+export type CreatorHighlight = {
+  id: string;
+  title: string;
+  artist: string;
+  image: string;
 };
 
 export type ActiveYears = {
