@@ -1,0 +1,3 @@
+That should fix it. The problem: Better Auth's default `basePath` is `/api/auth`, but when Next.js Pages Router hands the request to the catch-all `pages/api/auth/[...all].ts`, the `req.url` is `/auth/sign-in/social` (stripped of the `/api` prefix). Better Auth then tries to match `/auth/sign-in/social` against its registered route `/sign-in/social` and fails with a 405.
+
+Adding `basePath: "/api/auth"` explicitly tells Better Auth where it's mounted so it correctly strips the prefix and matches the route. Deploy that and Spotify sign-in should work.

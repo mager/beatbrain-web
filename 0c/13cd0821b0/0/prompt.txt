@@ -1,0 +1,6 @@
+hey i got this error on /auth/signin when clicking the spotify link is nextauth broken Request URL
+https://www.beatbrain.xyz/api/auth/sign-in/social
+Request Method
+POST
+Status Code
+405 Method Not Allowed
