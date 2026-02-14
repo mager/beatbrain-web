@@ -72,12 +72,12 @@ const CreatorHero: React.FC<Props> = ({
         <div className={`w-full h-full rounded-full bg-gradient-to-br ${config.glow} blur-3xl opacity-50`} />
       </div>
 
-      <div className="relative z-10 bb-container pt-24 pb-16">
-        <div className="flex flex-col md:flex-row gap-10 md:gap-14 items-start">
+      <div className="relative z-10 bb-container pt-16 pb-12">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
           {/* Large monogram */}
           <div className="flex-shrink-0 w-full md:w-auto flex justify-center md:justify-start">
-            <div className="relative w-[200px] h-[200px] md:w-[260px] md:h-[260px] border border-terminal-border/40 rounded-xl overflow-hidden flex items-center justify-center bg-terminal-surface/40 backdrop-blur-sm">
-              <span className="font-display text-[7rem] md:text-[9rem] text-white/8 select-none leading-none">
+            <div className="relative w-[180px] h-[180px] md:w-[220px] md:h-[220px] border border-terminal-border/40 rounded-xl overflow-hidden flex items-center justify-center bg-terminal-surface/40 backdrop-blur-sm">
+              <span className="font-display text-[6rem] md:text-[7.5rem] text-white/8 select-none leading-none">
                 {name.charAt(0).toUpperCase()}
               </span>
               <div className="absolute bottom-4 left-0 right-0 flex justify-center">

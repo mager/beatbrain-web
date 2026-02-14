@@ -33,13 +33,13 @@ module.exports = {
         'sleeve': '#d4d4e8',
       },
       fontFamily: {
-        sans: ['var(--font-body)'],
-        mono: ['var(--font-body)'],
-        display: ['var(--font-display)'],
+        sans: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-body)', 'monospace'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'massive': ['clamp(3rem, 12vw, 8rem)', { lineHeight: '1', letterSpacing: '-0.02em' }],
-        'hero': ['clamp(1.5rem, 5vw, 3rem)', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
+        'massive': ['clamp(2.25rem, 8vw, 5.5rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
+        'hero': ['clamp(1.25rem, 4vw, 2.25rem)', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
       },
       keyframes: {
         marquee: {

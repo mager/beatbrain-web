@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
-import { JetBrains_Mono, IBM_Plex_Mono } from "next/font/google";
+import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { useAppContext } from "../context/AppContext";
 import type { Track } from "@types";
 
@@ -19,8 +19,8 @@ const bodyFont = JetBrains_Mono({
   variable: "--font-body",
 });
 
-// Display: IBM Plex Mono — slightly different character for headings
-const displayFont = IBM_Plex_Mono({
+// Display: Space Grotesk — geometric, bold, made for headlines
+const displayFont = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-display",

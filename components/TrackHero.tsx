@@ -45,11 +45,11 @@ const TrackHero: React.FC<Props> = ({ name, artist, image, isrc, releaseDate, ge
         </div>
       )}
 
-      <div className="relative z-10 bb-container pt-24 pb-12">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+      <div className="relative z-10 bb-container pt-16 pb-10">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
           {/* Cover Art */}
           <div className="flex-shrink-0 w-full md:w-auto flex justify-center md:justify-start">
-            <div className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] border border-terminal-border rounded overflow-hidden group hover:shadow-glow-accent transition-shadow duration-500">
+            <div className="relative w-[240px] h-[240px] md:w-[280px] md:h-[280px] border border-terminal-border rounded-lg overflow-hidden group hover:shadow-glow-accent transition-shadow duration-500">
               <Image
                 src={image || "/placeholder-image.png"}
                 alt={name || "Track artwork"}
