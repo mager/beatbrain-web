@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
-import { useSession } from "next-auth/react";
+import { authClient } from "../../../lib/auth-client";
 import prisma from "../../../lib/prisma";
 import { useAppContext } from "../../../context/AppContext";
 
@@ -48,7 +48,7 @@ type Props = {
 const Track: React.FC<Props> = ({ track, posts }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
   const { state: appState, playTrack } = useAppContext();
   const { user } = appState;
 

@@ -47,7 +47,7 @@ const Header: React.FC = () => {
 
           {!user ? (
             <Link
-              href="/api/auth/signin"
+              href="/auth/signin"
               className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-accent/50 text-phosphor hover:text-accent font-mono text-xs transition-all duration-300 rounded"
             >
               login

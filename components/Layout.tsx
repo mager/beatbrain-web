@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Analytics } from "@vercel/analytics/react";
 import { JetBrains_Mono, IBM_Plex_Mono } from "next/font/google";
-import { useSession } from "next-auth/react";
-import SpotifyPlayer, { State as SpotifyPlayerCallback } from 'react-spotify-web-playback';
 import { useAppContext } from "../context/AppContext";
 import type { Track } from "@types";
 
@@ -29,25 +27,17 @@ const displayFont = IBM_Plex_Mono({
 });
 
 // Define constants for layout calculation
-const PLAYER_HEIGHT_PX = 80;
 const FOOTER_HEIGHT_PX = 36;
 
 type Props = {
   children: ReactNode;
 };
 
-// Extend the Session type to include accessToken
-interface ExtendedSession {
-  accessToken?: string;
-}
-
 const Layout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const hideSearch = ["/create", "/settings"].includes(router.pathname);
-  const { data: session } = useSession();
-  const { state: appState, setPlayerIsPlaying, setTracks, setTracksLoading } = useAppContext();
-  const { currentTrackUri, isPlaying, tracks, tracksLoading } = appState;
-  const spotifyToken = (session as ExtendedSession)?.accessToken;
+  const { state: appState, setTracks, setTracksLoading } = useAppContext();
+  const { tracks, tracksLoading } = appState;
 
   useEffect(() => {
     if (tracksLoading || (tracks && tracks.length > 0)) return;
@@ -76,10 +66,6 @@ const Layout: React.FC<Props> = ({ children }) => {
     return `${totalHeight}px`;
   };
 
-  const handlePlayerCallback = (state: SpotifyPlayerCallback) => {
-    setPlayerIsPlaying(state.isPlaying);
-  };
-
   return (
     <div
       className={`${bodyFont.variable} ${displayFont.variable} font-mono relative`}
@@ -91,13 +77,13 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Main>{children}</Main>
       <Analytics />
 
-      {/* Fixed Container for Player and Footer */}
+      {/* Fixed Container for Footer */}
       <div className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
-        <div 
+        <div
           className="transition-all duration-300 ease-in-out"
           style={{ height: `${FOOTER_HEIGHT_PX}px` }}
         >
-          <Footer className="border-t border-terminal-border"/>
+          <Footer className="border-t border-terminal-border" />
         </div>
       </div>
     </div>

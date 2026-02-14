@@ -1,28 +1,27 @@
-import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getToken } from "next-auth/jwt";
-
+import { getSession } from "../../../lib/auth-api";
 import { SERVER_HOST } from "@util";
-
-const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const decoded = await getToken({ req, secret });
-  const userId = decoded.sub;
+  const session = await getSession(req);
+  if (!session?.user?.id) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const userId = session.user.id;
   const url = `${SERVER_HOST}/user?id=${userId}`;
-  const token = jwt.sign(decoded, secret);
   const body = {
     ...req.body,
-    id: parseInt(userId),
+    id: userId,
   };
+
   try {
     const response = await fetch(url, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
