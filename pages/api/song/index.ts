@@ -3,21 +3,25 @@ import { SERVER_HOST } from "@util";
 import { adaptTrack } from "@adapters/track";
 
 // GET /api/song
-// Required fields in query: mbid
+// Query params: mbid OR spotifyId
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { mbid } = req.query;
-  if (!mbid || typeof mbid !== "string") {
-    return res.status(400).json({ error: "mbid is required" });
+  const { mbid, spotifyId } = req.query;
+
+  let url: string;
+  if (spotifyId && typeof spotifyId === "string") {
+    url = `${SERVER_HOST}/track?spotifyId=${spotifyId}`;
+  } else if (mbid && typeof mbid === "string") {
+    url = `${SERVER_HOST}/track?mbid=${mbid}`;
+  } else {
+    return res.status(400).json({ error: "mbid or spotifyId is required" });
   }
 
-  const resp = await fetch(`${SERVER_HOST}/track?mbid=${mbid}`, {
+  const resp = await fetch(url, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
   });
 
   if (!resp.ok) {

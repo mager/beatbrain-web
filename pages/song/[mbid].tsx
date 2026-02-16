@@ -22,6 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
+  // First, fetch via mbid (existing flow)
   const resp = await fetch(`${SERVER_HOST}/track?mbid=${mbid}`);
   if (!resp.ok) {
     console.error(`Failed to fetch track: ${resp.status} ${resp.statusText}`);
@@ -33,9 +34,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
-  const track = adaptTrack(respBody);
-
+  let track = adaptTrack(respBody);
   const sourceId = respBody.track.source_id;
+
+  // If we got a Spotify source_id from the mbid lookup, re-fetch via spotifyId
+  // to get the full audio features + analysis
+  if (sourceId) {
+    try {
+      const spotifyResp = await fetch(
+        `${SERVER_HOST}/track?spotifyId=${sourceId}`
+      );
+      if (spotifyResp.ok) {
+        const spotifyBody = await spotifyResp.json();
+        if (spotifyBody.track) {
+          track = adaptTrack(spotifyBody);
+        }
+      }
+    } catch (err) {
+      // Spotify-first failed, fall back to mbid data — that's fine
+      console.warn("Spotify-first enrichment failed, using mbid data", err);
+    }
+  }
+
   let posts: { author: { name: string; image: string } }[] = [];
   if (sourceId) {
     posts = await prisma.post.findMany({
