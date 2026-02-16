@@ -29,22 +29,29 @@ export type Segment = {
   loudness_max: number;
   loudness_end: number;
   confidence: number;
+  pitches?: number[];
+  timbres?: number[];
 };
 
+// Meta comes from Spotify — key/BPM/time sig/duration
+export type TrackMeta = {
+  duration_ms: number;
+  key: number;
+  mode: number;
+  tempo: number;
+  time_signature: number;
+};
+
+// Features are 0-1 scaled audio descriptors
 export type Features = {
   acousticness: number;
   danceability: number;
-  duration_ms: number;
   energy: number;
   happiness: number;
   instrumentalness: number;
-  key: number;
   liveness: number;
   loudness: number;
-  mode: number;
   speechiness: number;
-  tempo: number;
-  time_signature: number;
 };
 
 export type CreditArtist = {
@@ -148,10 +155,16 @@ export type TrackV3 = {
   release_date: string;
   genres: string[];
   isrc: string;
-  instruments: any | null;
-  production_credits: any | null;
+  instruments: Instrument[] | null;
+  production_credits: ProductionCredit[] | null;
   song_credits: SongCredit[];
   links: Link[];
+  meta: TrackMeta | null;
+  features: Features | null;
+  analysis: Analysis | null;
+  popularity: number | null;
+  preview_url: string | null;
+  source_id: string | null;
 };
 
 export type GetTrackResponseV3 = {

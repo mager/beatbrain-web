@@ -8,14 +8,27 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const resp = await fetch(`${SERVER_HOST}/track?mbid=${req.query.mbid}`, {
+  const { mbid } = req.query;
+  if (!mbid || typeof mbid !== "string") {
+    return res.status(400).json({ error: "mbid is required" });
+  }
+
+  const resp = await fetch(`${SERVER_HOST}/track?mbid=${mbid}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
 
+  if (!resp.ok) {
+    return res.status(resp.status).json({ error: "Failed to fetch track" });
+  }
+
   const respBody = await resp.json();
+  if (!respBody.track) {
+    return res.status(404).json({ error: "Track not found" });
+  }
+
   const adapted = adaptTrack(respBody);
   res.json(adapted);
 }
