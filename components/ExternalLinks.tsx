@@ -11,8 +11,13 @@ const iconMap: Record<string, { src: string; label: string }> = {
   genius: { src: "/images/icon-genius.png", label: "Genius" },
 };
 
+// Convert a Spotify web URL to a spotify: deep link URI
+const toSpotifyUri = (url: string): string => {
+  const trackId = url.split("/").pop()?.split("?")[0];
+  return trackId ? `spotify:track:${trackId}` : url;
+};
+
 const ExternalLinks = ({ links, sourceId }: Props) => {
-  // Build link list: prefer links[] from MusicBrainz, fall back to sourceId
   const resolvedLinks: { type: string; url: string }[] = [];
 
   if (links && links.length > 0) {
@@ -30,12 +35,15 @@ const ExternalLinks = ({ links, sourceId }: Props) => {
     <div className="flex items-center gap-2 flex-wrap">
       {resolvedLinks.map((link) => {
         const icon = iconMap[link.type];
+        const href =
+          link.type === "spotify" ? toSpotifyUri(link.url) : link.url;
+        const isDeepLink = href.startsWith("spotify:");
+
         return (
           <a
             key={link.url}
-            target="_blank"
-            href={link.url}
-            rel="noopener noreferrer"
+            href={href}
+            {...(!isDeepLink && { target: "_blank", rel: "noopener noreferrer" })}
             className="inline-flex items-center gap-2 border border-terminal-border rounded px-3 py-1.5 font-mono text-[10px] text-phosphor-dim hover:border-accent/50 hover:text-accent transition-all"
           >
             {icon && (

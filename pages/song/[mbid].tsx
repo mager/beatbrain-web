@@ -80,11 +80,6 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
   const { state: appState } = useAppContext();
   const { user } = appState;
 
-  const spotifyLink = track.links?.find((l) => l.type === "spotify");
-  const spotifyUri = spotifyLink?.url
-    ? `spotify:track:${spotifyLink.url.split("/").pop()}`
-    : null;
-
   const author = posts[0]?.author;
   const othersCount = posts.length > 0 ? posts.length - 1 : 0;
   const hideSaveButton =
@@ -146,17 +141,6 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
             </button>
           )}
           <ExternalLinks links={track.links} />
-          {spotifyUri && (
-            <a
-              href={spotifyUri}
-              className="border border-terminal-border text-phosphor-dim hover:border-accent/50 hover:text-accent font-mono text-[10px] rounded px-3 py-1.5 transition-all flex items-center gap-1.5"
-            >
-              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              Play
-            </a>
-          )}
         </div>
 
         {/* Popularity bar */}
