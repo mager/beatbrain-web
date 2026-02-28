@@ -77,7 +77,7 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const { data: session } = authClient.useSession();
-  const { state: appState, playTrack } = useAppContext();
+  const { state: appState } = useAppContext();
   const { user } = appState;
 
   const spotifyLink = track.links?.find((l) => l.type === "spotify");
@@ -147,15 +147,15 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
           )}
           <ExternalLinks links={track.links} />
           {spotifyUri && (
-            <button
-              onClick={() => playTrack(spotifyUri)}
+            <a
+              href={spotifyUri}
               className="border border-terminal-border text-phosphor-dim hover:border-accent/50 hover:text-accent font-mono text-[10px] rounded px-3 py-1.5 transition-all flex items-center gap-1.5"
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
               </svg>
               Play
-            </button>
+            </a>
           )}
         </div>
 
