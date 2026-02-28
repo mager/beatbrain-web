@@ -71,6 +71,7 @@ const styles = {
     fontFamily: 'var(--font-body), JetBrains Mono, monospace',
     marginTop: '6px',
     overflow: 'hidden',
+    zIndex: 9999,
   }),
   menuList: (provided) => ({
     ...provided,
