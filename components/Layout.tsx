@@ -11,6 +11,7 @@ import Search from "@components/Search";
 import Main from "@components/Main";
 import Footer from "@components/Footer";
 import Marquee from "@components/Marquee";
+import SpotifyPlayer, { PLAYER_HEIGHT } from "@components/SpotifyPlayer";
 
 // Body: JetBrains Mono — clean developer monospace
 const bodyFont = JetBrains_Mono({
@@ -63,6 +64,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 
   const calculatePaddingBottom = () => {
     let totalHeight = FOOTER_HEIGHT_PX;
+    if (appState.currentTrackUri) totalHeight += PLAYER_HEIGHT;
     return `${totalHeight}px`;
   };
 
@@ -76,6 +78,8 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Marquee tracks={tracks} speed={50} className="mb-6" />
       <Main>{children}</Main>
       <Analytics />
+
+      <SpotifyPlayer />
 
       {/* Fixed Container for Footer */}
       <div className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
