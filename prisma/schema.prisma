@@ -104,3 +104,17 @@ enum Source {
   SPOTIFY
   MIXCLOUD
 }
+
+model Podcast {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  coverArtUrl String?
+  spotifyUri  String   @unique
+  spotifyId   String   @unique
+  category    String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("podcasts")
+}
