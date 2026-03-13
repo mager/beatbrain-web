@@ -204,7 +204,7 @@ class PodcastIngestor:
             results = self.sp.search(
                 q=category,
                 type='show',
-                limit=5,
+                limit=10,
                 market='US'
             )
             
