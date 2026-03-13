@@ -35,7 +35,8 @@ type Props = {
 
 const Layout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
-  const hideSearch = ["/create", "/settings"].includes(router.pathname);
+  const hideSearch = ["/create", "/settings", "/categories"].includes(router.pathname) || router.pathname.startsWith("/categories/");
+  const hideMarquee = router.pathname.startsWith("/categories");
   const { state: appState, setTracks, setTracksLoading } = useAppContext();
   const { tracks, tracksLoading } = appState;
 
@@ -72,7 +73,7 @@ const Layout: React.FC<Props> = ({ children }) => {
     >
       <Header />
       {!hideSearch && <Search />}
-      <Marquee tracks={tracks} speed={50} className="mb-6" />
+      {!hideMarquee && <Marquee tracks={tracks} speed={50} className="mb-6" />}
       <Main>{children}</Main>
       <Analytics />
 
