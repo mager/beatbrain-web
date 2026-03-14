@@ -54,16 +54,7 @@ const Header: React.FC = () => {
           >
             podcasts
           </Link>
-          <Link
-            href="/categories"
-            className={`font-mono text-xs transition-colors duration-300 ${
-              router.pathname.startsWith('/categories')
-                ? 'text-accent'
-                : 'text-phosphor hover:text-white'
-            }`}
-          >
-            categories
-          </Link>
+
 
           {!user ? (
             <Link
