@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { SERVER_HOST } from './util';
 
 export interface CategoryWithCount {
   name: string;
@@ -7,58 +7,34 @@ export interface CategoryWithCount {
 }
 
 export interface Podcast {
-  id: number;
-  title: string;
-  description: string | null;
-  coverArtUrl: string | null;
-  spotifyUri: string;
-  spotifyId: string;
-  category: string;
+  id: string;
+  name: string;
+  publisher: string;
+  description: string;
+  categories: string[];
+  imageURL: string;
+  episodeCount: number;
+  explicit: boolean;
+  externalURL: string;
 }
 
 export async function getCategories(): Promise<CategoryWithCount[]> {
-  const categories = await prisma.podcast.groupBy({
-    by: ['category'],
-    _count: {
-      category: true,
-    },
-  });
-
-  // Get a preview image for each category
-  const categoriesWithPreview = await Promise.all(
-    categories.map(async (cat) => {
-      const preview = await prisma.podcast.findFirst({
-        where: { category: cat.category },
-        select: { coverArtUrl: true },
-      });
-
-      return {
-        name: cat.category,
-        count: cat._count.category,
-        previewImage: preview?.coverArtUrl || null,
-      };
-    })
-  );
-
-  // Sort by count descending
-  return categoriesWithPreview.sort((a, b) => b.count - a.count);
+  const res = await fetch(`${SERVER_HOST}/podcasts/categories`);
+  if (!res.ok) throw new Error(`Failed to fetch categories: ${res.status}`);
+  const data: Array<{ name: string; count: number; previewImage?: string }> = await res.json();
+  return data.map((c) => ({
+    name: c.name,
+    count: c.count,
+    previewImage: c.previewImage ?? null,
+  }));
 }
 
 export async function getPodcastsByCategory(
   category: string,
   limit: number = 50,
-  offset: number = 0
 ): Promise<Podcast[]> {
-  return prisma.podcast.findMany({
-    where: { category },
-    orderBy: { createdAt: 'desc' },
-    take: limit,
-    skip: offset,
-  });
-}
-
-export async function getCategoryCount(category: string): Promise<number> {
-  return prisma.podcast.count({
-    where: { category },
-  });
+  const params = new URLSearchParams({ category, limit: String(limit) });
+  const res = await fetch(`${SERVER_HOST}/podcasts?${params}`);
+  if (!res.ok) throw new Error(`Failed to fetch podcasts: ${res.status}`);
+  return res.json();
 }

@@ -1,30 +1,25 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 
 interface PodcastCardProps {
-  id: number;
-  title: string;
-  description: string | null;
-  coverArtUrl: string | null;
-  spotifyUri: string;
+  id: string;
+  name: string;
+  description?: string | null;
+  imageURL?: string | null;
+  externalURL: string;
   index: number;
 }
 
 const PodcastCard: React.FC<PodcastCardProps> = ({
-  title,
+  name,
   description,
-  coverArtUrl,
-  spotifyUri,
+  imageURL,
+  externalURL,
   index,
 }) => {
-  // Extract Spotify show ID from URI
-  const spotifyId = spotifyUri.split(':').pop() || '';
-  const spotifyUrl = `https://open.spotify.com/show/${spotifyId}`;
-
   return (
     <a
-      href={spotifyUrl}
+      href={externalURL}
       target="_blank"
       rel="noopener noreferrer"
       className="group relative flex flex-col overflow-hidden rounded-lg border border-terminal-border bg-terminal-surface transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 opacity-0 animate-fadeUp"
@@ -35,10 +30,10 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
     >
       {/* Cover Art */}
       <div className="relative aspect-square overflow-hidden bg-terminal-bg">
-        {coverArtUrl ? (
+        {imageURL ? (
           <Image
-            src={coverArtUrl}
-            alt={title}
+            src={imageURL}
+            alt={name}
             fill
             className="object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-[0.85]"
             unoptimized
@@ -69,7 +64,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
       {/* Content */}
       <div className="flex flex-1 flex-col p-3">
         <h3 className="font-display text-sm text-white line-clamp-2 transition-colors duration-300 group-hover:text-accent min-h-[2.5rem]">
-          {title}
+          {name}
         </h3>
         {description && (
           <p className="font-mono text-[10px] text-phosphor-dim line-clamp-2 mt-2 leading-relaxed">

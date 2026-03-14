@@ -6,13 +6,15 @@ import Layout from '@components/Layout';
 import PodcastCard from '@components/PodcastCard';
 
 interface Podcast {
-  id: number;
-  title: string;
-  description: string | null;
-  coverArtUrl: string | null;
-  spotifyUri: string;
-  spotifyId: string;
-  category: string;
+  id: string;
+  name: string;
+  publisher: string;
+  description: string;
+  categories: string[];
+  imageURL: string;
+  episodeCount: number;
+  explicit: boolean;
+  externalURL: string;
 }
 
 interface CategoryData {
@@ -126,10 +128,10 @@ const CategoryPage: React.FC = () => {
                 <PodcastCard
                   key={podcast.id}
                   id={podcast.id}
-                  title={podcast.title}
+                  name={podcast.name}
                   description={podcast.description}
-                  coverArtUrl={podcast.coverArtUrl}
-                  spotifyUri={podcast.spotifyUri}
+                  imageURL={podcast.imageURL}
+                  externalURL={podcast.externalURL}
                   index={index}
                 />
               ))}
