@@ -45,6 +45,16 @@ const Header: React.FC = () => {
             feed
           </Link>
           <Link
+            href="/podcasts"
+            className={`font-mono text-xs transition-colors duration-300 ${
+              router.pathname === '/podcasts'
+                ? 'text-accent'
+                : 'text-phosphor hover:text-white'
+            }`}
+          >
+            podcasts
+          </Link>
+          <Link
             href="/categories"
             className={`font-mono text-xs transition-colors duration-300 ${
               router.pathname.startsWith('/categories')

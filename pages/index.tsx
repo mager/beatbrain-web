@@ -54,100 +54,42 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* ── Discover Header ── */}
-      <div className="px-4 pt-4 pb-3 flex items-end justify-between">
-        <div>
-          <h1 className="font-display text-xl md:text-2xl text-white tracking-tight">
+      <div className="px-4 pt-8 pb-6">
+        <div className="relative inline-block">
+          <h1 className="font-display text-massive text-white tracking-tight">
             discover
           </h1>
-          <p className="font-mono text-xs text-phosphor mt-1">
-            {visibleTracks.length > 0 && (
-              <>
-                <span className="text-accent font-semibold">{visibleTracks.length}</span>
-                <span className="mx-1">hot tracks</span>
-              </>
-            )}
-            {tracksUpdated && (
-              <>
-                <span className="text-terminal-border-bright mx-1">/</span>
-                <span className="tabular-nums">
-                  {new Date(tracksUpdated).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </>
-            )}
-          </p>
+          {/* Ambient glow behind title */}
+          <div className="absolute -inset-8 -z-10 bg-accent/[0.04] blur-3xl rounded-full" />
+          <div className="absolute -bottom-1 left-0 w-full h-[3px] bg-gradient-to-r from-accent via-warm to-transparent rounded-full" />
         </div>
+        <p className="font-mono text-sm text-phosphor mt-4">
+          {visibleTracks.length > 0 && (
+            <>
+              <span className="text-accent font-semibold text-base tabular-nums">
+                {visibleTracks.length}
+              </span>
+              <span className="mx-2 text-phosphor-dim">hot tracks</span>
+            </>
+          )}
+          {tracksUpdated && (
+            <>
+              <span className="text-terminal-border-bright mx-2">/</span>
+              <span className="tabular-nums text-phosphor-dim">
+                {new Date(tracksUpdated).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
+            </>
+          )}
+        </p>
       </div>
 
       {/* ── Discover Wall ── */}
       {tracksLoading ? (
-        <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-11 xl:grid-cols-13 2xl:grid-cols-[repeat(15,minmax(0,1fr))] gap-0">
-          {[...Array(75)].map((_, i) => (
-            <div
-              key={i}
-              className="aspect-square bg-terminal-surface animate-pulse"
-              style={{ animationDelay: `${i * 10}ms` }}
-            />
-          ))}
-        </div>
-      ) : visibleTracks.length > 0 ? (
-        <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-11 xl:grid-cols-13 2xl:grid-cols-[repeat(15,minmax(0,1fr))] gap-0">
-          {visibleTracks.map((track, index) => (
-            <Link
-              key={track.source_id}
-              href={`/ext/spotify/${track.source_id}`}
-              className="group relative aspect-square overflow-hidden bg-terminal-surface opacity-0 animate-fadeUp"
-              style={{
-                animationDelay: `${Math.min(index * 8, 500)}ms`,
-                animationFillMode: "forwards",
-              }}
-            >
-              <Image
-                src={track.image}
-                alt={`${track.artist} - ${track.name}`}
-                fill
-                sizes="(max-width: 640px) 20vw, (max-width: 768px) 14.3vw, (max-width: 1024px) 11.1vw, (max-width: 1280px) 9.1vw, 7.7vw"
-                className="object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-[0.3]"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-              <div className="absolute inset-0 flex flex-col justify-end p-1.5 sm:p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                <p className="font-mono text-[8px] sm:text-[9px] text-white leading-tight line-clamp-2 drop-shadow-lg">
-                  {track.name}
-                </p>
-                <p className="font-mono text-[7px] sm:text-[8px] text-white/50 leading-tight line-clamp-1 mt-0.5 drop-shadow-lg">
-                  {track.artist}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : null}
-
-      {/* ── Feed Header ── */}
-      <div className="px-4 pt-10 pb-3 flex items-end justify-between">
-        <div>
-          <h2 className="font-display text-xl md:text-2xl text-white tracking-tight">
-            feed
-          </h2>
-          <p className="font-mono text-xs text-phosphor mt-1">
-            latest saves from the community
-          </p>
-        </div>
-        <Link
-          href="/feed"
-          className="font-mono text-[11px] text-phosphor hover:text-accent transition-colors duration-300"
-        >
-          view all →
-        </Link>
-      </div>
-
-      {/* ── Feed Wall ── */}
-      {feedLoading ? (
-        <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-11 xl:grid-cols-13 2xl:grid-cols-[repeat(15,minmax(0,1fr))] gap-0 pb-16">
-          {[...Array(30)].map((_, i) => (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-[2px]">
+          {[...Array(40)].map((_, i) => (
             <div
               key={i}
               className="aspect-square bg-terminal-surface animate-pulse"
@@ -155,46 +97,131 @@ const Home: React.FC = () => {
             />
           ))}
         </div>
-      ) : feedTracks.length > 0 ? (
-        <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-11 xl:grid-cols-13 2xl:grid-cols-[repeat(15,minmax(0,1fr))] gap-0 pb-16">
-          {feedTracks.map((post, index) => (
-            <Link
-              key={post.id}
-              href={`/ext/spotify/${post.track?.sourceId}`}
-              className="group relative aspect-square overflow-hidden bg-terminal-surface opacity-0 animate-fadeUp"
-              style={{
-                animationDelay: `${Math.min(index * 12, 400)}ms`,
-                animationFillMode: "forwards",
-              }}
-            >
-              <Image
-                src={post.track!.image}
-                alt={`${post.track?.artist} - ${post.track?.title}`}
-                fill
-                sizes="(max-width: 640px) 20vw, (max-width: 768px) 14.3vw, (max-width: 1024px) 11.1vw, (max-width: 1280px) 9.1vw, 7.7vw"
-                className="object-cover transition-all duration-300 group-hover:scale-110 group-hover:brightness-[0.3]"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-              <div className="absolute inset-0 flex flex-col justify-end p-1.5 sm:p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                <p className="font-mono text-[8px] sm:text-[9px] text-white leading-tight line-clamp-2 drop-shadow-lg">
-                  {post.track?.title}
-                </p>
-                <p className="font-mono text-[7px] sm:text-[8px] text-white/50 leading-tight line-clamp-1 mt-0.5 drop-shadow-lg">
-                  {post.track?.artist}
-                </p>
-                <p className="font-mono text-[6px] sm:text-[7px] text-accent/60 leading-tight line-clamp-1 mt-0.5">
-                  {post.author?.username
-                    ? `@${post.author.username}`
-                    : post.author?.name || ""}
-                </p>
-              </div>
-            </Link>
+      ) : visibleTracks.length > 0 ? (
+        <div className="relative">
+          {/* CRT scanline overlay */}
+          <div className="absolute inset-0 pointer-events-none z-20 crt-scanlines" />
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-[2px]">
+            {visibleTracks.map((track, index) => (
+              <Link
+                key={track.source_id}
+                href={`/ext/spotify/${track.source_id}`}
+                className="group relative aspect-square overflow-hidden bg-terminal-surface opacity-0 animate-fadeUp"
+                style={{
+                  animationDelay: `${Math.min(index * 20, 800)}ms`,
+                  animationFillMode: "forwards",
+                }}
+              >
+                <Image
+                  src={track.image}
+                  alt={`${track.artist} - ${track.name}`}
+                  fill
+                  sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, (max-width: 1280px) 16.7vw, 12.5vw"
+                  className="object-cover transition-all duration-500 ease-out group-hover:scale-[1.12] group-hover:brightness-[0.25]"
+                  unoptimized
+                />
+                {/* Hover gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Hover glow ring */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ring-1 ring-inset ring-accent/30" />
+                {/* Track info */}
+                <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10">
+                  <p className="font-mono text-[13px] sm:text-sm text-white leading-snug line-clamp-2 drop-shadow-lg font-medium">
+                    {track.name}
+                  </p>
+                  <p className="font-mono text-[11px] sm:text-xs text-white/60 leading-snug line-clamp-1 mt-1 drop-shadow-lg">
+                    {track.artist}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {/* ── Section Divider ── */}
+      <div className="relative py-16">
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-terminal-border-bright to-transparent" />
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent blur-sm" />
+      </div>
+
+      {/* ── Feed Header ── */}
+      <div className="px-4 pb-6 flex items-end justify-between">
+        <div>
+          <div className="relative inline-block">
+            <h2 className="font-display text-massive text-white tracking-tight">
+              feed
+            </h2>
+            <div className="absolute -inset-8 -z-10 bg-cool/[0.03] blur-3xl rounded-full" />
+            <div className="absolute -bottom-1 left-0 w-full h-[3px] bg-gradient-to-r from-cool via-violet to-transparent rounded-full" />
+          </div>
+          <p className="font-mono text-sm text-phosphor-dim mt-4">
+            latest saves from the community
+          </p>
+        </div>
+        <Link
+          href="/feed"
+          className="font-mono text-sm text-phosphor-dim hover:text-accent transition-colors duration-300 mb-2"
+        >
+          view all →
+        </Link>
+      </div>
+
+      {/* ── Feed Wall ── */}
+      {feedLoading ? (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-[2px] pb-16">
+          {[...Array(24)].map((_, i) => (
+            <div
+              key={i}
+              className="aspect-square bg-terminal-surface animate-pulse"
+              style={{ animationDelay: `${i * 20}ms` }}
+            />
           ))}
         </div>
+      ) : feedTracks.length > 0 ? (
+        <div className="relative pb-16">
+          <div className="absolute inset-0 pointer-events-none z-20 crt-scanlines" />
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-[2px]">
+            {feedTracks.map((post, index) => (
+              <Link
+                key={post.id}
+                href={`/ext/spotify/${post.track?.sourceId}`}
+                className="group relative aspect-square overflow-hidden bg-terminal-surface opacity-0 animate-fadeUp"
+                style={{
+                  animationDelay: `${Math.min(index * 25, 600)}ms`,
+                  animationFillMode: "forwards",
+                }}
+              >
+                <Image
+                  src={post.track!.image}
+                  alt={`${post.track?.artist} - ${post.track?.title}`}
+                  fill
+                  sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, (max-width: 1280px) 16.7vw, 12.5vw"
+                  className="object-cover transition-all duration-500 ease-out group-hover:scale-[1.12] group-hover:brightness-[0.25]"
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ring-1 ring-inset ring-accent/30" />
+                <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10">
+                  <p className="font-mono text-[13px] sm:text-sm text-white leading-snug line-clamp-2 drop-shadow-lg font-medium">
+                    {post.track?.title}
+                  </p>
+                  <p className="font-mono text-[11px] sm:text-xs text-white/60 leading-snug line-clamp-1 mt-1 drop-shadow-lg">
+                    {post.track?.artist}
+                  </p>
+                  <p className="font-mono text-[10px] sm:text-[11px] text-accent/60 leading-tight line-clamp-1 mt-1">
+                    {post.author?.username
+                      ? `@${post.author.username}`
+                      : post.author?.name || ""}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       ) : (
-        <div className="py-12 text-center font-mono pb-16">
-          <p className="text-phosphor-dim text-xs">no activity yet</p>
+        <div className="py-20 text-center font-mono pb-16">
+          <p className="text-phosphor-dim text-sm">no activity yet</p>
         </div>
       )}
     </div>
