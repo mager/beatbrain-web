@@ -92,25 +92,25 @@ const PodcastsPage: React.FC = () => {
       </div>
 
       {/* ── Category Chips ── */}
-      <div className="px-4 pt-6 pb-4">
+      <div className="pt-6 pb-4">
         {categoriesLoading ? (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2 overflow-x-auto px-4 scrollbar-hide md:flex-wrap">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="h-8 w-24 rounded-full bg-terminal-surface animate-pulse"
+                className="h-8 w-24 flex-shrink-0 rounded-full bg-terminal-surface animate-pulse"
                 style={{ animationDelay: `${i * 50}ms` }}
               />
             ))}
           </div>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2 overflow-x-auto px-4 scrollbar-hide md:flex-wrap">
             {categories.map((cat) => (
               <button
                 key={cat.name}
                 onClick={() => setSelectedCategory(cat.name)}
                 className={`
-                  inline-flex items-center gap-2 px-4 py-2 rounded-full
+                  flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full
                   font-mono text-xs transition-all duration-300
                   border focus:outline-none focus:ring-1 focus:ring-accent/50
                   ${
