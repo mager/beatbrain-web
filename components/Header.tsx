@@ -35,6 +35,16 @@ const Header: React.FC = () => {
         {/* Nav Links */}
         <div className="flex items-center gap-6">
           <Link
+            href="/discover"
+            className={`font-mono text-xs transition-colors duration-300 ${
+              router.pathname === '/discover'
+                ? 'text-accent'
+                : 'text-phosphor hover:text-white'
+            }`}
+          >
+            discover
+          </Link>
+          <Link
             href="/feed"
             className={`font-mono text-xs transition-colors duration-300 ${
               router.pathname === '/feed'

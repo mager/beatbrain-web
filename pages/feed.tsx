@@ -80,17 +80,21 @@ const Feed: React.FC<Props> = (props) => {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="px-4 pt-4 pb-3 flex items-end justify-between">
+      <div className="px-4 pt-8 pb-6 flex items-end justify-between">
         <div>
-          <h1 className="font-display text-xl md:text-2xl text-white tracking-tight">
-            feed
-          </h1>
-          <p className="font-mono text-xs text-phosphor mt-1">
-            <span className="text-accent font-semibold">{posts.length}</span>
-            <span className="mx-1">discoveries from the community</span>
+          <div className="relative inline-block">
+            <h1 className="font-display text-massive text-white tracking-tight">
+              feed
+            </h1>
+            <div className="absolute -inset-8 -z-10 bg-cool/[0.03] blur-3xl rounded-full" />
+            <div className="absolute -bottom-1 left-0 w-full h-[3px] bg-gradient-to-r from-cool via-violet to-transparent rounded-full" />
+          </div>
+          <p className="font-mono text-sm text-phosphor-dim mt-4">
+            <span className="text-accent font-semibold text-base tabular-nums">{posts.length}</span>
+            <span className="mx-2">discoveries from the community</span>
           </p>
         </div>
-        <div className="flex items-center gap-3 font-mono text-[11px]">
+        <div className="flex items-center gap-3 font-mono text-xs mb-2">
           <button
             onClick={() => setFilter('all')}
             className={`transition-colors duration-200 ${filter === 'all' ? 'text-accent' : 'text-phosphor-dim hover:text-phosphor'}`}
@@ -133,19 +137,19 @@ const Feed: React.FC<Props> = (props) => {
 
               {/* Track info on hover */}
               <div className="absolute inset-0 flex flex-col justify-end p-2.5 sm:p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                <p className="font-mono text-[10px] sm:text-xs text-white leading-tight line-clamp-2 drop-shadow-lg font-medium">
+                <p className="font-mono text-[13px] sm:text-sm text-white leading-snug line-clamp-2 drop-shadow-lg font-medium">
                   {post.track?.title}
                 </p>
-                <p className="font-mono text-[9px] sm:text-[10px] text-white/60 leading-tight line-clamp-1 mt-1 drop-shadow-lg">
+                <p className="font-mono text-[11px] sm:text-xs text-white/60 leading-snug line-clamp-1 mt-1 drop-shadow-lg">
                   {post.track?.artist}
                 </p>
                 <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-white/10">
-                  <p className="font-mono text-[8px] sm:text-[9px] text-accent leading-tight">
+                  <p className="font-mono text-[10px] sm:text-[11px] text-accent leading-tight">
                     {post.author?.username
                       ? `@${post.author.username}`
                       : post.author?.name || ""}
                   </p>
-                  <p className="font-mono text-[8px] sm:text-[9px] text-white/30">
+                  <p className="font-mono text-[10px] sm:text-[11px] text-white/30">
                     {timeAgo(post.createdAt)}
                   </p>
                 </div>

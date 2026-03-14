@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/router";
 import PodcastCard from "@components/PodcastCard";
 
 interface Category {
@@ -20,6 +21,7 @@ interface Podcast {
 }
 
 const PodcastsPage: React.FC = () => {
+  const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -34,8 +36,11 @@ const PodcastsPage: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch categories");
         const data: Category[] = await res.json();
         setCategories(data);
-        // Auto-select first category
-        if (data.length > 0) {
+        // Use query param if present, otherwise first category
+        const queryCat = router.query.cat as string | undefined;
+        if (queryCat && data.some((c) => c.name === queryCat)) {
+          setSelectedCategory(queryCat);
+        } else if (data.length > 0) {
           setSelectedCategory(data[0].name);
         }
       } catch (err) {
@@ -44,8 +49,8 @@ const PodcastsPage: React.FC = () => {
         setCategoriesLoading(false);
       }
     };
-    fetchCategories();
-  }, []);
+    if (router.isReady) fetchCategories();
+  }, [router.isReady, router.query.cat]);
 
   // Fetch podcasts when category changes
   const fetchPodcasts = useCallback(async (category: string) => {
