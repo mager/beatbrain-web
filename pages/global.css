@@ -4,17 +4,17 @@
 
 @layer base {
   :root {
-    --terminal-bg: #0c0c14;
-    --terminal-surface: #13131f;
-    --terminal-border: #1f1f35;
-    --phosphor: #d4d4e8;
-    --phosphor-dim: #6b6b8a;
-    --accent: #e8a948;
-    --warm: #f06449;
-    --cool: #7c8fff;
-    --mint: #5ce0b8;
-    --violet: #b07cff;
-    --rose: #ff6b9d;
+    --terminal-bg: #faf9f7;
+    --terminal-surface: #ffffff;
+    --terminal-border: #e8e6e1;
+    --phosphor: #1a1a1a;
+    --phosphor-dim: #888580;
+    --accent: #ff3366;
+    --warm: #ff6b35;
+    --cool: #6c63ff;
+    --mint: #00c9a7;
+    --violet: #9d4edd;
+    --rose: #ff3366;
   }
 
   html {
@@ -31,10 +31,10 @@
 
   ::selection {
     background: var(--accent);
-    color: var(--terminal-bg);
+    color: white;
   }
 
-  /* Minimal scrollbar */
+  /* Elegant thin scrollbar */
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -44,7 +44,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2a2a45;
+    background: #d4d0c8;
     border-radius: 2px;
   }
 
@@ -71,23 +71,17 @@
     }
   }
 
-  /* ===== TEXT GLOW (vibrant) ===== */
+  /* ===== TEXT GLOW — subtle colored shadows ===== */
   .text-glow-accent {
-    text-shadow:
-      0 0 8px rgba(232, 169, 72, 0.35),
-      0 0 24px rgba(232, 169, 72, 0.12);
+    text-shadow: none;
   }
 
   .text-glow-warm {
-    text-shadow:
-      0 0 8px rgba(240, 100, 73, 0.35),
-      0 0 24px rgba(240, 100, 73, 0.12);
+    text-shadow: none;
   }
 
   .text-glow-cool {
-    text-shadow:
-      0 0 8px rgba(124, 143, 255, 0.35),
-      0 0 24px rgba(124, 143, 255, 0.12);
+    text-shadow: none;
   }
 
   /* ===== BLINKING CURSOR ===== */
@@ -99,11 +93,29 @@
     font-weight: 300;
   }
 
+  /* ===== CARD ===== */
+  .card-terminal {
+    background: var(--terminal-surface);
+    border: 1px solid var(--terminal-border);
+    border-radius: 12px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .card-terminal:hover {
+    border-color: #d4d0c8;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .card-glass {
+    @apply card-terminal;
+  }
+
   /* ===== TERMINAL WINDOW ===== */
   .terminal-window {
     background: var(--terminal-surface);
     border: 1px solid var(--terminal-border);
-    border-radius: 8px;
+    border-radius: 12px;
     position: relative;
     overflow: hidden;
   }
@@ -113,7 +125,7 @@
     align-items: center;
     gap: 6px;
     padding: 10px 16px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 0, 0, 0.02);
     border-bottom: 1px solid var(--terminal-border);
     font-size: 12px;
     font-weight: 500;
@@ -130,27 +142,9 @@
     height: 8px;
     border-radius: 50%;
     background: var(--accent);
-    opacity: 0.6;
+    opacity: 0.8;
     margin-right: 8px;
     flex-shrink: 0;
-  }
-
-  /* ===== CARD ===== */
-  .card-terminal {
-    background: var(--terminal-surface);
-    border: 1px solid var(--terminal-border);
-    border-radius: 8px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  .card-terminal:hover {
-    border-color: #2d2d4a;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    transform: translateY(-1px);
-  }
-
-  .card-glass {
-    @apply card-terminal;
   }
 
   /* ===== DATA LABEL ===== */
@@ -169,7 +163,7 @@
 
   .hover-glow:hover {
     border-color: var(--accent);
-    box-shadow: 0 0 24px rgba(232, 169, 72, 0.08);
+    box-shadow: 0 4px 20px rgba(255, 51, 102, 0.08);
   }
 
   /* ===== TAB BAR ===== */
@@ -205,7 +199,7 @@
     border-bottom-color: var(--accent);
   }
 
-  /* ===== NOISE TEXTURE (very subtle) ===== */
+  /* ===== GRAIN TEXTURE ===== */
   .noise {
     position: relative;
   }
@@ -215,7 +209,7 @@
     position: absolute;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.015;
+    opacity: 0.012;
     pointer-events: none;
     z-index: 1;
   }
@@ -268,24 +262,9 @@
   }
 }
 
-/* ===== CRT SCANLINE EFFECT ===== */
+/* ===== CRT SCANLINES — now just a subtle magazine halftone vibe ===== */
 .crt-scanlines {
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
-  );
-  mix-blend-mode: multiply;
-}
-
-/* Subtle flicker on the whole grid — very faint */
-@keyframes crt-flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.98; }
-  94% { opacity: 1; }
+  display: none; /* Kill the CRT effect */
 }
 
 /* ===== ANIMATIONS ===== */

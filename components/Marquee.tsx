@@ -23,24 +23,24 @@ const Marquee: React.FC<MarqueeProps> = ({
           href={`/ext/spotify/${track.source_id}`}
           className="inline-flex items-center gap-2 group"
         >
-          <span className="font-mono text-[10px] text-accent/60 tabular-nums">
+          <span className="font-mono text-[10px] text-accent/50 tabular-nums font-semibold">
             {String(index + 1).padStart(2, '0')}
           </span>
-          <span className="text-phosphor group-hover:text-accent transition-colors duration-200 text-xs font-mono">
+          <span className="text-phosphor group-hover:text-accent transition-colors duration-200 text-xs font-display font-semibold">
             {track.name}
           </span>
-          <span className="text-phosphor-dim mx-0.5">—</span>
-          <span className="text-phosphor/70 group-hover:text-phosphor transition-colors duration-200 text-xs font-mono">
+          <span className="text-phosphor-dim/50 mx-0.5">—</span>
+          <span className="text-phosphor-dim group-hover:text-phosphor transition-colors duration-200 text-xs font-mono">
             {track.artist}
           </span>
-          <span className="text-accent/30 mx-2">/</span>
+          <span className="text-accent/20 mx-2">✦</span>
         </Link>
       ))}
     </span>
   );
 
   return (
-    <div className={`overflow-hidden whitespace-nowrap py-2.5 mt-4 border-y border-terminal-border/60 bg-terminal-surface/40 ${className}`}>
+    <div className={`overflow-hidden whitespace-nowrap py-3 mt-4 border-y border-terminal-border bg-white/60 backdrop-blur-sm ${className}`}>
       <div
         className="inline-flex animate-marquee"
         style={{

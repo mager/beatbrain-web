@@ -25,7 +25,7 @@ const Header: React.FC = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled
-        ? 'bg-terminal-bg/95 backdrop-blur-sm border-b border-terminal-border/60'
+        ? 'bg-terminal-bg/95 backdrop-blur-md border-b border-terminal-border/60 shadow-sm'
         : 'bg-transparent'
     }`}>
       <nav className="bb-container flex items-center justify-between py-3">
@@ -36,58 +36,57 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-6">
           <Link
             href="/discover"
-            className={`font-mono text-xs transition-colors duration-300 ${
+            className={`font-display text-sm font-semibold tracking-tight transition-colors duration-300 ${
               router.pathname === '/discover'
                 ? 'text-accent'
-                : 'text-phosphor hover:text-white'
+                : 'text-phosphor-dim hover:text-phosphor'
             }`}
           >
-            discover
+            Discover
           </Link>
           <Link
             href="/feed"
-            className={`font-mono text-xs transition-colors duration-300 ${
+            className={`font-display text-sm font-semibold tracking-tight transition-colors duration-300 ${
               router.pathname === '/feed'
                 ? 'text-accent'
-                : 'text-phosphor hover:text-white'
+                : 'text-phosphor-dim hover:text-phosphor'
             }`}
           >
-            feed
+            Feed
           </Link>
           <Link
             href="/podcasts"
-            className={`font-mono text-xs transition-colors duration-300 ${
+            className={`font-display text-sm font-semibold tracking-tight transition-colors duration-300 ${
               router.pathname === '/podcasts'
                 ? 'text-accent'
-                : 'text-phosphor hover:text-white'
+                : 'text-phosphor-dim hover:text-phosphor'
             }`}
           >
-            podcasts
+            Podcasts
           </Link>
-
 
           {!user ? (
             <Link
               href="/auth/signin"
-              className="flex items-center gap-1.5 px-4 py-2 border border-terminal-border hover:border-accent/50 text-phosphor hover:text-accent font-mono text-xs transition-all duration-300 rounded"
+              className="flex items-center gap-1.5 px-5 py-2 bg-accent text-white font-display text-sm font-semibold transition-all duration-300 rounded-full hover:bg-accent/90 hover:shadow-glow-accent"
             >
-              login
+              Sign in
             </Link>
           ) : (
             <div className="flex items-center gap-4">
               {username && (
                 <Link
                   href={`/u/${username}`}
-                  className={`font-mono text-xs transition-colors duration-300 ${
+                  className={`font-display text-sm font-semibold tracking-tight transition-colors duration-300 ${
                     router.pathname === '/u/[username]'
                       ? 'text-cool'
-                      : 'text-phosphor hover:text-white'
+                      : 'text-phosphor-dim hover:text-phosphor'
                   }`}
                 >
                   {username}
                 </Link>
               )}
-              <AuthMenu iconColor="var(--phosphor)" />
+              <AuthMenu iconColor="var(--phosphor-dim)" />
             </div>
           )}
         </div>

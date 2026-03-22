@@ -7,12 +7,6 @@ type Props = {
   className?: string;
 };
 
-/**
- * BeatBrain logo — one word, two colors, with a brainwave pulse mark.
- *
- * The "pulse" is a tiny inline SVG that looks like a heartbeat/brainwave
- * sitting between "beat" and "brain", replacing the gap with energy.
- */
 const Logo: React.FC<Props> = ({ size = "md", linked = true, className = "" }) => {
   const sizes = {
     sm: { text: "text-sm", pulse: 12, pulseH: 10 },
@@ -24,7 +18,7 @@ const Logo: React.FC<Props> = ({ size = "md", linked = true, className = "" }) =
 
   const logoContent = (
     <span className={`font-display ${s.text} inline-flex items-baseline tracking-tight ${className}`}>
-      <span className="text-accent">beat</span>
+      <span className="text-accent font-bold">beat</span>
       <svg
         width={s.pulse}
         height={s.pulseH}
@@ -41,7 +35,7 @@ const Logo: React.FC<Props> = ({ size = "md", linked = true, className = "" }) =
           strokeLinejoin="round"
         />
       </svg>
-      <span className="text-white">brain</span>
+      <span className="text-phosphor font-bold">brain</span>
     </span>
   );
 
