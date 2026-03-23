@@ -2,12 +2,13 @@ import Tag from "@components/Tag";
 
 type Props = {
   genres: string[];
+  light?: boolean;
 };
 
-const Genres = ({ genres }: Props) => (
-  <div className="my-4 flex flex-wrap">
+const Genres = ({ genres, light = false }: Props) => (
+  <div className="flex flex-wrap gap-0">
     {genres.map((genre) => (
-      <Tag key={genre} name={genre}>{genre}</Tag>
+      <Tag key={genre} name={genre} light={light}>{genre}</Tag>
     ))}
   </div>
 );

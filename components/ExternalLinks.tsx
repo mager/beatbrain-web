@@ -3,7 +3,8 @@ import type { Link } from "@types";
 
 type Props = {
   links?: Link[];
-  sourceId?: string; // legacy fallback for ext/spotify pages
+  sourceId?: string;
+  light?: boolean;
 };
 
 const iconMap: Record<string, { src: string; label: string }> = {
@@ -17,7 +18,7 @@ const toSpotifyUri = (url: string): string => {
   return trackId ? `spotify:track:${trackId}` : url;
 };
 
-const ExternalLinks = ({ links, sourceId }: Props) => {
+const ExternalLinks = ({ links, sourceId, light = false }: Props) => {
   const resolvedLinks: { type: string; url: string }[] = [];
 
   if (links && links.length > 0) {
@@ -44,7 +45,11 @@ const ExternalLinks = ({ links, sourceId }: Props) => {
             key={link.url}
             href={href}
             {...(!isDeepLink && { target: "_blank", rel: "noopener noreferrer" })}
-            className="inline-flex items-center gap-2 border border-terminal-border rounded px-3 py-1.5 font-mono text-[10px] text-phosphor-dim hover:border-accent/50 hover:text-accent transition-all"
+            className={`inline-flex items-center gap-2 border rounded px-3 py-1.5 font-mono text-[10px] transition-all ${
+            light
+              ? "border-white/25 text-white/70 hover:border-white/60 hover:text-white"
+              : "border-terminal-border text-phosphor-dim hover:border-accent/50 hover:text-accent"
+          }`}
           >
             {icon && (
               <Image

@@ -133,7 +133,7 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
         <div className="flex items-center gap-3 mt-6 flex-wrap">
           {!hideSaveButton && (
             <button
-              className="border border-accent text-accent hover:bg-accent/10 font-mono text-xs px-4 py-2 rounded flex items-center gap-2 transition-colors"
+              className="border border-white/30 text-white hover:bg-white/15 font-mono text-xs px-4 py-2 rounded-lg flex items-center gap-2 transition-all"
               onClick={() => setIsModalOpen(true)}
             >
               <span className="text-sm">+</span>
@@ -146,14 +146,14 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
         {/* Popularity bar */}
         {track.popularity !== null && track.popularity !== undefined && (
           <div className="mt-4 flex items-center gap-3">
-            <span className="data-label flex-shrink-0">Popularity</span>
-            <div className="flex-1 max-w-[200px] h-1.5 bg-white/[0.04] rounded-full overflow-hidden">
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/45 flex-shrink-0">Popularity</span>
+            <div className="flex-1 max-w-[180px] h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-accent to-warm"
                 style={{ width: `${track.popularity}%` }}
               />
             </div>
-            <span className="font-mono text-xs text-phosphor-dim tabular-nums">
+            <span className="font-mono text-xs text-white/50 tabular-nums font-semibold">
               {track.popularity}
             </span>
           </div>
@@ -165,7 +165,7 @@ const Song: React.FC<Props> = ({ track, posts, sourceId }) => {
             <img
               src={author.image || "/default-avatar.png"}
               alt={author.name || "User"}
-              className="w-7 h-7 rounded-sm border border-terminal-border"
+              className="w-7 h-7 rounded-lg border border-white/20"
             />
             <SavedBy author={author} othersCount={othersCount} />
           </div>
