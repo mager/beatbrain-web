@@ -29,10 +29,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let sourceId: string | null = null;
 
   if (isSpotifyId) {
-    // Fast path: hit v2 directly
-    const resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${mbid}`);
+    // Try v2 first, fall back to v1
+    let resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${mbid}`);
     if (!resp.ok) {
-      console.error(`v2 track fetch failed: ${resp.status}`);
+      console.warn(`v2 track fetch failed (${resp.status}), falling back to v1`);
+      resp = await fetch(`${SERVER_HOST}/track?spotifyId=${mbid}`);
+    }
+    if (!resp.ok) {
+      console.error(`track fetch failed: ${resp.status}`);
       return { notFound: true };
     }
     const body = await resp.json();

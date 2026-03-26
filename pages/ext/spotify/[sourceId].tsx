@@ -22,11 +22,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
-  // Use v2: parallel fetch + Firestore cache
-  const resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
+  // Try v2 first (parallel fetch + cache), fall back to v1
+  let resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
   if (!resp.ok) {
-    console.error(`Failed to fetch track: ${resp.status} ${resp.statusText}`);
-    return { notFound: true };
+    console.warn(`v2 track fetch failed (${resp.status}), falling back to v1`);
+    resp = await fetch(`${SERVER_HOST}/track?spotifyId=${sourceId}`);
+    if (!resp.ok) {
+      console.error(`v1 track fetch also failed: ${resp.status} ${resp.statusText}`);
+      return { notFound: true };
+    }
   }
 
   const respBody = await resp.json();
