@@ -9,93 +9,46 @@ const AboutPage: React.FC = () => {
       <div className="px-4 pt-12 pb-8 md:pt-20 md:pb-12">
         <div className="bb-container">
           <GiantTitle>about</GiantTitle>
-          <p className="mt-4 text-phosphor-dim font-mono text-sm md:text-base max-w-2xl">
-            A social music discovery app for people who care about what they listen to —
-            and who want to share that with friends.
-          </p>
         </div>
       </div>
 
       {/* Story */}
       <div className="bb-container pb-16 space-y-12">
-        {/* Why beatbrain exists */}
+        {/* Why */}
         <section className="terminal-window">
-          <div className="terminal-titlebar">the origin</div>
+          <div className="terminal-titlebar">why this exists</div>
           <div className="p-5 md:p-6 space-y-4 text-phosphor-dim">
             <p>
-              I loved Last.fm. That site understood something important: music is social.
-              The scrobbling, the charts, the discovery through friends — it was a way
-              to share taste without having to write about it.
+              I loved Last.fm. The scrobbling, the charts, seeing what your friends
+              were actually listening to — that site understood that music is social.
+              It&apos;s still around, but it doesn&apos;t hit the same anymore.
             </p>
             <p>
-              Last.fm is still around, but it doesn't hit the same. So I built beatbrain
-              as my take on social music discovery. A place to find what's hot, share
-              your favorites, and see what your friends are actually listening to.
+              So I built beatbrain. It&apos;s my take on social music discovery.
+              Find what&apos;s hot, share your favorites, see what your friends are
+              into. That&apos;s it. No algorithm trying to keep you scrolling. Just
+              music and the people who care about it.
             </p>
-            <p className="text-phosphor text-sm">
-              —{" "}
-              <a
-                href="https://x.com/mager"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent hover:underline"
-              >
-                @mager
-              </a>
-              , building beatbrain since 2024
+            <p>
+              I started building this in 2024 and I haven&apos;t stopped. It&apos;s a
+              side project that became a real thing.
             </p>
           </div>
         </section>
 
-        {/* What it does */}
-        <section className="terminal-window">
-          <div className="terminal-titlebar">what it does</div>
-          <div className="p-5 md:p-6">
-            <div className="grid md:grid-cols-3 gap-6">
-              <div>
-                <h3 className="text-phosphor font-mono text-sm mb-2">discover</h3>
-                <p className="text-phosphor-dim text-sm">
-                  Hot new releases from Spotify, Billboard, Pitchfork, and HotNewHipHop —
-                  scored and ranked so you know what's actually worth your time.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-phosphor font-mono text-sm mb-2">share</h3>
-                <p className="text-phosphor-dim text-sm">
-                  Save tracks with notes. Build a profile of what you love. Your friends
-                  can see your taste and find their next obsession.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-phosphor font-mono text-sm mb-2">explore</h3>
-                <p className="text-phosphor-dim text-sm">
-                  Full credits: who produced it, who played bass, what key it's in.
-                  Plus podcasts from 100+ categories for when you need something to
-                  listen to between songs.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* The Spotify connection */}
+        {/* Spotify */}
         <section className="terminal-window">
           <div className="terminal-titlebar">spotify-pilled</div>
           <div className="p-5 md:p-6 space-y-4 text-phosphor-dim">
             <p>
-              beatbrain is heavily integrated with Spotify. That's intentional — I worked
-              there from 2011-2014 as the first Developer Advocate, and I believe in
-              their catalog and APIs.
+              Yeah, beatbrain is heavily Spotify-integrated. I&apos;m fine with that.
+              I worked at Spotify from 2011-2014 as their first Developer Advocate.
+              I believe in their catalog and their APIs.
             </p>
             <p>
-              We use Spotify for search, track metadata, audio features (danceability,
-              energy, valence), and audio analysis (the loudness map you see on track
-              pages). If you connect your account, you can even play tracks directly
-              through the site.
-            </p>
-            <p>
-              But beatbrain isn't just a Spotify wrapper. We enrich every track with data
-              from{" "}
+              But I also wanted to show you things Spotify doesn&apos;t. Who played
+              bass on that track. Who produced it. What key it&apos;s in. How loud it
+              gets. That data comes from{" "}
               <a
                 href="https://musicbrainz.org"
                 target="_blank"
@@ -103,9 +56,52 @@ const AboutPage: React.FC = () => {
                 className="text-accent hover:underline"
               >
                 MusicBrainz
+              </a>
+              , the open music encyclopedia. I built a{" "}
+              <a
+                href="https://github.com/mager/musicbrainz-go"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                Go client library
               </a>{" "}
-              — the open music encyclopedia — to show you production credits,
-              instruments, and songwriting info you won't find in the Spotify app.
+              to talk to it.
+            </p>
+            <p>
+              Click any track and you&apos;ll see the Audio DNA — danceability,
+              energy, acousticness, all of it visualized. Plus a loudness map of the
+              entire song. Plus full liner-notes-style credits. That&apos;s the stuff I
+              always wanted to see and couldn&apos;t find anywhere.
+            </p>
+          </div>
+        </section>
+
+        {/* How it works */}
+        <section className="terminal-window">
+          <div className="terminal-titlebar">how it works</div>
+          <div className="p-5 md:p-6 space-y-4 text-phosphor-dim">
+            <p>
+              The discover page aggregates hot releases from Spotify New Releases,
+              Billboard, HotNewHipHop, and Pitchfork. A Go service called{" "}
+              <strong className="text-phosphor">melodex</strong> scrapes these sources,
+              scores the tracks, and stores them in Firestore.
+            </p>
+            <p>
+              When you click a track, another Go service called{" "}
+              <strong className="text-phosphor">occipital</strong> (named after the part
+              of your brain that processes visual information) fans out parallel API
+              calls to Spotify and MusicBrainz, assembles everything, caches it, and
+              returns it in about 200ms. It used to take 3 seconds. I{" "}
+              <a
+                href="https://mager.co/blog/beatbrain-v2-backend-rewrite"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                wrote about the rewrite
+              </a>
+              .
             </p>
           </div>
         </section>
@@ -115,10 +111,11 @@ const AboutPage: React.FC = () => {
           <div className="terminal-titlebar">podcasts</div>
           <div className="p-5 md:p-6 space-y-4 text-phosphor-dim">
             <p>
-              The newest addition: podcast discovery from 100+ categories. We index shows
-              from Spotify's catalog — everything from mainstream hits to niche
-              obsessions like Linguistics, Cybersecurity, DJing, Philosophy, and
-              Firefighting.
+              I added podcast discovery because I listen to a lot of podcasts and
+              Spotify&apos;s browse experience is... fine. beatbrain indexes shows from
+              100+ categories — and I mean weird ones. Linguistics. Cybersecurity.
+              Firefighting. DJing. Philosophy. If Spotify has a category for it, I
+              indexed it.
             </p>
             <p>
               <Link href="/podcasts" className="text-accent hover:underline">
@@ -128,57 +125,34 @@ const AboutPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Tech stack */}
+        {/* Stack */}
         <section className="terminal-window">
           <div className="terminal-titlebar">the stack</div>
-          <div className="p-5 md:p-6">
-            <div className="space-y-3 text-sm">
-              <div className="flex gap-4">
-                <span className="text-phosphor font-mono w-24 shrink-0">frontend</span>
-                <span className="text-phosphor-dim">
-                  Next.js 14, Tailwind, Prisma, Vercel
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-phosphor font-mono w-24 shrink-0">backend</span>
-                <span className="text-phosphor-dim">
-                  Go + Uber FX, Cloud Run, Firestore
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-phosphor font-mono w-24 shrink-0">scrapers</span>
-                <span className="text-phosphor-dim">
-                  Go + Chromedp, runs on Cloud Run
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-phosphor font-mono w-24 shrink-0">apis</span>
-                <span className="text-phosphor-dim">
-                  Spotify, MusicBrainz, Cover Art Archive
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-phosphor font-mono w-24 shrink-0">design</span>
-                <span className="text-phosphor-dim">
-                  Built with Claude's impeccable design skills
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Open source */}
-        <section className="terminal-window">
-          <div className="terminal-titlebar">open source</div>
           <div className="p-5 md:p-6 space-y-4 text-phosphor-dim">
             <p>
-              All the code is public. The backend is called{" "}
-              <strong className="text-phosphor">occipital</strong> (after the part of
-              your brain that processes visual information). The scraper is{" "}
-              <strong className="text-phosphor">melodex</strong>. The MusicBrainz client
-              is its own library.
+              Everything is open source. The frontend is Next.js on Vercel. The backend
+              is Go on Cloud Run. The scrapers use Chromedp for headless browsing. I use
+              AI to build — Claude with the{" "}
+              <a
+                href="https://github.com/pbasaus/impeccable"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                impeccable
+              </a>{" "}
+              design skills for the frontend, and my own agent{" "}
+              <a
+                href="https://github.com/mager/openclaw-brain"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                magerbot
+              </a>{" "}
+              for everything else.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 mt-4">
               <a
                 href="https://github.com/mager/beatbrain-web"
                 target="_blank"
@@ -215,17 +189,21 @@ const AboutPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Links */}
+        {/* Find me */}
         <section className="terminal-window">
-          <div className="terminal-titlebar">find us</div>
-          <div className="p-5 md:p-6">
-            <div className="flex flex-wrap gap-6 text-sm">
+          <div className="terminal-titlebar">find me</div>
+          <div className="p-5 md:p-6 space-y-4 text-phosphor-dim">
+            <p>
+              I&apos;m{" "}
               <a
-                href="https://beatbrain.xyz"
+                href="https://x.com/mager"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-accent hover:underline"
               >
-                beatbrain.xyz
-              </a>
+                @mager
+              </a>{" "}
+              everywhere. beatbrain is{" "}
               <a
                 href="https://x.com/beatbrainxyz"
                 target="_blank"
@@ -234,15 +212,21 @@ const AboutPage: React.FC = () => {
               >
                 @beatbrainxyz
               </a>
+              . I write about building stuff at{" "}
               <a
-                href="https://x.com/mager"
+                href="https://mager.co"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-accent hover:underline"
               >
-                @mager
+                mager.co
               </a>
-            </div>
+              .
+            </p>
+            <p>
+              If you find a bug, want to contribute, or just want to talk about music —
+              I&apos;m around. ✌️
+            </p>
           </div>
         </section>
       </div>
