@@ -22,9 +22,9 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
       href={externalURL}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col overflow-hidden rounded-lg border border-terminal-border bg-terminal-surface transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5 opacity-0 animate-fadeUp"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-terminal-border bg-terminal-surface transition-all duration-500 ease-out hover:border-accent/40 hover:shadow-[0_8px_40px_rgba(255,51,102,0.08)] hover:-translate-y-1 opacity-0 animate-fadeUp"
       style={{
-        animationDelay: `${Math.min(index * 30, 500)}ms`,
+        animationDelay: `${Math.min(index * 40, 600)}ms`,
         animationFillMode: 'forwards',
       }}
     >
@@ -35,46 +35,64 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
             src={imageURL}
             alt={name}
             fill
-            className="object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-[0.85]"
+            className="object-cover transition-all duration-700 ease-out group-hover:scale-[1.06]"
             unoptimized
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-terminal-border/20">
-            <span className="font-mono text-2xl text-phosphor-dim">🎧</span>
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-terminal-border/30 to-terminal-border/10">
+            <span className="font-mono text-3xl text-phosphor-dim/40">🎧</span>
           </div>
         )}
 
-        {/* Play overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-black font-mono text-xs font-semibold">
+        {/* Gradient overlay — always subtle, stronger on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        {/* Play CTA — slides up on hover */}
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-center p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-10">
+          <div className="flex items-center gap-2 rounded-full bg-white/95 backdrop-blur-sm px-4 py-2 text-phosphor font-display text-xs font-semibold shadow-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="currentColor"
+              className="text-accent"
             >
               <polygon points="5 3 19 12 5 21 5 3" />
             </svg>
-            Listen on Spotify
+            Listen
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-phosphor-dim"
+            >
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-3">
-        <h3 className="font-display text-sm text-white line-clamp-2 transition-colors duration-300 group-hover:text-accent min-h-[2.5rem]">
+      <div className="flex flex-1 flex-col p-3.5">
+        <h3 className="font-display text-sm text-phosphor font-semibold line-clamp-2 transition-colors duration-300 group-hover:text-accent min-h-[2.5rem] leading-snug">
           {name}
         </h3>
         {description && (
-          <p className="font-mono text-[10px] text-phosphor-dim line-clamp-2 mt-2 leading-relaxed">
+          <p className="font-mono text-[10px] text-phosphor-dim/70 line-clamp-2 mt-2 leading-relaxed">
             {description}
           </p>
         )}
       </div>
 
-      {/* Bottom border accent */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-accent/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      {/* Bottom accent line — grows on hover */}
+      <div className="h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left" />
     </a>
   );
 };

@@ -280,7 +280,44 @@
 }
 
 .animate-fadeUp {
-  animation: fadeUp 0.4s ease-out;
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Shimmer loading animation */
+@keyframes shimmerSlide {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--terminal-border) 0%,
+    rgba(0, 0, 0, 0.02) 40%,
+    rgba(0, 0, 0, 0.04) 50%,
+    rgba(0, 0, 0, 0.02) 60%,
+    var(--terminal-border) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSlide 1.8s ease-in-out infinite;
+}
+
+/* Reduced motion: disable all non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeUp,
+  .animate-shimmer,
+  .animate-marquee,
+  .animate-float,
+  .animate-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .discover-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ===== SCROLLBAR HIDE ===== */
