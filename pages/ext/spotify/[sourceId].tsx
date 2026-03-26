@@ -22,8 +22,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
-  // Use the Spotify-first endpoint directly
-  const resp = await fetch(`${SERVER_HOST}/track?spotifyId=${sourceId}`);
+  // Use v2: parallel fetch + Firestore cache
+  const resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
   if (!resp.ok) {
     console.error(`Failed to fetch track: ${resp.status} ${resp.statusText}`);
     return { notFound: true };

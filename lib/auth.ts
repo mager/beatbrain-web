@@ -23,6 +23,12 @@ export const auth = betterAuth({
       ],
     },
   },
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["spotify"],
+    },
+  },
   plugins: [username()],
   session: {
     cookieCache: {

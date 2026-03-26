@@ -22,37 +22,53 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
-  // First, fetch via mbid (existing flow)
-  const resp = await fetch(`${SERVER_HOST}/track?mbid=${mbid}`);
-  if (!resp.ok) {
-    console.error(`Failed to fetch track: ${resp.status} ${resp.statusText}`);
-    return { notFound: true };
-  }
+  // Check if mbid is actually a Spotify ID (passed directly from feed/discover)
+  const isSpotifyId = mbid.length === 22 && !mbid.includes("-");
 
-  const respBody = await resp.json();
-  if (!respBody.track) {
-    return { notFound: true };
-  }
+  let track;
+  let sourceId: string | null = null;
 
-  let track = adaptTrack(respBody);
-  const sourceId = respBody.track.source_id;
+  if (isSpotifyId) {
+    // Fast path: hit v2 directly
+    const resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${mbid}`);
+    if (!resp.ok) {
+      console.error(`v2 track fetch failed: ${resp.status}`);
+      return { notFound: true };
+    }
+    const body = await resp.json();
+    if (!body.track) return { notFound: true };
+    track = adaptTrack(body);
+    sourceId = mbid;
+  } else {
+    // MBID path: resolve source_id first, then hit v2
+    const mbResp = await fetch(`${SERVER_HOST}/track?mbid=${mbid}`);
+    if (!mbResp.ok) {
+      console.error(`MB track fetch failed: ${mbResp.status}`);
+      return { notFound: true };
+    }
+    const mbBody = await mbResp.json();
+    if (!mbBody.track) return { notFound: true };
 
-  // If we got a Spotify source_id from the mbid lookup, re-fetch via spotifyId
-  // to get the full audio features + analysis
-  if (sourceId) {
-    try {
-      const spotifyResp = await fetch(
-        `${SERVER_HOST}/track?spotifyId=${sourceId}`
-      );
-      if (spotifyResp.ok) {
-        const spotifyBody = await spotifyResp.json();
-        if (spotifyBody.track) {
-          track = adaptTrack(spotifyBody);
+    sourceId = mbBody.track.source_id || null;
+
+    if (sourceId) {
+      // Upgrade to v2 for full features + cache
+      try {
+        const v2Resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
+        if (v2Resp.ok) {
+          const v2Body = await v2Resp.json();
+          if (v2Body.track) {
+            track = adaptTrack(v2Body);
+          }
         }
+      } catch (err) {
+        console.warn("v2 upgrade failed, falling back to mbid data", err);
       }
-    } catch (err) {
-      // Spotify-first failed, fall back to mbid data — that's fine
-      console.warn("Spotify-first enrichment failed, using mbid data", err);
+    }
+
+    // Final fallback: use the MB response as-is
+    if (!track) {
+      track = adaptTrack(mbBody);
     }
   }
 
@@ -64,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
   }
 
-  return { props: { track, posts, sourceId: sourceId || null } };
+  return { props: { track, posts, sourceId } };
 };
 
 type Props = {
