@@ -1,14 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import GiantTitle from "@components/GiantTitle";
 
 const AboutPage: React.FC = () => {
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div className="px-4 pt-12 pb-8 md:pt-20 md:pb-12">
-        <div className="bb-container">
-          <GiantTitle>about</GiantTitle>
+      {/* Header — matches discover/feed style */}
+      <div className="px-4 pt-8 pb-8">
+        <div className="relative inline-block">
+          <h1 className="font-display text-massive text-phosphor tracking-tight font-bold">
+            about
+          </h1>
+          <div className="absolute -bottom-2 left-0 w-16 h-1 bg-accent rounded-full" />
         </div>
       </div>
 

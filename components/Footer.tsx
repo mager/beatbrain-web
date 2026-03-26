@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Logo from "@components/Logo";
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,6 +18,10 @@ const Footer: React.FC<FooterProps> = ({ className, ...rest }) => {
         </div>
         
         <div className="flex items-center gap-4 text-phosphor-dim">
+          <Link href="/about" className="text-phosphor-dim hover:text-accent transition-colors">
+            about
+          </Link>
+          <span className="text-terminal-border">·</span>
           <a 
             href="https://twitter.com/mager"
             target="_blank"
