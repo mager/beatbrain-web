@@ -13,6 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'accept': 'application/json',
       },
       body: JSON.stringify(req.body),
+      signal: AbortSignal.timeout(8000),
     });
     const data = await backendRes.json();
     res.status(backendRes.status).json(data);

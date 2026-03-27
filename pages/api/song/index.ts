@@ -22,6 +22,7 @@ export default async function handle(
   const resp = await fetch(url, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
+    signal: AbortSignal.timeout(8000),
   });
 
   if (!resp.ok) {

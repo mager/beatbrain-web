@@ -13,6 +13,7 @@ export default async function handle(
       "Content-Type": "application/json",
     },
     body: JSON.stringify(req.body),
+    signal: AbortSignal.timeout(8000),
   });
 
   const respBody = await resp.json();
