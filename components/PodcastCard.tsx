@@ -80,12 +80,12 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-3.5">
-        <h3 className="font-display text-sm text-phosphor font-semibold line-clamp-2 transition-colors duration-300 group-hover:text-accent min-h-[2.5rem] leading-snug">
+      <div className="flex flex-1 flex-col p-2.5 sm:p-3.5">
+        <h3 className="font-display text-xs sm:text-sm text-phosphor font-semibold line-clamp-2 transition-colors duration-300 group-hover:text-accent leading-snug">
           {name}
         </h3>
         {description && (
-          <p className="font-mono text-[10px] text-phosphor-dim/70 line-clamp-2 mt-2 leading-relaxed">
+          <p className="hidden sm:block font-mono text-[10px] text-phosphor-dim/70 line-clamp-2 mt-1.5 leading-relaxed">
             {description}
           </p>
         )}

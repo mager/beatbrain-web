@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import PodcastCard from "@components/PodcastCard";
 
@@ -27,8 +27,16 @@ const PodcastsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [podcastsLoading, setPodcastsLoading] = useState(false);
+  const [categorySearch, setCategorySearch] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
   const chipsRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const filteredCategories = useMemo(() => {
+    if (!categorySearch.trim()) return categories;
+    const q = categorySearch.toLowerCase();
+    return categories.filter((c) => c.name.toLowerCase().includes(q));
+  }, [categories, categorySearch]);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -72,9 +80,7 @@ const PodcastsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory) {
-      fetchPodcasts(selectedCategory);
-    }
+    if (selectedCategory) fetchPodcasts(selectedCategory);
   }, [selectedCategory, fetchPodcasts]);
 
   // Scroll selected chip into view
@@ -82,9 +88,15 @@ const PodcastsPage: React.FC = () => {
     if (!selectedCategory || !chipsRef.current) return;
     const active = chipsRef.current.querySelector('[data-active="true"]');
     if (active) {
-      active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     }
   }, [selectedCategory]);
+
+  const handleCategorySelect = (name: string) => {
+    setSelectedCategory(name);
+    setCategorySearch("");
+    searchRef.current?.blur();
+  };
 
   return (
     <div className="min-h-screen">
@@ -101,52 +113,100 @@ const PodcastsPage: React.FC = () => {
         </p>
       </div>
 
-      {/* ── Category Chips ── */}
-      <div className="pt-6 pb-4">
+      {/* ── Category Search + Chips ── */}
+      <div className="pt-6 pb-4 space-y-3">
+        {/* Search input */}
+        <div className="px-4">
+          <div
+            className={`
+              flex items-center gap-2.5 px-4 py-2.5 rounded-full
+              border transition-all duration-200
+              bg-terminal-surface
+              ${searchFocused
+                ? "border-accent/60 shadow-[0_0_0_3px_rgba(255,51,102,0.08)]"
+                : "border-terminal-border hover:border-phosphor-dim/30"
+              }
+            `}
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`flex-shrink-0 transition-colors duration-200 ${searchFocused ? "text-accent" : "text-phosphor-dim/50"}`}
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              ref={searchRef}
+              type="text"
+              value={categorySearch}
+              onChange={(e) => setCategorySearch(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              placeholder={`Search ${categories.length} categories...`}
+              className="flex-1 bg-transparent font-mono text-xs text-phosphor placeholder-phosphor-dim/40 focus:outline-none min-w-0"
+            />
+            {categorySearch && (
+              <button
+                onClick={() => setCategorySearch("")}
+                className="flex-shrink-0 text-phosphor-dim/50 hover:text-phosphor transition-colors"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Category chips */}
         {categoriesLoading ? (
-          <div className="flex gap-2 overflow-x-auto px-4 scrollbar-hide md:flex-wrap">
+          <div className="flex gap-2 overflow-x-auto px-4 scrollbar-hide">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
                 className="h-9 w-28 flex-shrink-0 rounded-full bg-gradient-to-r from-terminal-border/40 to-terminal-border/20 animate-shimmer"
-                style={{
-                  animationDelay: `${i * 80}ms`,
-                  backgroundSize: '200% 100%',
-                }}
+                style={{ animationDelay: `${i * 80}ms`, backgroundSize: "200% 100%" }}
               />
             ))}
+          </div>
+        ) : filteredCategories.length === 0 ? (
+          <div className="px-4">
+            <p className="font-mono text-xs text-phosphor-dim/50 py-2">
+              no categories match &ldquo;{categorySearch}&rdquo;
+            </p>
           </div>
         ) : (
           <div
             ref={chipsRef}
-            className="flex gap-2 overflow-x-auto px-4 scrollbar-hide md:flex-wrap snap-x snap-mandatory"
+            className="flex gap-2 overflow-x-auto px-4 scrollbar-hide snap-x snap-mandatory"
           >
-            {categories.map((cat) => {
+            {filteredCategories.map((cat) => {
               const isActive = selectedCategory === cat.name;
               return (
                 <button
                   key={cat.name}
                   data-active={isActive}
-                  onClick={() => setSelectedCategory(cat.name)}
+                  onClick={() => handleCategorySelect(cat.name)}
                   className={`
-                    flex-shrink-0 snap-start inline-flex items-center gap-2 px-5 py-2.5 rounded-full
+                    flex-shrink-0 snap-start inline-flex items-center gap-2 px-4 py-2 rounded-full
                     font-mono text-xs transition-all duration-300 ease-out
-                    border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-terminal-bg
+                    border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40
                     ${
                       isActive
                         ? "bg-accent text-white border-accent shadow-glow-accent scale-[1.02]"
-                        : "bg-terminal-surface border-terminal-border text-phosphor-dim hover:border-phosphor-dim/40 hover:text-phosphor hover:bg-terminal-surface/80 active:scale-95"
+                        : "bg-terminal-surface border-terminal-border text-phosphor-dim hover:border-phosphor-dim/40 hover:text-phosphor active:scale-95"
                     }
                   `}
                 >
                   <span className="font-medium">{cat.name}</span>
-                  <span
-                    className={`text-[10px] tabular-nums ${
-                      isActive
-                        ? "text-white/70"
-                        : "text-phosphor-dim/40"
-                    }`}
-                  >
+                  <span className={`text-[10px] tabular-nums ${isActive ? "text-white/70" : "text-phosphor-dim/40"}`}>
                     {cat.count}
                   </span>
                 </button>
@@ -157,8 +217,8 @@ const PodcastsPage: React.FC = () => {
       </div>
 
       {/* ── Selected Category Label ── */}
-      {selectedCategory && (
-        <div className="px-4 pb-6 flex items-center gap-3">
+      {selectedCategory && !podcastsLoading && (
+        <div className="px-4 pb-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-terminal-border to-transparent" />
           <span className="font-mono text-xs text-accent uppercase tracking-[0.2em] font-medium">
             {selectedCategory}
@@ -168,24 +228,27 @@ const PodcastsPage: React.FC = () => {
       )}
 
       {/* ── Podcast Grid ── */}
-      <div ref={gridRef} className="px-4 pb-16">
+      <div className="px-3 pb-20">
         {podcastsLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {[...Array(15)].map((_, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {[...Array(12)].map((_, i) => (
               <div
                 key={i}
                 className="flex flex-col rounded-xl border border-terminal-border/60 bg-terminal-surface overflow-hidden"
               >
-                <div className="aspect-square bg-gradient-to-br from-terminal-border/30 to-terminal-border/10 animate-shimmer" style={{ backgroundSize: '200% 100%', animationDelay: `${i * 60}ms` }} />
-                <div className="p-3.5 space-y-2.5">
-                  <div className="h-4 bg-terminal-border/30 rounded-full w-3/4 animate-shimmer" style={{ backgroundSize: '200% 100%', animationDelay: `${i * 60 + 100}ms` }} />
-                  <div className="h-3 bg-terminal-border/20 rounded-full w-1/2 animate-shimmer" style={{ backgroundSize: '200% 100%', animationDelay: `${i * 60 + 200}ms` }} />
+                <div
+                  className="aspect-square bg-gradient-to-br from-terminal-border/30 to-terminal-border/10 animate-shimmer"
+                  style={{ backgroundSize: "200% 100%", animationDelay: `${i * 60}ms` }}
+                />
+                <div className="p-3 space-y-2">
+                  <div className="h-3.5 bg-terminal-border/30 rounded-full w-3/4 animate-shimmer" style={{ backgroundSize: "200% 100%", animationDelay: `${i * 60 + 100}ms` }} />
+                  <div className="h-2.5 bg-terminal-border/20 rounded-full w-1/2 animate-shimmer" style={{ backgroundSize: "200% 100%", animationDelay: `${i * 60 + 200}ms` }} />
                 </div>
               </div>
             ))}
           </div>
         ) : podcasts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
             {podcasts.map((podcast, index) => (
               <PodcastCard
                 key={podcast.id}
@@ -203,7 +266,7 @@ const PodcastsPage: React.FC = () => {
             <div className="inline-block p-6 rounded-2xl bg-terminal-surface border border-terminal-border">
               <span className="text-4xl mb-4 block">🎧</span>
               <p className="font-mono text-phosphor-dim text-sm">
-                no podcasts found in{" "}
+                no podcasts in{" "}
                 <span className="text-accent font-semibold">{selectedCategory}</span>
               </p>
             </div>
