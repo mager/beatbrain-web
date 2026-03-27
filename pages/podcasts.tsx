@@ -101,7 +101,7 @@ const PodcastsPage: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* ── Header ── */}
-      <div className="px-4 pt-8 pb-2">
+      <div className="px-4 pt-4 pb-2">
         <div className="relative inline-block">
           <h1 className="font-display text-massive text-phosphor tracking-tight font-bold">
             podcasts
