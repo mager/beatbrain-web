@@ -163,6 +163,19 @@ const SpotifyTrack: React.FC<Props> = ({ track, posts, sourceId }) => {
       </TrackHero>
 
       <div className="bb-container pb-16 space-y-8">
+        {/* Empty state — enrichment not yet available */}
+        {!hasFeatures && !hasAnalysis && !hasCredits && !hasReleases && (
+          <div className="terminal-window">
+            <div className="terminal-titlebar">analysis</div>
+            <div className="p-8 text-center">
+              <p className="font-mono text-xs text-phosphor-dim mb-1 uppercase tracking-widest">Enrichment pending</p>
+              <p className="font-mono text-[11px] text-white/25 max-w-sm mx-auto leading-relaxed">
+                Audio DNA, loudness map, and credits for this track haven't been processed yet. Check back later.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Audio DNA */}
         {hasFeatures && (
           <div className="terminal-window">
