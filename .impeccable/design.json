@@ -1,0 +1,1 @@
+{"version":1,"name":"Beatbrain record room","colors":{"background":"#101113","surface":"#191b1f","border":"#303238","text":"#f3f0e9","muted":"#aaaeb7","accent":"#e4b6ff"},"typography":{"family":"Space Grotesk","body":16,"displayMax":61},"spacing":{"container":1200,"desktopPadding":32,"mobilePadding":20},"motion":{"tiltDegrees":3.5,"durationMs":400,"reducedMotion":true}}

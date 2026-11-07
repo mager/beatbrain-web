@@ -11,26 +11,26 @@ module.exports = {
       colors: {
         // Bright editorial foundation
         'terminal': {
-          bg: '#faf9f7',
-          surface: '#ffffff',
-          border: '#e8e6e1',
-          'border-bright': '#d4d0c8',
+          bg: '#101113',
+          surface: '#191b1f',
+          border: '#303238',
+          'border-bright': '#51545c',
         },
         // Text palette — rich dark for readability
-        'phosphor': '#1a1a1a',
-        'phosphor-dim': '#888580',
+        'phosphor': '#f3f0e9',
+        'phosphor-dim': '#aaaeb7',
         // Vivid accent palette — bubblegum meets fashion
-        'accent': '#ff3366',           // hot pink — the hero color
-        'warm': '#ff6b35',             // electric orange
-        'cool': '#6c63ff',             // deep violet
+        'accent': '#e4b6ff',           // hot pink — the hero color
+        'warm': '#e4b6ff',             // electric orange
+        'cool': '#bcabf2',             // deep violet
         'mint': '#00c9a7',             // fresh teal-mint
         'violet': '#9d4edd',           // purple fashion
-        'rose': '#ff3366',             // alias for accent
+        'rose': '#e4b6ff',             // alias for accent
         // Legacy aliases
-        'ink': '#faf9f7',
-        'vinyl': '#ffffff',
-        'groove': '#e8e6e1',
-        'sleeve': '#1a1a1a',
+        'ink': '#101113',
+        'vinyl': '#191b1f',
+        'groove': '#303238',
+        'sleeve': '#f3f0e9',
       },
       fontFamily: {
         sans: ['var(--font-display)', 'system-ui', 'sans-serif'],

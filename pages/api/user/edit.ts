@@ -1,40 +1,41 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../lib/prisma";
 import { getSession } from "../../../lib/auth-api";
-import { SERVER_HOST } from "@util";
+import { isSameOrigin } from "../../../lib/access";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
+  if (req.method !== "PUT")
+    return res
+      .setHeader("Allow", "PUT")
+      .status(405)
+      .json({ error: "Method not allowed" });
   const session = await getSession(req);
-  if (!session?.user?.id) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  const userId = session.user.id;
-  const url = `${SERVER_HOST}/user?id=${userId}`;
-  const body = {
-    ...req.body,
-    id: userId,
-  };
-
+  if (!session)
+    return res.status(401).json({ error: "Sign in to edit your profile." });
+  if (!isSameOrigin(req.headers.origin))
+    return res.status(403).json({ error: "Invalid request origin." });
+  const username =
+    typeof req.body?.username === "string"
+      ? req.body.username.trim().toLowerCase()
+      : "";
+  if (!/^[a-z0-9_]{3,30}$/.test(username))
+    return res
+      .status(400)
+      .json({ error: "Use 3–30 letters, numbers, or underscores." });
   try {
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
+    const user = await prisma.user.update({
+      where: { id: session.user.id },
+      data: { username, displayUsername: username },
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    res.status(200).json(data);
+    return res.json({ username: user.username });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ error: "Failed to update user" });
+    if ((error as { code?: string }).code === "P2002")
+      return res.status(409).json({ error: "That username is already taken." });
+    return res
+      .status(500)
+      .json({ error: "Your profile was not saved. Please try again." });
   }
 }

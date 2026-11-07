@@ -1,3 +1,4 @@
+import { backendFetch } from "../../../lib/backend";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SERVER_HOST } from "@util";
 
@@ -7,7 +8,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const resp = await fetch(`${SERVER_HOST}/spotify/recommended_tracks`, {
+  const resp = await backendFetch(`${SERVER_HOST}/spotify/recommended_tracks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -118,3 +118,17 @@ model Podcast {
 
   @@map("podcasts")
 }
+
+// A token is consumed before account creation. Failed creation needs a new invite.
+model Invite {
+  id        String    @id @default(cuid())
+  email     String
+  tokenHash String    @unique
+  createdBy String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  @@index([email])
+  @@map("invites")
+}

@@ -1,41 +1,54 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getSession } from "../../../lib/auth-api";
+import { parsePostInput } from "../../../lib/post-input";
+import { isSameOrigin } from "../../../lib/access";
 
-// POST /api/post
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  const { content, track } = req.body;
+  if (req.method !== "POST")
+    return res
+      .setHeader("Allow", "POST")
+      .status(405)
+      .json({ error: "Method not allowed" });
   const session = await getSession(req);
-
-  if (!session) {
-    return res.status(401).send({ message: "Unauthorized" });
+  if (!session)
+    return res.status(401).json({ error: "Sign in to post a track." });
+  if (!isSameOrigin(req.headers.origin))
+    return res.status(403).json({ error: "Invalid request origin." });
+  let input: ReturnType<typeof parsePostInput>;
+  try {
+    input = parsePostInput(req.body);
+  } catch (error) {
+    return res.status(400).json({ error: (error as Error).message });
   }
-
-  // Check if a track exists
-  let trackToUpdate = await prisma.track.findUnique({
-    where: {
-      source_sourceId: {
-        source: "SPOTIFY",
-        sourceId: track.sourceId,
-      },
-    },
-  });
-
-  if (!trackToUpdate) {
-    trackToUpdate = await prisma.track.create({
-      data: track,
+  try {
+    const result = await prisma.$transaction(async (tx) => {
+      const track = await tx.track.upsert({
+        where: {
+          source_sourceId: {
+            source: input.track.source,
+            sourceId: input.track.sourceId,
+          },
+        },
+        create: input.track,
+        update: {},
+      });
+      return tx.post.create({
+        data: {
+          content: input.content,
+          authorId: session.user.id,
+          trackId: track.id,
+        },
+      });
     });
+    return res.status(201).json(result);
+  } catch {
+    return res
+      .status(500)
+      .json({ error: "Your track was not posted. Please try again." });
   }
-
-  const result = await prisma.post.create({
-    data: {
-      content,
-      author: { connect: { email: session.user.email } },
-      track: { connect: { id: trackToUpdate.id } },
-    },
-  });
-  res.json(result);
 }
+export const config = { api: { bodyParser: { sizeLimit: "16kb" } } };

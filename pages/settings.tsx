@@ -1,149 +1,182 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AppContext } from "../context/AppContext";
-
-
-const Settings: React.FC = () => {
-  const context = useContext(AppContext);
-  const { state } = context;
-  const user = state?.user;
-  const [username, setUsername] = useState(user?.username || "");
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useAppContext } from "../context/AppContext";
+import { authClient } from "../lib/auth-client";
+import { isOwner } from "../lib/access";
+import {
+  ArrowUpRightIcon,
+  CheckIcon,
+  ClipboardIcon,
+} from "@heroicons/react/24/outline";
+export default function Settings() {
+  const {
+    state: { user },
+    setState,
+  } = useAppContext();
+  const [username, setUsername] = useState(""),
+    [email, setEmail] = useState(""),
+    [inviteURL, setInviteURL] = useState(""),
+    [message, setMessage] = useState(""),
+    [error, setError] = useState(""),
+    [busy, setBusy] = useState(false),
+    [copied, setCopied] = useState(false);
   useEffect(() => {
-    if (user?.username) setUsername(user.username);
+    setUsername(user?.username || "");
   }, [user?.username]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaving(true);
-    
+  async function save(event: React.FormEvent) {
+    event.preventDefault();
+    setBusy(true);
+    setError("");
+    setMessage("");
     try {
-      await fetch("/api/user/edit", {
+      const response = await fetch("/api/user/edit", {
         method: "PUT",
-        body: JSON.stringify({ username }),
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
       });
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    } catch (error) {
-      console.error("Failed to update:", error);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error);
+      setState((s) => ({ ...s, user: { ...s.user, username: data.username } }));
+      setMessage("Your profile is saved.");
+    } catch (e) {
+      setError((e as Error).message);
     } finally {
-      setIsSaving(false);
-      setIsEditing(false);
+      setBusy(false);
     }
-  };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center font-mono">
-        <div className="text-center">
-          <p className="text-phosphor-dim text-sm">please log in to continue</p>
-        </div>
-      </div>
-    );
   }
-
+  async function invite(event: React.FormEvent) {
+    event.preventDefault();
+    setBusy(true);
+    setError("");
+    setInviteURL("");
+    setCopied(false);
+    try {
+      const response = await fetch("/api/invites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error);
+      setInviteURL(data.url);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
-    <div className="min-h-screen">
-      <div className="relative bb-container max-w-2xl pt-24 pb-16">
-        {/* Header */}
-        <div className="mb-10 border-b border-terminal-border pb-4">
-          <h1 className="font-display text-2xl md:text-3xl text-phosphor tracking-tight mb-2">
-            settings
-          </h1>
-          <p className="font-mono text-xs text-phosphor-dim">
-            account configuration
+    <div className="settings-page">
+      <h1>Make yourself at home.</h1>
+      <p className="muted">Your profile. Your people. Your room.</p>
+      <section className="settings-section">
+        <h2>Your profile</h2>
+        <form className="form-stack" onSubmit={save}>
+          <label>
+            Username
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value.toLowerCase())}
+              required
+              pattern="[a-z0-9_]{3,30}"
+              maxLength={30}
+            />
+            <span className="field-hint">
+              3–30 letters, numbers, or underscores.
+            </span>
+          </label>
+          <div className="inline-actions">
+            <button className="button button-secondary" disabled={busy}>
+              Save profile
+            </button>
+            {user?.username && (
+              <Link href={`/u/${user.username}`}>
+                View my feed <ArrowUpRightIcon width={14} />
+              </Link>
+            )}
+          </div>
+        </form>
+      </section>
+      {isOwner(user) && (
+        <section className="settings-section">
+          <h2>Bring your people.</h2>
+          <p className="muted">
+            Make a private invite for a friend. Each link works once, for their
+            email, and expires in 7 days.
           </p>
-        </div>
-
-        {/* Profile Card */}
-        <div className="terminal-window mb-6">
-          <div className="terminal-titlebar">profile</div>
-          <div className="p-6 font-mono">
-            {/* User info */}
-            <div className="space-y-2 mb-6 text-xs">
-              <div className="flex gap-4">
-                <span className="text-phosphor-dim w-24">name</span>
-                <span className="text-phosphor">{user.name || '—'}</span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-phosphor-dim w-24">email</span>
-                <span className="text-phosphor">{user.email || '—'}</span>
-              </div>
-              {user.spotifyId && (
-                <div className="flex gap-4">
-                  <span className="text-phosphor-dim w-24">spotify</span>
-                  <span className="text-accent flex items-center gap-2">
-                    connected
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent/70 inline-block" />
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className="border-t border-terminal-border my-4" />
-
-            {/* Username field */}
-            <div>
-              <div className="data-label mb-3">username</div>
-              
-              {!isEditing ? (
-                <div className="flex items-center gap-3">
-                  <span className="text-cool">{username || '—'}</span>
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="px-3 py-1.5 text-[10px] border border-terminal-border text-phosphor-dim hover:border-accent/50 hover:text-accent transition-all duration-300 rounded"
-                  >
-                    edit
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-3">
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ''))}
-                    className="w-full max-w-xs bg-terminal-bg border border-terminal-border text-phosphor px-3 py-1.5 font-mono text-xs outline-none focus:border-accent transition-all rounded"
-                    placeholder="username"
-                    maxLength={30}
-                    autoFocus
-                  />
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="submit"
-                      disabled={isSaving}
-                      className="px-4 py-1.5 text-[10px] border border-accent/50 text-accent hover:bg-accent/5 disabled:opacity-50 transition-all duration-300 rounded"
-                    >
-                      {isSaving ? 'saving...' : 'save'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setIsEditing(false); setUsername(user?.username || ""); }}
-                      className="px-4 py-1.5 text-[10px] border border-terminal-border text-phosphor-dim hover:text-phosphor transition-all duration-300 rounded"
-                    >
-                      cancel
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {saved && (
-                <p className="mt-3 text-[11px] text-accent">
-                  saved ✓
-                </p>
-              )}
-
-              <p className="mt-4 text-[10px] text-phosphor-dim">
-                lowercase, numbers, dashes, underscores
+          <form onSubmit={invite} className="form-stack">
+            <label>
+              Their email
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
+            <button className="button button-primary" disabled={busy}>
+              Create invite <ArrowUpRightIcon width={18} />
+            </button>
+          </form>
+          {inviteURL && (
+            <div className="invite-result">
+              <label>
+                Invite link
+                <input
+                  readOnly
+                  value={inviteURL}
+                  onFocus={(e) => e.target.select()}
+                />
+              </label>
+              <button
+                className="button button-secondary"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(inviteURL);
+                    setCopied(true);
+                  } catch {
+                    setError("Select and copy the link above.");
+                  }
+                }}
+              >
+                {copied ? (
+                  <CheckIcon width={18} />
+                ) : (
+                  <ClipboardIcon width={18} />
+                )}{" "}
+                {copied ? "Copied" : "Copy link"}
+              </button>
+              <p className="field-hint">
+                Send this link to your friend. No email has been sent.
               </p>
             </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </section>
+      )}
+      {error && (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      )}
+      {message && (
+        <p role="status" className="success-message">
+          {message}
+        </p>
+      )}
+      <section className="settings-section">
+        <button
+          className="text-button"
+          onClick={() =>
+            authClient.signOut({
+              fetchOptions: {
+                onSuccess: () => window.location.assign("/auth/signin"),
+              },
+            })
+          }
+        >
+          Sign out
+        </button>
+      </section>
     </div>
   );
-};
-
-export default Settings;
+}

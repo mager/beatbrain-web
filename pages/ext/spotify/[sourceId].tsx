@@ -1,3 +1,4 @@
+import { backendFetch } from "../../../lib/backend";
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import { authClient } from "../../../lib/auth-client";
@@ -23,10 +24,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   // Try v2 first (parallel fetch + cache), fall back to v1
-  let resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
+  let resp = await backendFetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
   if (!resp.ok) {
     console.warn(`v2 track fetch failed (${resp.status}), falling back to v1`);
-    resp = await fetch(`${SERVER_HOST}/track?spotifyId=${sourceId}`);
+    resp = await backendFetch(`${SERVER_HOST}/track?spotifyId=${sourceId}`);
     if (!resp.ok) {
       console.error(`v1 track fetch also failed: ${resp.status} ${resp.statusText}`);
       return { notFound: true };
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const posts = await prisma.post.findMany({
     where: { track: { sourceId } },
-    select: { author: true },
+    select: { author: { select: { name: true, username: true, image: true } } },
   });
 
   return { props: { track, posts, sourceId } };

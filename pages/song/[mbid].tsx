@@ -1,3 +1,4 @@
+import { backendFetch } from "../../lib/backend";
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import { authClient } from "../../lib/auth-client";
@@ -30,10 +31,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (isSpotifyId) {
     // Try v2 first, fall back to v1
-    let resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${mbid}`);
+    let resp = await backendFetch(`${SERVER_HOST}/v2/track?spotifyId=${mbid}`);
     if (!resp.ok) {
       console.warn(`v2 track fetch failed (${resp.status}), falling back to v1`);
-      resp = await fetch(`${SERVER_HOST}/track?spotifyId=${mbid}`);
+      resp = await backendFetch(`${SERVER_HOST}/track?spotifyId=${mbid}`);
     }
     if (!resp.ok) {
       console.error(`track fetch failed: ${resp.status}`);
@@ -45,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     sourceId = mbid;
   } else {
     // MBID path: resolve source_id first, then hit v2
-    const mbResp = await fetch(`${SERVER_HOST}/track?mbid=${mbid}`);
+    const mbResp = await backendFetch(`${SERVER_HOST}/track?mbid=${mbid}`);
     if (!mbResp.ok) {
       console.error(`MB track fetch failed: ${mbResp.status}`);
       return { notFound: true };
@@ -58,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (sourceId) {
       // Upgrade to v2 for full features + cache
       try {
-        const v2Resp = await fetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
+        const v2Resp = await backendFetch(`${SERVER_HOST}/v2/track?spotifyId=${sourceId}`);
         if (v2Resp.ok) {
           const v2Body = await v2Resp.json();
           if (v2Body.track) {
@@ -80,7 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (sourceId) {
     posts = await prisma.post.findMany({
       where: { track: { sourceId } },
-      select: { author: true },
+      select: { author: { select: { name: true, username: true, image: true } } },
     });
   }
 

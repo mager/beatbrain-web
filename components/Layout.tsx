@@ -1,93 +1,64 @@
 import type { ReactNode } from "react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { Analytics } from "@vercel/analytics/react";
-import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import Head from "next/head";
+import { Space_Grotesk } from "next/font/google";
 import { useAppContext } from "../context/AppContext";
-import type { Track } from "@types";
-
-import Header from "@components/Header";
-import Search from "@components/Search";
-import Main from "@components/Main";
-import Footer from "@components/Footer";
-import Marquee from "@components/Marquee";
-
-// Body: JetBrains Mono — clean developer monospace
-const bodyFont = JetBrains_Mono({
-  weight: ["300", "400", "500", "600", "700", "800"],
-  subsets: ["latin"],
-  variable: "--font-body",
-});
-
-// Display: Space Grotesk — geometric, bold, made for headlines
-const displayFont = Space_Grotesk({
-  weight: ["300", "400", "500", "600", "700"],
+import Header from "./Header";
+const font = Space_Grotesk({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-display",
 });
-
-// Define constants for layout calculation
-const FOOTER_HEIGHT_PX = 36;
-
-type Props = {
-  children: ReactNode;
-};
-
-const Layout: React.FC<Props> = ({ children }) => {
+export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const hideSearch = ["/create", "/settings", "/podcasts", "/discover"].includes(router.pathname);
-  const hideMarquee = ["/podcasts", "/discover"].includes(router.pathname);
-  const { state: appState, setTracks, setTracksLoading } = useAppContext();
-  const { tracks, tracksLoading } = appState;
-
+  const { setTracks, setTracksLoading } = useAppContext();
+  const loaded = useRef(false);
   useEffect(() => {
-    if (tracksLoading || (tracks && tracks.length > 0)) return;
+    if (router.pathname !== "/discover" || loaded.current) return;
+    loaded.current = true;
+    const controller = new AbortController();
     setTracksLoading(true);
-    const fetchTracks = async () => {
-      try {
-        const res = await fetch(`/api/discover`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
-        });
-        if (!res.ok) return;
-        const resp = await res.json();
-        setTracks(resp.tracks, resp.updated || null);
-      } catch (err) {
-        // handle error
-      } finally {
-        setTracksLoading(false);
-      }
+    fetch("/api/discover", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          setTracks(data.tracks || [], data.updated);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setTracksLoading(false));
+    return () => {
+      controller.abort();
+      loaded.current = false;
     };
-    fetchTracks();
-  }, [setTracks, setTracksLoading, tracks, tracksLoading]);
-
-  const calculatePaddingBottom = () => {
-    return `${FOOTER_HEIGHT_PX}px`;
-  };
-
+  }, [router.pathname]);
+  const entry = router.pathname === "/auth/signin";
   return (
-    <div
-      className={`${bodyFont.variable} ${displayFont.variable} font-mono relative`}
-      style={{ paddingBottom: calculatePaddingBottom() }}
-    >
-      <Header />
-      {!hideSearch && <Search />}
-      {!hideMarquee && <Marquee tracks={tracks} speed={50} className="mb-6" />}
-      <Main>{children}</Main>
-      <Analytics />
-
-      {/* Fixed Container for Footer */}
-      <div className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
-        <div
-          className="transition-all duration-300 ease-in-out"
-          style={{ height: `${FOOTER_HEIGHT_PX}px` }}
-        >
-          <Footer className="border-t border-terminal-border" />
-        </div>
-      </div>
+    <div className={`${font.variable} app-shell`}>
+      <Head>
+        <title>Beatbrain — Your music, your people</title>
+        <meta
+          name="description"
+          content="An invite-only listening room for you and your music friends."
+        />
+        <meta name="robots" content="noindex,nofollow" />
+        <meta name="theme-color" content="#101113" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      {!entry && <Header />}
+      <main id="main-content">{children}</main>
+      {!entry && (
+        <footer className="site-footer">
+          <span>Good music travels between friends.</span>
+          <span>beatbrain</span>
+        </footer>
+      )}
     </div>
   );
-};
-
-export default Layout;
+}

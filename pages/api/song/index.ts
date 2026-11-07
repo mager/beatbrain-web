@@ -1,3 +1,4 @@
+import { backendFetch } from "../../../lib/backend";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SERVER_HOST } from "@util";
 import { adaptTrack } from "@adapters/track";
@@ -19,7 +20,7 @@ export default async function handle(
     return res.status(400).json({ error: "mbid or spotifyId is required" });
   }
 
-  const resp = await fetch(url, {
+  const resp = await backendFetch(url, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
     signal: AbortSignal.timeout(8000),

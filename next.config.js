@@ -1,6 +1,7 @@
-const { withSuperjson } = require('next-superjson')
-
-module.exports = withSuperjson()({
+module.exports = {
+    async redirects() {
+      return [{ source: '/:path*', has: [{ type: 'host', value: 'www.beatbrain.xyz' }], destination: 'https://beatbrain.xyz/:path*', permanent: true }];
+    },
     images: {
         remotePatterns: [
             {
@@ -23,4 +24,4 @@ module.exports = withSuperjson()({
             },
         ],
     },
-})
+}

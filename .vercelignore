@@ -1,0 +1,10 @@
+.git
+.claude
+.agents
+.entire
+.impeccable
+.superpowers
+.env*
+tests
+scripts
+*.tsbuildinfo

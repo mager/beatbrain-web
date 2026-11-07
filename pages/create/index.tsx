@@ -1,89 +1,196 @@
-import React, { useState } from "react";
-import Input from "@components/Input";
-import Router from "next/router";
-import Searchbox, { loadOptions } from "@components/Searchbox";
-import useDebouncedLoadOptions from "../../lib/hooks/useDebouncedLoadOptions";
-
-const Create: React.FC = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [content, setContent] = useState("");
-  const debouncedLoadOptions = useDebouncedLoadOptions(loadOptions);
-
-  const [option, setOption] = useState(null);
-  const handleChange = (option) => {
-    setOption(option);
-  };
-
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import {
+  MagnifyingGlassIcon,
+  ArrowUpRightIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { useAppContext } from "../../context/AppContext";
+type Track = { id: string; name: string; artist: string; thumb: string | null };
+export default function Create() {
+  const router = useRouter();
+  const {
+    state: { user },
+  } = useAppContext();
+  const [query, setQuery] = useState(""),
+    [tracks, setTracks] = useState<Track[]>([]),
+    [selected, setSelected] = useState<Track | null>(null),
+    [content, setContent] = useState(""),
+    [searching, setSearching] = useState(false),
+    [saving, setSaving] = useState(false),
+    [error, setError] = useState("");
+  useEffect(() => {
+    if (query.trim().length < 2 || selected) {
+      setTracks([]);
+      setSearching(false);
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setSearching(true);
+      setError("");
+      try {
+        const response = await fetch("/api/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+          signal: controller.signal,
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        setTracks(data.results || []);
+      } catch (e) {
+        if (!controller.signal.aborted)
+          setError(
+            (e as Error).message || "Search did not finish. Please try again.",
+          );
+      } finally {
+        if (!controller.signal.aborted) setSearching(false);
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, selected]);
+  async function submit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!selected) return;
+    setSaving(true);
+    setError("");
     try {
-      setIsSubmitting(true);
-      const track = {
-        source: "SPOTIFY",
-        sourceId: option.value.id,
-        artist: option.value.artist,
-        title: option.value.name,
-        image: option.value.thumb,
-      };
-      const body = { content, track };
-
-      await fetch(`/api/post`, {
+      const response = await fetch("/api/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          content,
+          track: {
+            source: "SPOTIFY",
+            sourceId: selected.id,
+            title: selected.name,
+            artist: selected.artist,
+            image: selected.thumb || "",
+          },
+        }),
       });
-      await Router.push("/feed");
-    } catch (error) {
-      console.error(error);
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.error || "Your track was not posted.");
+      await router.push(user?.username ? `/u/${user.username}` : "/");
+    } catch (e) {
+      setError((e as Error).message);
     } finally {
-      setIsSubmitting(false);
+      setSaving(false);
     }
-  };
-
+  }
   return (
-    <div className="bb-container pt-24 pb-16">
-      <form onSubmit={submitData} className="w-full max-w-3xl">
-        <h1 className="font-display text-3xl text-white tracking-tight mb-8">Share a beat</h1>
-        <div className="flex flex-col lg:flex-row justify-between my-4 gap-4">
-          <div className="w-full lg:w-1/2 flex items-center">
-            <Searchbox
-              option={option}
-              handleChange={handleChange}
-              loadOptions={debouncedLoadOptions}
-            />
+    <div className="compose-page">
+      <Link href="/" className="back-link">
+        Back to the room
+      </Link>
+      <h1>What’s on repeat?</h1>
+      <p className="muted">One track. A few words. Your kind of people.</p>
+      <form onSubmit={submit} className="form-stack compose-form">
+        {!selected ? (
+          <>
+            <label htmlFor="track-search">Find a track</label>
+            <div className="search-field">
+              <MagnifyingGlassIcon width={20} />
+              <input
+                id="track-search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Track or artist name"
+                autoComplete="off"
+                maxLength={200}
+              />
+            </div>
+            <div aria-live="polite" className="field-hint">
+              {searching
+                ? "Finding your track…"
+                : query.trim().length >= 2 && !tracks.length
+                  ? "No tracks found. Try a different title or artist."
+                  : "Search, then choose the cover."}
+            </div>
+            <ul className="search-results">
+              {tracks.map((track) => (
+                <li key={track.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelected(track);
+                      setError("");
+                    }}
+                  >
+                    {track.thumb && (
+                      <img src={track.thumb} width={56} height={56} alt="" />
+                    )}
+                    <span>
+                      <strong>{track.name}</strong>
+                      <span>{track.artist}</span>
+                    </span>
+                    <ArrowUpRightIcon width={18} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div className="selected-track">
+            {selected.thumb && (
+              <img
+                src={selected.thumb.replace(
+                  "ab67616d00001e02",
+                  "ab67616d0000b273",
+                )}
+                alt={`${selected.name} cover`}
+                width={280}
+                height={280}
+              />
+            )}
+            <div>
+              <h2>{selected.name}</h2>
+              <p>{selected.artist}</p>
+              <button
+                type="button"
+                className="text-button"
+                onClick={() => {
+                  setSelected(null);
+                  setQuery("");
+                }}
+              >
+                <XMarkIcon width={14} /> Change track
+              </button>
+            </div>
           </div>
-          <div className="w-full lg:w-1/2 flex items-center">
-            <Input
-              placeholder="How does it make you feel?"
-              value={content}
-              setValue={setContent}
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 mt-6">
+        )}
+        <label>
+          Your note <span className="muted">(optional)</span>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            maxLength={1000}
+            rows={3}
+            placeholder="The part you can’t stop thinking about…"
+          />
+        </label>
+        <div className="compose-actions">
+          <span className="field-hint">{content.length}/1000</span>
           <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`font-mono text-xs rounded px-6 py-2.5 transition-colors ${
-              isSubmitting
-                ? "border border-terminal-border text-phosphor-dim cursor-not-allowed"
-                : "border border-accent bg-accent/10 text-accent hover:bg-accent/20"
-            }`}
+            className="button button-primary"
+            disabled={!selected || saving}
           >
-            {isSubmitting ? "Creating..." : "Create"}
+            {saving ? "Posting…" : "Post to my feed"}
+            <ArrowUpRightIcon width={18} />
           </button>
-
-          <a
-            className="text-phosphor-dim hover:text-phosphor cursor-pointer font-mono text-xs transition-colors"
-            onClick={() => Router.push("/create")}
-          >
-            Cancel
-          </a>
         </div>
+        {error && (
+          <p role="alert" className="form-error">
+            {error}
+          </p>
+        )}
       </form>
     </div>
   );
-};
-
-export default Create;
+}

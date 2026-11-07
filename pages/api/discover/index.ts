@@ -1,3 +1,4 @@
+import { backendFetch } from "../../../lib/backend";
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { SERVER_HOST } from "@util";
 
@@ -6,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
   try {
-    const backendRes = await fetch(`${SERVER_HOST}/discover/v2`, {
+    const backendRes = await backendFetch(`${SERVER_HOST}/discover/v2`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

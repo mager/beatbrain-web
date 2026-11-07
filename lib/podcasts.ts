@@ -1,3 +1,4 @@
+import { backendFetch } from "./backend";
 import { SERVER_HOST } from './util';
 
 export interface CategoryWithCount {
@@ -19,7 +20,7 @@ export interface Podcast {
 }
 
 export async function getCategories(): Promise<CategoryWithCount[]> {
-  const res = await fetch(`${SERVER_HOST}/podcasts/categories`);
+  const res = await backendFetch(`${SERVER_HOST}/podcasts/categories`);
   if (!res.ok) throw new Error(`Failed to fetch categories: ${res.status}`);
   const data: Array<{ name: string; count: number; previewImage?: string }> = await res.json();
   return data.map((c) => ({
@@ -34,7 +35,7 @@ export async function getPodcastsByCategory(
   limit: number = 50,
 ): Promise<Podcast[]> {
   const params = new URLSearchParams({ category, limit: String(limit) });
-  const res = await fetch(`${SERVER_HOST}/podcasts?${params}`);
+  const res = await backendFetch(`${SERVER_HOST}/podcasts?${params}`);
   if (!res.ok) throw new Error(`Failed to fetch podcasts: ${res.status}`);
   return res.json();
 }

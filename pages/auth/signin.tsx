@@ -1,198 +1,191 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { LockClosedIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { authClient } from "../../lib/auth-client";
-import Logo from "@components/Logo";
+import { safeReturnPath } from "../../lib/access";
 
-const SignIn: React.FC = () => {
+export default function SignIn() {
   const router = useRouter();
-  const callbackUrl = (router.query.callbackUrl as string) || "/";
-  const errorParam = router.query.error as string | undefined;
-
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [error, setError] = useState(errorParam || "");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const invite =
+    typeof router.query.invite === "string" ? router.query.invite : "";
+  const [email, setEmail] = useState(""),
+    [password, setPassword] = useState(""),
+    [name, setName] = useState(""),
+    [username, setUsername] = useState(""),
+    [error, setError] = useState(""),
+    [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (typeof router.query.email === "string") setEmail(router.query.email);
+    if (typeof router.query.error === "string")
+      setError(
+        "Spotify could not sign you in. Please try again, or use your email and password.",
+      );
+  }, [router.query.email, router.query.error]);
+  async function submit(event: React.FormEvent) {
+    event.preventDefault();
     setLoading(true);
-
+    setError("");
     try {
-      if (mode === "signup") {
-        const { data, error: signUpError } = await authClient.signUp.email({
-          email,
-          password,
-          name: name || email.split("@")[0],
-        });
-
-        if (signUpError) {
-          setError(signUpError.message || "Registration failed");
-          setLoading(false);
-          return;
-        }
-
-        // Auto signed in after signup
-        router.push(callbackUrl);
+      const result = invite
+        ? await authClient.signUp.email(
+            { email, password, name, username },
+            { headers: { "x-invite-token": invite } },
+          )
+        : await authClient.signIn.email({ email, password });
+      if (result.error) {
+        setError(
+          result.error.message || "Could not sign in. Please try again.",
+        );
         return;
       }
-
-      // Sign in
-      const { data, error: signInError } = await authClient.signIn.email({
-        email,
-        password,
-      });
-
-      if (signInError) {
-        setError("Invalid email or password");
-        setLoading(false);
-        return;
-      }
-
-      router.push(callbackUrl);
-    } catch (err) {
-      setError("An unexpected error occurred");
+      window.location.assign(safeReturnPath(router.query.callbackUrl));
+    } catch {
+      setError("Could not connect. Please try again.");
+    } finally {
       setLoading(false);
     }
-  };
-
-  const handleSpotifySignIn = async () => {
-    setError("");
+  }
+  async function spotify() {
     setLoading(true);
+    setError("");
     try {
-      const { error: authError } = await authClient.signIn.social({
+      const result = await authClient.signIn.social({
         provider: "spotify",
-        callbackURL: callbackUrl,
+        callbackURL: "/",
       });
-      if (authError) {
-        setError(authError.message || "Spotify sign in failed");
+      if (result.error) {
+        setError(result.error.message || "Could not connect to Spotify.");
         setLoading(false);
       }
-      // on success, better-auth redirects — no need to push router
-    } catch (err) {
-      setError("Failed to connect to Spotify. Try again.");
+    } catch {
+      setError("Could not connect to Spotify. Please try again.");
       setLoading(false);
     }
-  };
-
+  }
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="text-center mb-10">
-          <Logo size="lg" linked={false} className="justify-center" />
-        </div>
-
-        {/* Card */}
-        <div className="border border-terminal-border bg-terminal-surface rounded p-6">
-          {/* Toggle */}
-          <div className="flex gap-4 mb-6 font-mono text-xs border-b border-terminal-border pb-3">
-            <button
-              onClick={() => {
-                setMode("signin");
-                setError("");
-              }}
-              className={`transition-colors duration-200 ${mode === "signin" ? "text-accent" : "text-phosphor-dim hover:text-phosphor"}`}
-            >
-              sign in
-            </button>
-            <button
-              onClick={() => {
-                setMode("signup");
-                setError("");
-              }}
-              className={`transition-colors duration-200 ${mode === "signup" ? "text-accent" : "text-phosphor-dim hover:text-phosphor"}`}
-            >
-              create account
-            </button>
+    <div className="entry-page">
+      <div className="entry-brand wordmark">
+        beatbrain
+        <span className="brand-signal" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+      </div>
+      <section className="entry-copy">
+        <div className="record-object" aria-hidden="true">
+          <div className="record-label">
+            <span>bb</span>
           </div>
-
-          {/* Error */}
-          {error && (
-            <div className="mb-4 px-3 py-2 border border-warm/30 bg-warm/5 rounded font-mono text-[11px] text-warm">
-              {error}
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === "signup" && (
-              <div>
-                <label className="block font-mono text-[10px] text-phosphor-dim uppercase tracking-wider mb-1.5">
-                  name
-                </label>
+        </div>
+        <h1>
+          Your music.
+          <br />
+          <span>Your people.</span>
+        </h1>
+        <p>
+          A private listening room for the tracks you love
+          <br className="desktop-only" /> and the friends who need to hear them.
+        </p>
+        <span className="private-note">
+          <LockClosedIcon width={14} /> Invite only. Even the browsing.
+        </span>
+      </section>
+      <section className="entry-form">
+        <h2>{invite ? "You’re on the list." : "Come on in."}</h2>
+        <p className="muted">
+          {invite
+            ? "Make an account and join the listening room."
+            : "Already a member? Pick up where you left off."}
+        </p>
+        <form onSubmit={submit} className="form-stack">
+          {invite && (
+            <>
+              <label>
+                Your name
                 <input
-                  type="text"
+                  autoComplete="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2.5 font-mono text-sm text-phosphor placeholder-phosphor-dim/40 focus:outline-none focus:border-accent/50 transition-colors"
-                  placeholder="your name"
+                  required
+                  maxLength={80}
                 />
-              </div>
+              </label>
+              <label>
+                Username
+                <input
+                  autoComplete="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value.toLowerCase())}
+                  pattern="[a-z0-9_]{3,30}"
+                  title="3–30 letters, numbers, or underscores"
+                  required
+                />
+                <span className="field-hint">
+                  Your feed will live at /u/{username || "you"}
+                </span>
+              </label>
+            </>
+          )}
+          <label>
+            Email
+            <input
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              autoComplete={invite ? "new-password" : "current-password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={8}
+              required
+            />
+            {invite && (
+              <span className="field-hint">At least 8 characters.</span>
             )}
-
-            <div>
-              <label className="block font-mono text-[10px] text-phosphor-dim uppercase tracking-wider mb-1.5">
-                email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2.5 font-mono text-sm text-phosphor placeholder-phosphor-dim/40 focus:outline-none focus:border-accent/50 transition-colors"
-                placeholder="you@email.com"
-              />
-            </div>
-
-            <div>
-              <label className="block font-mono text-[10px] text-phosphor-dim uppercase tracking-wider mb-1.5">
-                password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
-                className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2.5 font-mono text-sm text-phosphor placeholder-phosphor-dim/40 focus:outline-none focus:border-accent/50 transition-colors"
-                placeholder={mode === "signup" ? "min 8 characters" : "your password"}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 border border-accent bg-accent/10 hover:bg-accent/20 text-accent font-mono text-xs rounded transition-all duration-200 disabled:opacity-50"
-            >
-              {loading ? "..." : mode === "signin" ? "sign in" : "create account"}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 border-t border-terminal-border" />
-            <span className="font-mono text-[10px] text-phosphor-dim">or</span>
-            <div className="flex-1 border-t border-terminal-border" />
-          </div>
-
-          {/* Spotify */}
-          <button
-            onClick={handleSpotifySignIn}
-            disabled={loading}
-            className="w-full py-2.5 border border-terminal-border hover:border-terminal-border-bright text-phosphor hover:text-white font-mono text-xs rounded transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#1DB954]">
-              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-            </svg>
-            {loading ? "connecting..." : "continue with spotify"}
+          </label>
+          {error && (
+            <p role="alert" className="form-error">
+              {error}
+            </p>
+          )}
+          <button className="button button-primary" disabled={loading}>
+            {loading
+              ? "Opening the door…"
+              : invite
+                ? "Join the room"
+                : "Sign in"}
+            <ArrowUpRightIcon width={18} />
           </button>
-        </div>
-      </div>
+        </form>
+        {!invite && (
+          <>
+            <div className="form-divider">or</div>
+            <button
+              onClick={spotify}
+              disabled={loading}
+              className="button button-secondary full-width"
+            >
+              Sign in with Spotify
+            </button>
+            <p className="entry-footnote">
+              New here? Ask a friend for an invite.
+              <br />
+              Spotify sign-in is for existing members.
+            </p>
+          </>
+        )}
+      </section>
+      <footer className="entry-footer">
+        A little less algorithm. A little more human.
+      </footer>
     </div>
   );
-};
-
-export default SignIn;
+}

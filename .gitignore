@@ -5,3 +5,6 @@ node_modules/
 .env.local
 .vercel
 .env*.local
+
+# Local visual checks contain private member content
+.impeccable/review/

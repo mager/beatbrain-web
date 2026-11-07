@@ -53,7 +53,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     tracksLoading: false,
     tracksUpdated: null,
   });
-  const { data: session, isPending } = authClient.useSession();
+  const { data, isPending } = authClient.useSession();
+  const session = data as { user: { id: string } } | null;
 
   // Fetch user data when authenticated
   useEffect(() => {
