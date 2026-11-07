@@ -1,3 +1,7 @@
+import type { GetServerSideProps } from "next";
+import { backendFetch } from "../../lib/backend";
+import { SERVER_HOST } from "@util";
+import { adaptTrack } from "@adapters/track";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -8,18 +12,64 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAppContext } from "../../context/AppContext";
 type Track = { id: string; name: string; artist: string; thumb: string | null };
-export default function Create() {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  if (typeof query.track !== "string" || !/^[a-zA-Z0-9]{22}$/.test(query.track))
+    return { props: { initialTrack: null } };
+  try {
+    let response = await backendFetch(
+      `${SERVER_HOST}/v2/track?spotifyId=${query.track}`,
+    );
+    if (!response.ok)
+      response = await backendFetch(
+        `${SERVER_HOST}/track?spotifyId=${query.track}`,
+      );
+    if (!response.ok) throw new Error("Track unavailable");
+    const data = await response.json();
+    if (!data.track) throw new Error("Track unavailable");
+    const track = adaptTrack(data);
+    return {
+      props: {
+        initialTrack: {
+          id: query.track,
+          name: track.name,
+          artist: track.artist,
+          thumb: track.image || null,
+        },
+      },
+    };
+  } catch {
+    return {
+      props: {
+        initialTrack: null,
+        initialError: "Couldn’t load that track. Search for it below.",
+      },
+    };
+  }
+};
+export default function Create({
+  initialTrack,
+  initialError = "",
+}: {
+  initialTrack: Track | null;
+  initialError?: string;
+}) {
   const router = useRouter();
   const {
     state: { user },
   } = useAppContext();
   const [query, setQuery] = useState(""),
     [tracks, setTracks] = useState<Track[]>([]),
-    [selected, setSelected] = useState<Track | null>(null),
+    [selected, setSelected] = useState<Track | null>(initialTrack),
     [content, setContent] = useState(""),
     [searching, setSearching] = useState(false),
     [saving, setSaving] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState(initialError);
+  useEffect(() => {
+    setSelected(initialTrack);
+    setError(initialError);
+    setContent("");
+    setQuery("");
+  }, [initialTrack, initialError]);
   useEffect(() => {
     if (query.trim().length < 2 || selected) {
       setTracks([]);
@@ -86,11 +136,10 @@ export default function Create() {
   }
   return (
     <div className="compose-page">
-      <Link href="/" className="back-link">
-        Back to the room
+      <Link href="/feed" className="back-link">
+        Back to Feed
       </Link>
       <h1>What’s on repeat?</h1>
-      <p className="muted">One track. A few words. Your kind of people.</p>
       <form onSubmit={submit} className="form-stack compose-form">
         {!selected ? (
           <>

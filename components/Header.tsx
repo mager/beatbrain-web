@@ -6,7 +6,7 @@ export default function Header() {
   const {
     state: { user },
   } = useAppContext();
-  const { pathname } = useRouter();
+  const { pathname, asPath } = useRouter();
   return (
     <header className="site-header">
       <a className="skip-link" href="#main-content">
@@ -22,16 +22,33 @@ export default function Header() {
           </span>
         </Link>
         <nav aria-label="Main navigation">
-          <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
-            The room
+          <Link
+            href="/"
+            aria-current={
+              ["/", "/discover"].includes(pathname) ? "page" : undefined
+            }
+          >
+            Discover
+          </Link>
+          <Link
+            href="/feed"
+            aria-current={pathname === "/feed" ? "page" : undefined}
+          >
+            Feed
           </Link>
           <Link
             href={user?.username ? `/u/${user.username}` : "/settings"}
-            aria-current={pathname === "/u/[username]" ? "page" : undefined}
+            aria-current={
+              asPath === `/u/${user?.username}` ? "page" : undefined
+            }
           >
-            My feed
+            Profile
           </Link>
-          <Link href="/settings" className="settings-link">
+          <Link
+            href="/settings"
+            className="settings-link"
+            aria-current={pathname === "/settings" ? "page" : undefined}
+          >
             Settings
           </Link>
         </nav>

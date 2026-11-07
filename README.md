@@ -1,6 +1,6 @@
 # Beatbrain
 
-An invite-only music room. Members post a track and an optional note. Their profile is their listening feed. Album art leads the dark interface.
+An invite-only music room. Members post a track and an optional note. Their profile is their listening feed. Album art leads the dark interface. Discover is the home page. Social posts live in `/feed`; each member also has a profile feed.
 
 ## Run
 
@@ -21,6 +21,8 @@ All three original member rows are preserved. Two legacy members have no linked 
 - `node --env-file=.env.local tests/launch-check.mjs`: browser and API integration checks against a running localhost:3000 instance. Requires local Chrome. Creates a temporary invite, member, and posts, then removes them. To test production, set `TEST_BASE_URL=https://beatbrain.xyz`.
 
 The integration test checks guest/forged-cookie rejection, invited signup, member restrictions, post ownership, repeat listens, profile privacy, search through Go, responsive layout, artwork tilt, reduced motion, and sign-out.
+
+- `node --env-file=.env.local tests/discover-check.mjs`: checks live discovery, retry and empty states, About, desktop/mobile layouts, and posting from a track page. It also creates and removes a temporary invited member.
 
 ## Deploy
 

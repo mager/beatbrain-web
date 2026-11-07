@@ -78,14 +78,6 @@ export default function Profile({
           </Link>
         )}
       </section>
-      <div className="feed-heading">
-        <h2>
-          {state.user?.id === user.id
-            ? "Your listening history"
-            : `${user.name}’s listening history`}
-        </h2>
-        <span>A life in tracks.</span>
-      </div>
       <PostGrid posts={posts} />
     </div>
   );

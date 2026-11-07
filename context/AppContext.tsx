@@ -1,6 +1,11 @@
-import React, { createContext, useEffect, useState, ReactNode, useContext } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  ReactNode,
+  useContext,
+} from "react";
 import { authClient } from "../lib/auth-client";
-import type { Track } from "@types";
 
 interface AppUser {
   id: string;
@@ -14,20 +19,11 @@ interface AppUser {
 
 interface AppState {
   user: AppUser | null;
-  currentTrackUri: string | null;
-  isPlaying: boolean;
-  tracks: Track[];
-  tracksLoading: boolean;
-  tracksUpdated: string | null;
 }
 
 interface AppContextType {
   state: AppState;
   setState: React.Dispatch<React.SetStateAction<AppState>>;
-  playTrack: (uri: string) => void;
-  setPlayerIsPlaying: (playing: boolean) => void;
-  setTracks: (tracks: Track[], updated?: string | null) => void;
-  setTracksLoading: (loading: boolean) => void;
 }
 
 interface AppProviderProps {
@@ -47,11 +43,6 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [state, setState] = useState<AppState>({
     user: null,
-    currentTrackUri: null,
-    isPlaying: false,
-    tracks: [],
-    tracksLoading: false,
-    tracksUpdated: null,
   });
   const { data, isPending } = authClient.useSession();
   const session = data as { user: { id: string } } | null;
@@ -73,52 +64,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     }
   }, [session, isPending, state.user]);
 
-  // Load initial track URI from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUri = localStorage.getItem("currentTrackUri");
-      if (storedUri) {
-        setState((prevState) => ({ ...prevState, currentTrackUri: storedUri }));
-      }
-    }
-  }, []);
-
-  const playTrack = (uri: string) => {
-    setState((prevState) => ({
-      ...prevState,
-      currentTrackUri: uri,
-      isPlaying: true,
-    }));
-    if (typeof window !== "undefined") {
-      localStorage.setItem("currentTrackUri", uri);
-    }
-  };
-
-  const setPlayerIsPlaying = (playing: boolean) => {
-    setState((prevState) => ({ ...prevState, isPlaying: playing }));
-  };
-
-  const setTracks = (tracks: Track[], updated?: string | null) => {
-    setState((prevState) => ({
-      ...prevState,
-      tracks,
-      tracksUpdated: updated ?? prevState.tracksUpdated,
-    }));
-  };
-
-  const setTracksLoading = (loading: boolean) => {
-    setState((prevState) => ({ ...prevState, tracksLoading: loading }));
-  };
-
   return (
     <AppContext.Provider
       value={{
         state,
         setState,
-        playTrack,
-        setPlayerIsPlaying,
-        setTracks,
-        setTracksLoading,
       }}
     >
       {children}

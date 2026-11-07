@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { LockClosedIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { authClient } from "../../lib/auth-client";
+import SpotifyLogo from "../../components/SpotifyLogo";
+import FooterCredit from "../../components/FooterCredit";
 import { safeReturnPath } from "../../lib/access";
 
 export default function SignIn() {
@@ -83,12 +85,9 @@ export default function SignIn() {
           <br />
           <span>Your people.</span>
         </h1>
-        <p>
-          A private listening room for the tracks you love
-          <br className="desktop-only" /> and the friends who need to hear them.
-        </p>
+        <p>Good music. Close friends. Your kind of place.</p>
         <span className="private-note">
-          <LockClosedIcon width={14} /> Invite only. Even the browsing.
+          <LockClosedIcon width={14} /> Invite only.
         </span>
       </section>
       <section className="entry-form">
@@ -96,7 +95,7 @@ export default function SignIn() {
         <p className="muted">
           {invite
             ? "Make an account and join the listening room."
-            : "Already a member? Pick up where you left off."}
+            : "Your next favorite is waiting."}
         </p>
         <form onSubmit={submit} className="form-stack">
           {invite && (
@@ -173,7 +172,7 @@ export default function SignIn() {
               disabled={loading}
               className="button button-secondary full-width"
             >
-              Sign in with Spotify
+              <SpotifyLogo /> Sign in with Spotify
             </button>
             <p className="entry-footnote">
               New here? Ask a friend for an invite.
@@ -184,7 +183,7 @@ export default function SignIn() {
         )}
       </section>
       <footer className="entry-footer">
-        A little less algorithm. A little more human.
+        <FooterCredit />
       </footer>
     </div>
   );

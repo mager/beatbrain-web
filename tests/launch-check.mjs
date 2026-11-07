@@ -162,7 +162,7 @@ try {
   assert.ok((await search.json()).results.length);
   checks.push("private frontend-to-Go search passed");
   await page.setViewportSize({ width: 1440, height: 1050 });
-  await page.goto("/");
+  await page.goto("/feed");
   await page.locator(".album-art").first().waitFor();
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(async () => { document.querySelectorAll('img').forEach(i => i.loading = 'eager'); await Promise.all(Array.from(document.images).map(i => i.decode().catch(() => {}))); });

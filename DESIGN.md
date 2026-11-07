@@ -6,10 +6,10 @@ The user chose a dark, album-led room with gentle 3D tilt, art-colored light, an
 
 - Background: `#101113`; surface: `#191b1f`; rule: `#303238`.
 - Primary text: `#f3f0e9`; secondary text: `#aaaeb7`; accent: `#e4b6ff`.
-- Typeface: locally served Space Grotesk, 400–700. Body 14–16 px; post title 19–21 px; desktop page title up to 61 px.
-- Main measure: 1200 px content plus 32 px edge padding. Mobile edge: 20 px.
+- Type: locally served Space Grotesk, 400–700 for controls, metadata, and music. Archivo 900 italic for page headings. Body 14–16 px; music titles 15–21 px; page headings 44–96 px.
+- Main measure: full viewport with 32 px edges on desktop and 16 px on mobile. Forms keep a short measure. About prose is at most 65ch.
 - Artwork: square, 3 px corner. Controls: 6 px corner, 46 px minimum height.
-- Post grid: three columns on desktop, two below 900 px, one below 600 px. Keep author, date, title, artist, and note visible.
+- Post grid: fill available width with columns at least 280 px; two below 900 px, one below 600 px. Discover: five columns on desktop, six on wide displays, two on mobile. Keep author, date, title, artist, and note visible.
 
 ## Interaction
 
@@ -21,4 +21,4 @@ The feed is chronological and preserves repeat posts. A profile is its feed. Eve
 
 ## Scope
 
-Discovery, podcasts, and credits remain at their existing routes. They are secondary to posting. The separate beatbrain-v2 project remains unchanged.
+Discover is the home page and remains at /discover. Social posts have a separate /feed tab. Profile is the member’s feed. Podcasts and credits remain at their existing routes. The separate beatbrain-v2 project remains unchanged.
