@@ -31,7 +31,7 @@
 
   ::selection {
     background: var(--accent);
-    color: white;
+    color: #101113;
   }
 
   /* Elegant thin scrollbar */
@@ -379,7 +379,7 @@ textarea {
   display: block;
   width: 3px;
   height: 9px;
-  background: #e4b6ff;
+  background: var(--room-accent);
   border-radius: 2px;
 }
 .brand-signal i:nth-child(2) {
@@ -431,11 +431,11 @@ textarea {
   transform: none;
 }
 .button-primary {
-  background: #e4b6ff;
-  color: #201529;
+  background: var(--room-accent);
+  color: var(--room-on-accent, #201529);
 }
 .button-primary:hover {
-  background: #edcfff;
+  background: var(--room-accent-hover, #edcfff);
 }
 .button-secondary {
   border-color: #454850;
@@ -469,7 +469,7 @@ p {
   font-weight: 500;
 }
 .title-dot {
-  color: #e4b6ff;
+  color: var(--room-accent);
 }
 .room-intro p {
   font-size: 16px;
@@ -499,7 +499,7 @@ p {
   align-items: center;
   justify-content: center;
   background: #2e2935;
-  color: #e4b6ff;
+  color: var(--room-accent);
   border-radius: 50%;
   width: 28px;
   height: 28px;
@@ -624,7 +624,7 @@ p {
   color: #aaaeb7;
 }
 .listen-link:hover {
-  color: #e4b6ff;
+  color: var(--room-accent);
 }
 .post-note {
   font-size: 14px;
@@ -647,7 +647,7 @@ p {
 }
 .site-footer a:hover,
 .entry-footer a:hover {
-  color: #e4b6ff;
+  color: var(--room-accent);
 }
 .site-footer a:last-child,
 .entry-footer a:last-child {
@@ -657,8 +657,8 @@ p {
   position: absolute;
   left: 16px;
   top: -80px;
-  background: #e4b6ff;
-  color: #201529;
+  background: var(--room-accent);
+  color: var(--room-on-accent, #201529);
   padding: 12px;
   z-index: 100;
 }
@@ -696,7 +696,7 @@ p {
 }
 .form-stack input:focus,
 .form-stack textarea:focus {
-  outline: 2px solid #e4b6ff;
+  outline: 2px solid var(--room-accent);
   outline-offset: 2px;
 }
 .form-stack input::placeholder,
@@ -956,7 +956,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: #e4b6ff;
+  color: var(--room-accent);
   font-size: 13px;
   min-height: 44px;
 }
@@ -1425,7 +1425,7 @@ p {
 }
 .header-inner nav [aria-current] {
   text-decoration: underline;
-  text-decoration-color: #e4b6ff;
+  text-decoration-color: var(--room-accent);
   text-decoration-thickness: 2px;
   text-underline-offset: 8px;
 }
@@ -1459,7 +1459,7 @@ p {
   text-decoration: underline;
 }
 .about-copy a:hover {
-  color: #e4b6ff;
+  color: var(--room-accent);
 }
 .about-links {
   display: flex;
@@ -1596,7 +1596,7 @@ p {
   font-size: clamp(22px, 2.5vw, 36px);
   line-height: 1.3;
   margin-top: 16px;
-  color: #e4b6ff;
+  color: var(--room-accent);
 }
 .track-release {
   color: #aaaeb7;
@@ -1618,20 +1618,6 @@ p {
 .track-posted a {
   color: #f3f0e9;
   text-decoration: underline;
-}
-.track-extra {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-  gap: 40px;
-  padding-top: 0;
-}
-.track-section {
-  min-width: 0;
-}
-.track-section > h2 {
-  font-size: 23px;
-  font-weight: 600;
-  margin-bottom: 20px;
 }
 @media (max-width: 760px) {
   .track-hero {
@@ -1676,5 +1662,255 @@ p {
   .entry-copy h1 {
     max-width: none;
     font-size: 42px;
+  }
+}
+
+/* Song colors come from the cover; labels and source data remain readable. */
+.track-album {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #aaaeb7;
+}
+.track-album a {
+  color: var(--room-accent);
+  text-decoration: underline;
+}
+.track-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 36px;
+  margin-top: 28px;
+}
+.track-facts dt {
+  color: #aaaeb7;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.track-facts dd {
+  font-size: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.track-genres {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 24px;
+  color: var(--song-muted, #aaaeb7);
+  font-size: 13px;
+}
+.liner-notes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 64px;
+  padding-top: 24px;
+}
+.liner-notes h2 {
+  font-family: var(--font-heading), sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 36px;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+}
+.liner-credits,
+.liner-extra {
+  min-width: 0;
+}
+.liner-extra {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}
+.credits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.credit-group h3 {
+  font-size: 15px;
+  color: var(--room-accent);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.credit-row {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.65fr) minmax(0, 1.35fr);
+  gap: 20px;
+  padding: 13px 0;
+  border-top: 1px solid var(--song-border, #303238);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.credit-row dt {
+  color: #aaaeb7;
+  text-transform: capitalize;
+}
+.credit-row dd {
+  overflow-wrap: anywhere;
+}
+.credit-row a {
+  text-decoration: underline;
+  text-decoration-color: var(--song-border, #454850);
+}
+.credit-row a:hover,
+.credit-row a:focus-visible {
+  color: var(--room-accent);
+  text-decoration-color: currentColor;
+}
+.track-sources {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  font-size: 14px;
+}
+.track-sources a {
+  color: var(--room-accent);
+  text-decoration: underline;
+}
+.metadata-note {
+  color: #aaaeb7;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.recording-identifiers {
+  margin-top: 28px;
+  font-size: 12px;
+  color: #aaaeb7;
+}
+.recording-identifiers summary {
+  cursor: pointer;
+  padding: 10px 0;
+}
+.recording-identifiers dl {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+}
+.recording-identifiers dt {
+  color: #f3f0e9;
+}
+.recording-identifiers dd {
+  overflow-wrap: anywhere;
+  margin-top: 4px;
+}
+.audio-features {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+.audio-feature {
+  display: grid;
+  grid-template-columns: 105px minmax(40px, 1fr) 42px;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+.audio-feature > span:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #aaaeb7;
+}
+.audio-meter {
+  height: 7px;
+  background: var(--song-surface, #191b1f);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.audio-meter i {
+  display: block;
+  height: 100%;
+  background: var(--room-accent);
+}
+.audio-loudness {
+  color: #aaaeb7;
+  font-size: 13px;
+  margin-top: 8px;
+}
+.audio-loudness strong {
+  color: #f3f0e9;
+  margin-left: 12px;
+  font-weight: 500;
+}
+.release-list {
+  list-style: none;
+}
+.release-list li + li {
+  border-top: 1px solid var(--song-border, #303238);
+}
+.release-list a {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  align-items: center;
+}
+.release-list li:first-child a {
+  padding-top: 0;
+}
+.release-list img,
+.release-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.release-placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--song-surface, #191b1f);
+  color: var(--song-muted, #aaaeb7);
+}
+.release-list a > span:not(.release-placeholder) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.release-list strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+.release-list a > span > span {
+  color: #aaaeb7;
+  font-size: 12px;
+}
+.release-list a > svg {
+  color: var(--room-accent);
+  flex-shrink: 0;
+}
+.release-list a:hover strong {
+  color: var(--room-accent);
+}
+@media (max-width: 900px) {
+  .liner-notes {
+    gap: 36px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .liner-notes {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    padding-top: 0;
+  }
+  .liner-notes h2 {
+    font-size: 30px;
+    margin-bottom: 24px;
+  }
+  .track-facts {
+    gap: 20px 30px;
+  }
+  .track-facts dd {
+    font-size: 18px;
+  }
+  .credit-row {
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 14px;
+    font-size: 14px;
   }
 }

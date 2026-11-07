@@ -22,3 +22,9 @@ The feed is chronological and preserves repeat posts. A profile is its feed. Eve
 ## Scope
 
 Discover is the home page and remains at /discover. Social posts have a separate /feed tab. Profile is the member’s feed. Podcasts and credits remain at their existing routes. The separate beatbrain-v2 project remains unchanged.
+
+## Song details
+
+Song pages use a dominant color sampled from the actual cover. Broad colored areas outrank small details; black, white, and transparent pixels do not set the accent. The accent has at least 7:1 contrast with the dark canvas and button text. Monochrome or unavailable covers use a neutral accent. The header, primary action, artist name, links, and focus marks share the song accent. Navigation away restores the site palette. No extra image service or color package is needed.
+
+Credits read as grouped liner notes: songwriting, performance, and production. Album, release date, length, genres, known musical facts, releases, and source links accompany them. Never infer missing key, tempo, or credits. Metadata may be incomplete when a source has no matching recording.

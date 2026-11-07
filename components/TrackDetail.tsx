@@ -7,6 +7,8 @@ import AudioDNA from "./AudioDNA";
 import LoudnessMap from "./LoudnessMap";
 import Credits from "./Credits";
 import Releases from "./Releases";
+import { useAlbumTheme } from "../lib/use-album-theme";
+import { trackFacts, trackSourceLinks } from "../lib/track-details";
 import type { TrackV3 } from "@types";
 
 type Props = {
@@ -15,6 +17,10 @@ type Props = {
   sourceId: string | null;
 };
 export default function TrackDetail({ track, posts, sourceId }: Props) {
+  const { onArtworkLoad } = useAlbumTheme(track.image);
+  const facts = trackFacts(track.meta);
+  const sourceLinks = trackSourceLinks(track);
+  const genres = Array.from(new Set(track.genres || [])).slice(0, 10);
   const people = Array.from(
     new Map(
       posts.flatMap((p) =>
@@ -38,7 +44,41 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
         artist={track.artist}
         image={track.image}
         releaseDate={track.release_date}
+        onArtworkLoad={onArtworkLoad}
       >
+        {track.album?.name && (
+          <p className="track-album">
+            From{" "}
+            {track.album.id && /^[a-zA-Z0-9]{22}$/.test(track.album.id) ? (
+              <a
+                href={`https://open.spotify.com/album/${track.album.id}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {track.album.name}
+              </a>
+            ) : (
+              <span>{track.album.name}</span>
+            )}
+          </p>
+        )}
+        {facts.length > 0 && (
+          <dl className="track-facts">
+            {facts.map((fact) => (
+              <div key={fact.label}>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {genres.length > 0 && (
+          <ul className="track-genres" aria-label="Genres">
+            {genres.map((genre) => (
+              <li key={genre}>{genre}</li>
+            ))}
+          </ul>
+        )}
         {sourceId && (
           <div className="track-actions">
             <Link
@@ -72,38 +112,85 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
           </p>
         )}
       </TrackHero>
-      <div className="room-container track-extra">
-        {!!hasCredits && (
-          <section className="track-section">
-            <h2>Credits</h2>
+      <div className="room-container liner-notes">
+        <section className="liner-credits">
+          <h2>Credits</h2>
+          {hasCredits ? (
             <Credits
               instruments={track.instruments || []}
               production_credits={track.production_credits || []}
               song_credits={track.song_credits || []}
             />
-          </section>
-        )}
-        {track.features && (
-          <section className="track-section">
-            <h2>Audio DNA</h2>
-            <AudioDNA meta={track.meta} features={track.features} />
-          </section>
-        )}
-        {!!track.analysis?.segments?.length && (
-          <section className="track-section">
-            <h2>Loudness</h2>
-            <LoudnessMap
-              segments={track.analysis.segments}
-              duration={track.analysis.duration}
-            />
-          </section>
-        )}
-        {!!track.releases?.length && (
-          <section className="track-section">
-            <h2>Releases</h2>
-            <Releases releases={track.releases} />
-          </section>
-        )}
+          ) : (
+            <p className="metadata-note">
+              Credits aren’t available for this recording yet.
+            </p>
+          )}
+          {sourceLinks.length > 0 && (
+            <nav className="track-sources" aria-label="Track sources">
+              {sourceLinks.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {link.label}
+                  <span aria-hidden="true"> ↗</span>
+                </a>
+              ))}
+            </nav>
+          )}
+          {(track.isrc || track.id) && (
+            <details className="recording-identifiers">
+              <summary>Recording IDs</summary>
+              <dl>
+                {track.isrc && (
+                  <div>
+                    <dt>ISRC</dt>
+                    <dd>{track.isrc}</dd>
+                  </div>
+                )}
+                {track.id && (
+                  <div>
+                    <dt>MusicBrainz</dt>
+                    <dd>{track.id}</dd>
+                  </div>
+                )}
+              </dl>
+            </details>
+          )}
+        </section>
+        {track.features ||
+        track.analysis?.segments?.length ||
+        track.releases?.length ? (
+          <div className="liner-extra">
+            {track.features && (
+              <section>
+                <h2>Audio DNA</h2>
+                <AudioDNA features={track.features} />
+              </section>
+            )}
+            {!!track.analysis?.segments?.length && (
+              <section>
+                <h2>Loudness</h2>
+                <LoudnessMap
+                  segments={track.analysis.segments}
+                  duration={track.analysis.duration}
+                />
+              </section>
+            )}
+            {!!track.releases?.length && (
+              <section>
+                <h2>Releases</h2>
+                <Releases
+                  key={track.id || sourceId}
+                  releases={track.releases}
+                />
+              </section>
+            )}
+          </div>
+        ) : null}
       </div>
     </>
   );

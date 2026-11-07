@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { formatReleaseDate } from "../lib/track-details";
 import { MusicalNoteIcon } from "@heroicons/react/24/outline";
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
   image: string;
   releaseDate?: string;
   children?: ReactNode;
+  onArtworkLoad?: (image: HTMLImageElement) => void;
 };
 export default function TrackHero({
   name,
@@ -14,13 +16,34 @@ export default function TrackHero({
   image,
   releaseDate,
   children,
+  onArtworkLoad,
 }: Props) {
-  const date = releaseDate ? new Date(releaseDate) : null;
+  const date = formatReleaseDate(releaseDate);
+  const [failedSource, setFailedSource] = useState("");
+  const artwork = useRef<HTMLImageElement>(null);
+  const onArtworkError = useCallback((img: HTMLImageElement) => {
+    if (img.crossOrigin) {
+      img.removeAttribute("crossorigin");
+      img.src = image;
+    } else setFailedSource(image);
+  }, [image]);
+  useEffect(() => {
+    // A cached cover can finish loading before React attaches its load handler.
+    const img = artwork.current;
+    if (!img?.complete) return;
+    if (img.naturalWidth > 0) onArtworkLoad?.(img);
+    else onArtworkError(img);
+  }, [image, onArtworkLoad, onArtworkError]);
   return (
     <section className="room-container track-hero">
-      {image ? (
+      {image && failedSource !== image ? (
         <img
+          ref={artwork}
+          key={image}
           className="track-cover"
+          crossOrigin="anonymous"
+          onLoad={(event) => onArtworkLoad?.(event.currentTarget)}
+          onError={(event) => onArtworkError(event.currentTarget)}
           src={image.replace("ab67616d00001e02", "ab67616d0000b273")}
           alt={`${name} cover`}
           width={600}
@@ -34,16 +57,7 @@ export default function TrackHero({
       <div>
         <h1>{name}</h1>
         <p className="track-artist">{artist}</p>
-        {date && !Number.isNaN(date.getTime()) && (
-          <p className="track-release">
-            Released{" "}
-            {date.toLocaleDateString("en-US", {
-              month: "long",
-              year: "numeric",
-              timeZone: "UTC",
-            })}
-          </p>
-        )}
+        {date && <p className="track-release">Released {date}</p>}
         {children}
       </div>
     </section>

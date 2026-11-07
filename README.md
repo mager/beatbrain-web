@@ -24,6 +24,8 @@ The integration test checks guest/forged-cookie rejection, invited signup, membe
 
 - `node --env-file=.env.local tests/discover-check.mjs`: checks live discovery, retry and empty states, About, desktop/mobile layouts, and posting from a track page. It also creates and removes a temporary invited member.
 
+- `node --env-file=.env.local tests/song-details-check.mjs`: checks real credits, album/duration/releases, dynamic cover accents, theme reset, and responsive song pages.
+
 ## Deploy
 
 Vercel project: `beatbrain-web`. Canonical URL: `https://beatbrain.xyz`. `www` redirects to the canonical URL. Set the production environment values in Vercel, then use `vercel deploy --prod` from this folder. Apply reviewed additive migrations before code that uses them. Never reset the existing database.

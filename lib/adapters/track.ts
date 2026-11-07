@@ -1,19 +1,20 @@
 import { GetTrackResponseV3, TrackV3 } from "@types";
 
-export const adaptTrack = ({track}: GetTrackResponseV3): TrackV3 => {
+export const adaptTrack = ({ track }: GetTrackResponseV3): TrackV3 => {
   return {
-    id: track.id,
+    id: track.id || "",
+    album: track.album || null,
     name: track.name,
     artist: track.artist,
     image: track.image,
-    releases: track.releases,
+    releases: track.releases || [],
     release_date: track.release_date,
-    genres: track.genres,
+    genres: track.genres || [],
     isrc: track.isrc,
-    instruments: track.instruments,
-    production_credits: track.production_credits,
-    song_credits: track.song_credits,
-    links: track.links,
+    instruments: track.instruments || [],
+    production_credits: track.production_credits || [],
+    song_credits: track.song_credits || [],
+    links: track.links || [],
     meta: track.meta || null,
     features: track.features || null,
     analysis: track.analysis || null,

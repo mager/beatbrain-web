@@ -146,7 +146,17 @@ export type TrackV2 = {
   imagefront?: string;
 };
 
+export type TrackAlbum = {
+  id: string;
+  name: string;
+  release_date: string;
+  release_date_precision?: string;
+  album_type?: string;
+  url?: string;
+};
+
 export type TrackV3 = {
+  album?: TrackAlbum | null;
   id: string;
   artist: string;
   name: string;
