@@ -19,6 +19,8 @@ Artwork tilts at most 3.5 degrees under a mouse. A blurred copy of the cover sup
 
 The feed is chronological and preserves repeat posts. A profile is its feed. Every content page and API requires a verified member session. The entry page contains no member activity or artwork. Only the owner can create email-bound invitations.
 
+Profiles open as a compact cover grid: eight columns on wide desktops, six or four at intermediate widths, and three on phones (two on very narrow screens). Keep track titles and artists below the covers. Grid / Feed buttons switch to a single column of posts with dates and notes. The browser remembers the view choice; both views keep the same chronological posts, including repeat listens.
+
 ## Scope
 
 Discover is the home page and remains at /discover. Social posts have a separate /feed tab. Profile is the member’s feed. Podcasts and credits remain at their existing routes. The separate beatbrain-v2 project remains unchanged.

@@ -1,7 +1,8 @@
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import prisma from "../../lib/prisma";
-import PostGrid, { type FeedPost } from "../../components/PostGrid";
+import type { FeedPost } from "../../components/PostGrid";
+import ProfilePosts from "../../components/ProfilePosts";
 import { useAppContext } from "../../context/AppContext";
 type ProfileUser = {
   id: string;
@@ -78,7 +79,7 @@ export default function Profile({
           </Link>
         )}
       </section>
-      <PostGrid posts={posts} />
+      <ProfilePosts posts={posts} />
     </div>
   );
 }

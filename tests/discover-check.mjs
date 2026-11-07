@@ -147,6 +147,8 @@ try {
     .getByRole("button", { name: "Post to my feed", exact: true })
     .click();
   await page.waitForURL("**/u/**");
+  await page.locator(".profile-record").first().waitFor();
+  await page.getByRole("button", { name: "Feed", exact: true }).click();
   await page.getByText("A discovery worth sharing.", { exact: true }).waitFor();
   await page.goto("/");
   let requests = 0;

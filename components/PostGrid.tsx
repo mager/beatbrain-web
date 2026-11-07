@@ -12,7 +12,7 @@ export type FeedPost = {
   } | null;
   track: { title: string; artist: string; sourceId: string; image: string };
 };
-export default function PostGrid({ posts }: { posts: FeedPost[] }) {
+export default function PostGrid({ posts, layout }: { posts: FeedPost[]; layout?: "list" }) {
   if (!posts.length)
     return (
       <div className="empty-state">
@@ -25,7 +25,7 @@ export default function PostGrid({ posts }: { posts: FeedPost[] }) {
       </div>
     );
   return (
-    <div className="post-grid">
+    <div className={`post-grid${layout === "list" ? " post-list" : ""}`}>
       {posts.map((post) => (
         <article className="music-post" key={post.id}>
           <div className="post-byline">
