@@ -42,9 +42,21 @@ export default async function handle(
           authorId: session.user.id,
           trackId: track.id,
         },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          authorId: true,
+          trackId: true,
+          author: { select: { username: true } },
+        },
       });
     });
-    return res.status(201).json(result);
+    const { author, ...post } = result;
+    return res.status(201).json({
+      ...post,
+      profilePath: author?.username ? `/u/${encodeURIComponent(author.username)}` : "/feed",
+    });
   } catch {
     return res
       .status(500)

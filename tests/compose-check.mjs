@@ -21,6 +21,9 @@ try {
   assert.equal(signup.status(), 200, await signup.text());
   userID = (await db.user.findUniqueOrThrow({ where: { email } })).id;
   const page = await context.newPage();
+  // Posting must reach the author's feed even when optional header profile
+  // data fails to load. The server already knows the authenticated author.
+  await page.route("**/api/user", route => route.fulfill({ status: 503, json: { error: "Profile temporarily unavailable" } }));
   page.setDefaultTimeout(20000);
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -55,7 +58,7 @@ try {
   assert.equal(await page.getByLabel("Your note", { exact: false }).inputValue(), "This one belongs in the room.");
   await page.unroute("**/api/post");
   await page.getByRole("button", { name: "Post to my feed", exact: true }).click();
-  await page.waitForURL("**/u/**");
+  await page.waitForURL(`${base}/u/compose_${suffix}`);
   assert.equal(await page.locator(".app-shell").getAttribute("data-album-theme"), null);
   assert.equal(await db.post.count({ where: { authorId: userID } }), 1);
   await page.goto(`/create?track=${trackID}`);

@@ -9,7 +9,6 @@ import {
   MagnifyingGlassIcon,
   ArrowUpRightIcon,
 } from "@heroicons/react/24/outline";
-import { useAppContext } from "../../context/AppContext";
 import SelectedTrack from "../../components/SelectedTrack";
 type Track = { id: string; name: string; artist: string; thumb: string | null };
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -56,9 +55,6 @@ export default function Create({
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
   const restoreSearchFocus = useRef(false);
-  const {
-    state: { user },
-  } = useAppContext();
   const [query, setQuery] = useState(""),
     [tracks, setTracks] = useState<Track[]>([]),
     [selected, setSelected] = useState<Track | null>(initialTrack),
@@ -135,7 +131,7 @@ export default function Create({
       const data = await response.json();
       if (!response.ok)
         throw new Error(data.error || "Your track was not posted.");
-      await router.push(user?.username ? `/u/${user.username}` : "/");
+      await router.push(data.profilePath || "/feed");
     } catch (e) {
       setError((e as Error).message);
     } finally {
