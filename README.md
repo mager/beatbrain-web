@@ -30,6 +30,8 @@ The integration test checks guest/forged-cookie rejection, invited signup, membe
 
 - `node --env-file=.env.local tests/profile-view-check.mjs`: checks the responsive cover grid, saved Grid / Feed choice, notes, and track links. It creates and removes its own invited member and posts. Set `TEST_BASE_URL=https://beatbrain.xyz` to check production.
 
+- `node --env-file=.env.local tests/compose-check.mjs`: checks album colors and reset, desktop/mobile layout, keyboard Change track, note retention, failed-post recovery, real posting, and missing artwork. It removes its invited test member and posts. Set `TEST_BASE_URL=https://beatbrain.xyz` for production. Run browser signup suites sequentially on production to respect the auth rate limit.
+
 - `node --env-file=.env.local --import tsx tests/waitlist-oauth-check.mjs`: runs real auth callbacks against the database with mocked Spotify responses; checks state, consent denial, waitlist isolation, duplicates, and existing member sign-in.
 - `node --env-file=.env.local --import tsx tests/waitlist-owner-check.mjs`: checks owner access, pagination past 100 entries, and invite writes against the database with a mocked session identity.
 - `node --env-file=.env.local tests/waitlist-ui-check.mjs`: checks public entry and confirmation, OAuth start, guest/member restrictions, and desktop/mobile owner controls. Owner UI responses are fixtures; it does not impersonate a real owner session. Set `TEST_BASE_URL=https://beatbrain.xyz` for production. All three checks remove their test records.

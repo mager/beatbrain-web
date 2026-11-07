@@ -9,6 +9,7 @@ type Props = {
   releaseDate?: string;
   children?: ReactNode;
   onArtworkLoad?: (image: HTMLImageElement) => void;
+  headingLevel?: 1 | 2;
 };
 export default function TrackHero({
   name,
@@ -17,7 +18,9 @@ export default function TrackHero({
   releaseDate,
   children,
   onArtworkLoad,
+  headingLevel = 1,
 }: Props) {
+  const Heading = headingLevel === 1 ? "h1" : "h2";
   const date = formatReleaseDate(releaseDate);
   const [failedSource, setFailedSource] = useState("");
   const artwork = useRef<HTMLImageElement>(null);
@@ -55,7 +58,7 @@ export default function TrackHero({
         </div>
       )}
       <div>
-        <h1>{name}</h1>
+        <Heading className="track-title">{name}</Heading>
         <p className="track-artist">{artist}</p>
         {date && <p className="track-release">Released {date}</p>}
         {children}

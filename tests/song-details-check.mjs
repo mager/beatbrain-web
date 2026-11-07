@@ -43,6 +43,7 @@ try {
     .getByRole("heading", { name: "Manchild", exact: true, level: 1 })
     .waitFor();
   await page.getByRole("heading", { name: "Credits", exact: true }).waitFor();
+  assert.equal(await page.title(), "Manchild — Sabrina Carpenter — Beatbrain");
   assert.ok(
     (await page.locator(".credit-row").count()) >= 8,
     "real credits visible",

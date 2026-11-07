@@ -60,6 +60,13 @@ try {
   await page.waitForTimeout(250);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
   await page.screenshot({ path: ".impeccable/review/profile-feed-mobile.png" });
+  await page.setViewportSize({ width: 320, height: 844 });
+  const firstTitle = page.locator(".post-list .post-track h2 a").first();
+  const originalTitle = await firstTitle.textContent();
+  await firstTitle.evaluate(el => { el.textContent = "Supercalifragilisticexpialidocious"; });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, "long list-view title wraps");
+  await firstTitle.evaluate((el, title) => { el.textContent = title; }, originalTitle);
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Grid", exact: true }).click();
   await page.goto("/u/mager");
   await page.locator(".profile-record-grid").waitFor();

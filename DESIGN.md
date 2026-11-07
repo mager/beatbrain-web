@@ -27,6 +27,10 @@ Profile identity and the view switch share a desktop row. The name uses the disp
 
 Discover is the home page and remains at /discover. Social posts have a separate /feed tab. Profile is the member’s feed. Podcasts and credits remain at their existing routes. The separate beatbrain-v2 project remains unchanged.
 
+## Posting
+
+Searching stays at a readable form width. Once a track is selected, its cover and note form fill two columns on desktop and stack on mobile. Reuse the song artwork's color sampling and image fallback. Keep one page-level heading; the selected track is an h2. Changing tracks restores search focus and the normal site palette. Preserve the note when changing tracks or when posting fails. A profile's list view places the author, date, title, and artist beside the cover, with the note below them; on phones, longer notes span the row.
+
 ## Song details
 
 Song pages use a dominant color sampled from the actual cover. Broad colored areas outrank small details; black, white, and transparent pixels do not set the accent. The accent has at least 7:1 contrast with the dark canvas and button text. Monochrome or unavailable covers use a neutral accent. The header, primary action, artist name, links, and focus marks share the song accent. Navigation away restores the site palette. No extra image service or color package is needed.

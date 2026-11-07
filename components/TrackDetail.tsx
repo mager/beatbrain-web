@@ -35,9 +35,7 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
   return (
     <>
       <Head>
-        <title>
-          {track.name} — {track.artist} — Beatbrain
-        </title>
+        <title>{`${track.name} — ${track.artist} — Beatbrain`}</title>
       </Head>
       <TrackHero
         name={track.name}

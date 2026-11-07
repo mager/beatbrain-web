@@ -2,15 +2,15 @@ import type { GetServerSideProps } from "next";
 import { backendFetch } from "../../lib/backend";
 import { SERVER_HOST } from "@util";
 import { adaptTrack } from "@adapters/track";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   MagnifyingGlassIcon,
   ArrowUpRightIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useAppContext } from "../../context/AppContext";
+import SelectedTrack from "../../components/SelectedTrack";
 type Track = { id: string; name: string; artist: string; thumb: string | null };
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   if (typeof query.track !== "string" || !/^[a-zA-Z0-9]{22}$/.test(query.track))
@@ -54,6 +54,8 @@ export default function Create({
   initialError?: string;
 }) {
   const router = useRouter();
+  const searchInput = useRef<HTMLInputElement>(null);
+  const restoreSearchFocus = useRef(false);
   const {
     state: { user },
   } = useAppContext();
@@ -64,6 +66,12 @@ export default function Create({
     [searching, setSearching] = useState(false),
     [saving, setSaving] = useState(false),
     [error, setError] = useState(initialError);
+  useEffect(() => {
+    if (!selected && restoreSearchFocus.current) {
+      searchInput.current?.focus({ preventScroll: true });
+      restoreSearchFocus.current = false;
+    }
+  }, [selected]);
   useEffect(() => {
     setSelected(initialTrack);
     setError(initialError);
@@ -135,7 +143,7 @@ export default function Create({
     }
   }
   return (
-    <div className="compose-page">
+    <div className={`compose-page${selected ? " compose-with-track" : ""}`}>
       <Link href="/feed" className="back-link">
         Back to Feed
       </Link>
@@ -148,6 +156,7 @@ export default function Create({
               <MagnifyingGlassIcon width={20} />
               <input
                 id="track-search"
+                ref={searchInput}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Track or artist name"
@@ -186,59 +195,36 @@ export default function Create({
             </ul>
           </>
         ) : (
-          <div className="selected-track">
-            {selected.thumb && (
-              <img
-                src={selected.thumb.replace(
-                  "ab67616d00001e02",
-                  "ab67616d0000b273",
-                )}
-                alt={`${selected.name} cover`}
-                width={280}
-                height={280}
+          <SelectedTrack
+            track={selected}
+            busy={saving}
+            onChange={() => {
+              restoreSearchFocus.current = true;
+              setSelected(null);
+              setQuery("");
+            }}
+          >
+            <label>
+              <span>Your note <span className="muted">(optional)</span></span>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                maxLength={1000}
+                rows={3}
+                placeholder="The part you can’t stop thinking about…"
               />
-            )}
-            <div>
-              <h2>{selected.name}</h2>
-              <p>{selected.artist}</p>
-              <button
-                type="button"
-                className="text-button"
-                onClick={() => {
-                  setSelected(null);
-                  setQuery("");
-                }}
-              >
-                <XMarkIcon width={14} /> Change track
+            </label>
+            <div className="compose-actions">
+              <span className="field-hint">{content.length}/1000</span>
+              <button className="button button-primary" disabled={saving}>
+                {saving ? "Posting…" : "Post to my feed"}
+                <ArrowUpRightIcon width={18} />
               </button>
             </div>
-          </div>
+            {error && <p role="alert" className="form-error">{error}</p>}
+          </SelectedTrack>
         )}
-        <label>
-          Your note <span className="muted">(optional)</span>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            maxLength={1000}
-            rows={3}
-            placeholder="The part you can’t stop thinking about…"
-          />
-        </label>
-        <div className="compose-actions">
-          <span className="field-hint">{content.length}/1000</span>
-          <button
-            className="button button-primary"
-            disabled={!selected || saving}
-          >
-            {saving ? "Posting…" : "Post to my feed"}
-            <ArrowUpRightIcon width={18} />
-          </button>
-        </div>
-        {error && (
-          <p role="alert" className="form-error">
-            {error}
-          </p>
-        )}
+        {!selected && error && <p role="alert" className="form-error">{error}</p>}
       </form>
     </div>
   );
