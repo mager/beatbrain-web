@@ -74,6 +74,18 @@ try {
     false,
   );
   await page.screenshot({ path: ".impeccable/review/discover-mobile.png" });
+  for (const width of [1920, 1024, 768, 600, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `Discover overflow at ${width}`);
+    const cover = await page.locator(".discovery-lead .artwork-link").boundingBox();
+    assert.ok(Math.abs(cover.width - cover.height) < 1, "lead cover remains square");
+  }
+  const leadTitle = page.locator(".discovery-lead h2 a");
+  const originalTitle = await leadTitle.textContent();
+  await leadTitle.evaluate(el => { el.textContent = "SupercalifragilisticexpialidociousLiveAtTheListeningRoom"; });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, "long opening title wraps");
+  await leadTitle.evaluate((el, title) => { el.textContent = title; }, originalTitle);
+  await page.setViewportSize({ width: 390, height: 844 });
   console.log("Discovery grid renders on desktop and mobile.");
   await page.goto("/about");
   await page.getByRole("heading", { name: "Music charms the soul." }).waitFor();
@@ -90,6 +102,11 @@ try {
     .locator(".discovery-track h2")
     .first()
     .innerText();
+  await page.getByRole("link", { name: "Post this track", exact: true }).click();
+  await page.waitForURL("**/create?track=*");
+  await page.getByRole("heading", { name: firstTitle, exact: true }).waitFor();
+  await page.goto("/");
+  await page.locator(".discover-grid .album-art").first().waitFor();
   console.log("Checking track detail and posting.");
   await page.locator(".discover-grid .artwork-link").first().click();
   await page.waitForURL("**/ext/spotify/**");
@@ -190,6 +207,7 @@ try {
         checks: [
           "navigation",
           "live data",
+          "opening cover to composer",
           "desktop/mobile",
           "error without request loop",
           "retry",

@@ -1004,6 +1004,29 @@ p {
   align-items: center;
   margin-bottom: 24px;
 }
+.profile-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 32px 24px;
+}
+.profile-page .profile-intro,
+.profile-page .profile-view-toolbar {
+  margin-bottom: 0;
+}
+.profile-page .profile-intro > div {
+  min-width: 0;
+}
+.profile-page .profile-intro h1 {
+  font-size: clamp(40px, 4.5vw, 68px);
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+.profile-page > .profile-record-grid,
+.profile-page > .post-grid,
+.profile-page > .empty-state {
+  grid-column: 1 / -1;
+}
 .waitlist-confirmation .button {
   margin-top: 28px;
 }
@@ -1045,6 +1068,7 @@ p {
   width: 88px;
   height: 88px;
   font-size: 32px;
+  flex-shrink: 0;
 }
 .profile-intro h1 {
   font-size: 42px;
@@ -1111,6 +1135,11 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: filter 180ms ease;
+}
+.profile-record:hover .profile-record-art img,
+.profile-record:focus-visible .profile-record-art img {
+  filter: brightness(1.1);
 }
 .profile-record-title,
 .profile-record-artist {
@@ -1399,6 +1428,24 @@ p {
   isolation: isolate;
   --tilt-x: 0deg;
   --tilt-y: 0deg;
+  --sleeve-light: 50%;
+}
+.artwork-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 20%, #fff2 45%, transparent 70%);
+  background-size: 200% 100%;
+  background-position: var(--sleeve-light) 0;
+  box-shadow: inset 0 0 0 1px #ffffff16;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.artwork-link:hover::after,
+.artwork-link:focus-visible::after {
+  opacity: 1;
 }
 .artwork-light {
   position: absolute;
@@ -1456,7 +1503,8 @@ p {
   padding: 24px;
 }
 .missing-art span {
-  max-width: 24ch;
+  max-width: min(100%, 24ch);
+  overflow-wrap: anywhere;
   font-size: 15px;
   line-height: 1.5;
 }
@@ -1501,6 +1549,7 @@ p {
   border-color: #77717f;
 }
 @media (hover: none) {
+  .artwork-link::after { display: none; }
   .artwork-light {
     display: none;
   }
@@ -1512,6 +1561,7 @@ p {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .artwork-link::after { display: none; }
   .artwork-stage .artwork-link,
   .entry-copy:hover .record-object {
     transform: none;
@@ -1560,8 +1610,40 @@ p {
 }
 .discover-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 32px 20px;
+}
+.discovery-lead {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.discovery-track.discovery-lead .post-track {
+  margin-top: 20px;
+  gap: 16px;
+}
+.discovery-track.discovery-lead h2 {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(28px, 2.5vw, 40px);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+.discovery-track.discovery-lead .post-track p {
+  font-size: 16px;
+  margin-top: 8px;
+}
+.discovery-post-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 8px;
+  color: var(--room-accent);
+  font-size: 13px;
+}
+.discovery-post-link:hover {
+  text-decoration: underline;
 }
 .discovery-track {
   min-width: 0;
@@ -1648,11 +1730,6 @@ p {
   margin-top: 32px;
   font-size: 14px;
 }
-@media (min-width: 1800px) {
-  .discover-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
 @media (max-width: 1100px) {
   .discover-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1668,6 +1745,16 @@ p {
   .discover-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 28px 14px;
+  }
+  .profile-page {
+    display: block;
+  }
+  .profile-page .profile-intro {
+    margin-bottom: 24px;
+  }
+  .profile-page .profile-view-toolbar {
+    justify-content: flex-start;
+    margin-bottom: 24px;
   }
   .header-inner {
     flex-wrap: wrap;
@@ -1703,6 +1790,13 @@ p {
   .discover-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px 12px;
+  }
+  .discovery-lead {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .discovery-track.discovery-lead .post-track {
+    margin-top: 16px;
   }
   .discovery-track h2 {
     font-size: 15px;

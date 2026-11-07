@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { ArrowUpRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import AlbumArtwork from "../components/AlbumArtwork";
 import type { Track } from "@types";
 
@@ -91,7 +91,7 @@ export default function Discover() {
           aria-label="Loading discoveries"
         >
           {Array.from({ length: 10 }, (_, i) => (
-            <div key={i} className="discovery-skeleton" aria-hidden="true">
+            <div key={i} className={`discovery-skeleton${i === 0 ? " discovery-lead" : ""}`} aria-hidden="true">
               <div />
               <span />
               <span />
@@ -122,12 +122,13 @@ export default function Discover() {
         </div>
       ) : (
         <div className="discover-grid">
-          {tracks.map((track) => (
-            <article key={track.source_id} className="discovery-track">
+          {tracks.map((track, index) => (
+            <article key={track.source_id} className={`discovery-track${index === 0 ? " discovery-lead" : ""}`}>
               <AlbumArtwork
                 src={track.image || ""}
                 title={`${track.name} by ${track.artist}`}
                 href={`/ext/spotify/${track.source_id}`}
+                priority={index === 0}
               />
               <div className="post-track">
                 <div>
@@ -148,6 +149,11 @@ export default function Discover() {
                   <ArrowUpRightIcon width={18} />
                 </a>
               </div>
+              {index === 0 && (
+                <Link className="discovery-post-link" href={`/create?track=${track.source_id}`}>
+                  <PlusIcon width={17} aria-hidden="true" /> Post this track
+                </Link>
+              )}
             </article>
           ))}
         </div>

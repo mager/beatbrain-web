@@ -1,9 +1,7 @@
 import type { GetServerSideProps } from "next";
-import Link from "next/link";
 import prisma from "../../lib/prisma";
 import type { FeedPost } from "../../components/PostGrid";
 import ProfilePosts from "../../components/ProfilePosts";
-import { useAppContext } from "../../context/AppContext";
 type ProfileUser = {
   id: string;
   name: string;
@@ -52,9 +50,8 @@ export default function Profile({
   user: ProfileUser;
   posts: FeedPost[];
 }) {
-  const { state } = useAppContext();
   return (
-    <div className="room-container">
+    <div className="room-container profile-page">
       <section className="profile-intro">
         <span className="avatar profile-avatar">
           {user.image ? (
@@ -73,11 +70,6 @@ export default function Profile({
             </span>
           </p>
         </div>
-        {state.user?.id === user.id && (
-          <Link href="/create" className="button button-secondary">
-            Post a track
-          </Link>
-        )}
       </section>
       <ProfilePosts posts={posts} />
     </div>

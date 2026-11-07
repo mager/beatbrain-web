@@ -6,10 +6,12 @@ export default function AlbumArtwork({
   src,
   title,
   href,
+  priority = false,
 }: {
   src: string;
   title: string;
   href: string;
+  priority?: boolean;
 }) {
   const stage = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
@@ -25,10 +27,12 @@ export default function AlbumArtwork({
       y = (event.clientY - rect.top) / rect.height - 0.5;
     event.currentTarget.style.setProperty("--tilt-x", `${-y * 7}deg`);
     event.currentTarget.style.setProperty("--tilt-y", `${x * 7}deg`);
+    event.currentTarget.style.setProperty("--sleeve-light", `${(x + 0.5) * 100}%`);
   }
   function reset() {
     stage.current?.style.setProperty("--tilt-x", "0deg");
     stage.current?.style.setProperty("--tilt-y", "0deg");
+    stage.current?.style.setProperty("--sleeve-light", "50%");
   }
   return (
     <div
@@ -59,7 +63,8 @@ export default function AlbumArtwork({
             alt={`${title} cover`}
             width={400}
             height={400}
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             onError={(event) => {
               if (event.currentTarget.src !== src) {
                 event.currentTarget.src = src;
