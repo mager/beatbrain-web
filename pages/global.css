@@ -1004,6 +1004,43 @@ p {
   align-items: center;
   margin-bottom: 24px;
 }
+.waitlist-confirmation .button {
+  margin-top: 28px;
+}
+.waitlist-entries {
+  margin-top: 20px;
+}
+.waitlist-entries li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid #303238;
+}
+.waitlist-entries li > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.waitlist-entries strong,
+.waitlist-entries span,
+.waitlist-entries small {
+  display: block;
+}
+.waitlist-entries span,
+.waitlist-entries small {
+  color: #aaaeb7;
+  margin-top: 4px;
+}
+.waitlist-entries small {
+  font-size: 12px;
+}
+.waitlist-entries .button {
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .waitlist-entries li { align-items: flex-start; flex-direction: column; }
+}
 .profile-avatar {
   width: 88px;
   height: 88px;

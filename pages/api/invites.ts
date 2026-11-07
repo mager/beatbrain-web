@@ -57,7 +57,11 @@ export default async function handler(
         .status(409)
         .json({ error: "This person is already a member." });
     const { token, data } = newInvite(email, session.user.id);
-    const invite = await prisma.invite.create({ data, select: inviteFields });
+    const invite = await prisma.$transaction(async (tx) => {
+      const created = await tx.invite.create({ data, select: inviteFields });
+      await tx.waitlistEntry.updateMany({ where: { email }, data: { invitedAt: new Date() } });
+      return created;
+    });
     const url = new URL(
       "/auth/signin",
       process.env.BETTER_AUTH_URL || "https://beatbrain.xyz",

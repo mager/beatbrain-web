@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { LockClosedIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { authClient } from "../../lib/auth-client";
@@ -10,6 +11,7 @@ export default function SignIn() {
   const router = useRouter();
   const invite =
     typeof router.query.invite === "string" ? router.query.invite : "";
+  const waitlisted = router.query.error === "WAITLIST_JOINED";
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
     [name, setName] = useState(""),
@@ -18,7 +20,7 @@ export default function SignIn() {
     [loading, setLoading] = useState(false);
   useEffect(() => {
     if (typeof router.query.email === "string") setEmail(router.query.email);
-    if (typeof router.query.error === "string")
+    if (typeof router.query.error === "string" && router.query.error !== "WAITLIST_JOINED")
       setError(
         "Spotify could not sign you in. Please try again, or use your email and password.",
       );
@@ -54,6 +56,7 @@ export default function SignIn() {
       const result = await authClient.signIn.social({
         provider: "spotify",
         callbackURL: "/",
+        errorCallbackURL: "/auth/signin",
       });
       if (result.error) {
         setError(result.error.message || "Could not connect to Spotify.");
@@ -91,6 +94,14 @@ export default function SignIn() {
         </span>
       </section>
       <section className="entry-form">
+        {waitlisted ? (
+          <div className="waitlist-confirmation" role="status">
+            <h2>You’re on the waitlist.</h2>
+            <p className="muted">Your place is saved. You’ll need an invite to enter.</p>
+            <Link href="/auth/signin" className="button button-secondary">Back to sign in</Link>
+          </div>
+        ) : (
+        <>
         <h2>{invite ? "You’re on the list." : "Come on in."}</h2>
         <p className="muted">
           {invite
@@ -172,14 +183,14 @@ export default function SignIn() {
               disabled={loading}
               className="button button-secondary full-width"
             >
-              <SpotifyLogo /> Sign in with Spotify
+              <SpotifyLogo /> Continue with Spotify
             </button>
             <p className="entry-footnote">
-              New here? Ask a friend for an invite.
-              <br />
-              Spotify sign-in is for existing members.
+              Members sign in. New listeners join the waitlist.
             </p>
           </>
+        )}
+        </>
         )}
       </section>
       <footer className="entry-footer">

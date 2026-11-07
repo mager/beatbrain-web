@@ -4,6 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { username } from "better-auth/plugins";
 import prisma from "./prisma";
 import { claimInvite } from "./invites";
+import { routeNewSpotifyUser } from "./waitlist";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: "postgresql" }),
@@ -12,10 +13,12 @@ export const auth = betterAuth({
     spotify: {
       clientId: process.env.SPOTIFY_CLIENT_ID as string,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
-      disableSignUp: true,
+      disableSignUp: false,
       scope: ["user-read-email", "user-read-private"],
     },
   },
+  user: { validateUserInfo: (data) => routeNewSpotifyUser(data) },
+  onAPIError: { errorURL: "/auth/signin" },
   // Existing Spotify members can sign in; only an email invite can create a user.
   databaseHooks: {
     user: {

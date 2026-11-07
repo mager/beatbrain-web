@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useAppContext } from "../context/AppContext";
 import { authClient } from "../lib/auth-client";
 import { isOwner } from "../lib/access";
+import Waitlist from "../components/Waitlist";
 import {
   ArrowUpRightIcon,
   CheckIcon,
@@ -23,6 +24,9 @@ export default function Settings() {
   useEffect(() => {
     setUsername(user?.username || "");
   }, [user?.username]);
+  useEffect(() => {
+    if (inviteURL) document.querySelector(".invite-result")?.scrollIntoView({ block: "nearest" });
+  }, [inviteURL]);
   async function save(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -46,7 +50,11 @@ export default function Settings() {
   }
   async function invite(event: React.FormEvent) {
     event.preventDefault();
+    await createInvite(email);
+  }
+  async function createInvite(recipient: string): Promise<boolean> {
     setBusy(true);
+    setEmail(recipient);
     setError("");
     setInviteURL("");
     setCopied(false);
@@ -54,13 +62,15 @@ export default function Settings() {
       const response = await fetch("/api/invites", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: recipient }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
       setInviteURL(data.url);
+      return true;
     } catch (e) {
       setError((e as Error).message);
+      return false;
     } finally {
       setBusy(false);
     }
@@ -98,6 +108,7 @@ export default function Settings() {
         </form>
       </section>
       {isOwner(user) && (
+        <>
         <section className="settings-section">
           <h2>Bring your people.</h2>
           <p className="muted">
@@ -152,6 +163,8 @@ export default function Settings() {
             </div>
           )}
         </section>
+        <Waitlist onInvite={createInvite} busy={busy} />
+        </>
       )}
       {error && (
         <p className="form-error" role="alert">

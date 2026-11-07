@@ -8,7 +8,9 @@ Copy `.env.example` to `.env.local` and set the values. Install with `npm ci`, t
 
 ## Access
 
-Every content page and API requires a verified database session. Only the sign-in page, required auth endpoints, and static assets are public. Spotify sign-in works for existing linked accounts; new Spotify signup is disabled.
+Every content page and API requires a verified database session. Only the sign-in page, required auth endpoints, and static assets are public. Spotify sign-in works for existing linked accounts. New Spotify listeners join a separate waitlist: they do not receive a member account, Spotify token storage, or a session.
+
+The owner can view the waitlist in Settings and create the same email-bound invites. Repeat Spotify requests preserve the original wait time and invite status. The list excludes people who have joined and loads 50 entries at a time. Beatbrain's Spotify app is currently in Development mode, which permits only five approved Spotify users. An open Spotify waitlist requires a change to that provider limit; the app cannot bypass it.
 
 The owner is the existing stable user ID `4`. In Settings, the owner can create an email-bound invitation. Send the returned link yourself: the app does not send email. Invites expire after seven days and work once. The database stores only a hash of the token. A failed account insert consumes the token; create another invitation if needed.
 
@@ -27,6 +29,10 @@ The integration test checks guest/forged-cookie rejection, invited signup, membe
 - `node --env-file=.env.local tests/song-details-check.mjs`: checks real credits, album/duration/releases, dynamic cover accents, theme reset, and responsive song pages.
 
 - `node --env-file=.env.local tests/profile-view-check.mjs`: checks the responsive cover grid, saved Grid / Feed choice, notes, and track links. It creates and removes its own invited member and posts. Set `TEST_BASE_URL=https://beatbrain.xyz` to check production.
+
+- `node --env-file=.env.local --import tsx tests/waitlist-oauth-check.mjs`: runs real auth callbacks against the database with mocked Spotify responses; checks state, consent denial, waitlist isolation, duplicates, and existing member sign-in.
+- `node --env-file=.env.local --import tsx tests/waitlist-owner-check.mjs`: checks owner access, pagination past 100 entries, and invite writes against the database with a mocked session identity.
+- `node --env-file=.env.local tests/waitlist-ui-check.mjs`: checks public entry and confirmation, OAuth start, guest/member restrictions, and desktop/mobile owner controls. Owner UI responses are fixtures; it does not impersonate a real owner session. Set `TEST_BASE_URL=https://beatbrain.xyz` for production. All three checks remove their test records.
 
 ## Deploy
 
