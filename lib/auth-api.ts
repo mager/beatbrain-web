@@ -6,7 +6,7 @@ import type { NextApiRequest } from "next";
  * Get the Better Auth session from a Pages Router API request.
  * Returns { session, user } or null.
  */
-export async function getSession(req: NextApiRequest) {
+export async function getSession(req: Pick<NextApiRequest, "headers">) {
   return auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });

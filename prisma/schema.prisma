@@ -46,10 +46,24 @@ model User {
   sessions        Session[]
   accounts        Account[]
   posts           Post[]
+  following       Follow[] @relation("FollowFrom")
+  followers       Follow[] @relation("FollowTo")
 
   @@unique([email])
   @@unique([username])
   @@map("user")
+}
+
+model Follow {
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User @relation("FollowFrom", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User @relation("FollowTo", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+  @@index([followingId])
+  @@map("follows")
 }
 
 model Session {

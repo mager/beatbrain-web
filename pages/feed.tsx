@@ -1,28 +1,31 @@
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
-import prisma from "../lib/prisma";
+import { getFeed } from "../lib/feed";
+import { getSession } from "../lib/auth-api";
 import PostGrid, { type FeedPost } from "../components/PostGrid";
-export const getServerSideProps: GetServerSideProps = async () => {
-  const posts = await prisma.post.findMany({
-    take: 48,
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      author: { select: { name: true, username: true, image: true } },
-      track: {
-        select: { title: true, artist: true, sourceId: true, image: true },
-      },
-    },
-  });
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getSession(req);
+  if (!session)
+    return { redirect: { destination: "/auth/signin", permanent: false } };
+  const friends = query.view === "friends";
+  const posts = await getFeed(session.user.id, friends, 48);
   return {
     props: {
-      posts: posts.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() })),
+      posts,
+      friends,
     },
   };
 };
-export default function Feed({ posts }: { posts: FeedPost[] }) {
+export default function Feed({
+  posts,
+  friends,
+}: {
+  posts: FeedPost[];
+  friends: boolean;
+}) {
   const people = Array.from(
     new Map(
       posts
@@ -55,7 +58,30 @@ export default function Feed({ posts }: { posts: FeedPost[] }) {
           </div>
         </div>
       </section>
-      <PostGrid posts={posts} />
+      <nav className="feed-view-switch" aria-label="Feed view">
+        <Link href="/feed" aria-current={!friends ? "page" : undefined}>
+          Everyone
+        </Link>
+        <Link
+          href="/feed?view=friends"
+          aria-current={friends ? "page" : undefined}
+        >
+          Friends
+        </Link>
+      </nav>
+      {friends && !posts.length ? (
+        <div className="empty-state">
+          <h2>Find your music people.</h2>
+          <p>
+            Follow someone from their profile. Their tracks will appear here.
+          </p>
+          <Link href="/feed" className="button button-primary">
+            Explore the room
+          </Link>
+        </div>
+      ) : (
+        <PostGrid posts={posts} />
+      )}
     </div>
   );
 }

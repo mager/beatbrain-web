@@ -1102,6 +1102,48 @@ p {
   border: 1px solid #303238;
   border-radius: 8px;
 }
+.profile-social {
+  margin-top: 16px;
+}
+.profile-social-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: #aaaeb7;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.profile-social .button {
+  margin-top: 14px;
+  min-width: 128px;
+}
+.profile-social .mutual-note {
+  color: var(--room-accent);
+}
+.feed-view-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 28px;
+  border: 1px solid #303238;
+  border-radius: 8px;
+}
+.feed-view-switch a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 4px;
+  color: #aaaeb7;
+  font-size: 14px;
+}
+.feed-view-switch a:hover {
+  color: #f3f0e9;
+}
+.feed-view-switch a[aria-current="page"] {
+  background: #f3f0e9;
+  color: #101113;
+}
 .profile-view-switch button {
   display: flex;
   align-items: center;

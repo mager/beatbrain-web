@@ -21,6 +21,8 @@ The feed is chronological and preserves repeat posts. A profile is its feed. Eve
 
 Profiles open as a compact cover grid: eight columns on wide desktops, six or four at intermediate widths, and three on phones (two on very narrow screens). Keep track titles and artists below the covers. Grid / Feed buttons switch to a single column of posts with dates and notes. The browser remembers the view choice; both views keep the same chronological posts, including repeat listens.
 
+Profiles show follower/following counts below the handle. Other members have a Follow/Following button with a visible selected state and a quiet “Follows you” note for a reciprocal follow. Keep pending controls disabled and preserve the last confirmed state on failure. Following needs no approval and grants no site access. Feed keeps Everyone as its default; Friends shows only followed people, in time order, with a clear path back to Everyone when empty.
+
 Profile identity and the view switch share a desktop row. The name uses the display face at up to 68 px. On mobile the view switch sits below the identity, aligned to the covers. The main header provides the posting action.
 
 ## Scope
