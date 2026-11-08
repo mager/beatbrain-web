@@ -38,6 +38,28 @@ try {
   page.setDefaultTimeout(20000);
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
+  // Spotify's guest suffix differs from the MusicBrainz recording title.
+  await page.goto("/ext/spotify/2OzhQlSqBEmt7hmkYxfT6m");
+  await page.getByRole("heading", {
+    name: "Fortnight (feat. Post Malone)", exact: true, level: 1,
+  }).waitFor();
+  assert.ok((await page.locator(".credit-row").count()) >= 8,
+    "Fortnight guest-title mismatch must not hide credits");
+  const fortnightCredits = await page.locator(".credit-row").allTextContents();
+  for (const name of ["Jack Antonoff", "Taylor Swift", "Post Malone", "Serban Ghenea", "Bryce Bordone", "Jack Manning"]) {
+    assert.ok(fortnightCredits.some((text) => text.includes(name)), `${name} credit visible`);
+  }
+  assert.equal(await page.getByText("Credits aren’t available for this recording yet.").count(), 0);
+  assert.equal(await page.locator('a[href="https://musicbrainz.org/recording/a06d6b37-9cae-40a5-806d-1a3c4f8098c0"]').count(), 1);
+  assert.ok((await page.locator(".release-list li").count()) > 0);
+  await page.waitForFunction(() => document.querySelector(".app-shell").dataset.albumTheme);
+  await page.evaluate(async () => { await document.fonts.ready; await document.querySelector(".track-cover").decode().catch(() => {}); });
+  await page.screenshot({ path: ".impeccable/review/fortnight-desktop.png", fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(250);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+  await page.screenshot({ path: ".impeccable/review/fortnight-mobile.png", fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1050 });
   await page.goto("/ext/spotify/42UBPzRMh5yyz0EDPr6fr1");
   await page
     .getByRole("heading", { name: "Manchild", exact: true, level: 1 })
@@ -171,6 +193,7 @@ try {
         secondAccent,
         checks: [
           "real credits",
+          "featured-artist title match and credits",
           "duration without audio features",
           "album",
           "releases",
