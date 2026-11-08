@@ -2,6 +2,8 @@
 
 An invite-only music room. Members post a track and an optional note. Their profile is their listening feed. Album art leads the dark interface. Discover is the home page. Social posts live in `/feed`; each member also has a profile feed.
 
+Members can follow people from their profiles. Following is directional and requires no approval. Profiles show counts and “Follows you” when the other member follows the viewer. `/feed?view=friends` shows only followed people's posts, in time order; `/feed` keeps everyone's posts. Follows never grant site access.
+
 ## Run
 
 Copy `.env.example` to `.env.local` and set the values. Install with `npm ci`, then run `npm run dev`. Use the same host as `BETTER_AUTH_URL`. The Go API requires a server-only `BEATBRAIN_API_KEY`.
@@ -29,6 +31,8 @@ The integration test checks guest/forged-cookie rejection, invited signup, membe
 - `node --env-file=.env.local tests/song-details-check.mjs`: checks real credits, album/duration/releases, dynamic cover accents, theme reset, and responsive song pages.
 
 - `node --env-file=.env.local tests/profile-view-check.mjs`: checks the responsive cover grid, saved Grid / Feed choice, notes, and track links. It creates and removes its own invited member and posts. Set `TEST_BASE_URL=https://beatbrain.xyz` to check production.
+
+- `node --env-file=.env.local tests/friends-check.mjs`: creates three temporary invited members and checks follow/unfollow, actor and origin protection, duplicate requests, self-follow prevention, mutual status, Friends feed isolation, failure recovery, keyboard controls, and desktop/mobile profiles. It removes its relationships, members, posts, and invites. Use `TEST_BASE_URL=https://beatbrain.xyz` for production and run it sequentially with other signup tests.
 
 - `node --env-file=.env.local tests/compose-check.mjs`: checks album colors and reset, desktop/mobile layout, keyboard Change track, note retention, failed-post recovery, real posting, and missing artwork. It removes its invited test member and posts. Set `TEST_BASE_URL=https://beatbrain.xyz` for production. Run browser signup suites sequentially on production to respect the auth rate limit.
 
