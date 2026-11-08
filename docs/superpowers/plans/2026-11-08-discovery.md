@@ -21,7 +21,7 @@ Use a pure TypeScript ranker in `lib/discovery.ts`, the existing session-protect
 - [x] Add failing ranking tests: fresh posts, distinct members versus repeats, deterministic order, artist diversity, personal affinity, shared taste, seen-track exclusion, exploration, empty input, invalid source IDs, missing authors and dates. Implement ranker, then run `npm test`.
 - [x] Add bounded database reads, session-derived identity, strict mode validation, no-store responses, and independent worldwide fallback in `/api/discover`. Never return author IDs or private profile inputs.
 - [x] Add the three controls, mode notes, track reasons, and useful empty states. Reuse the existing cover grid and buttons. Extend browser checks for mode switching, personalization after a real post, invalid requests, errors, retry, and narrow/wide layout. Run `npm test` and `npm run build`.
-- [ ] Review the diff, inspect desktop/mobile, run Impeccable detector, deploy Vercel, then run live discovery, launch, and song checks. Remove temporary test data and record deployment.
+- [x] Review the diff, inspect desktop/mobile, run Impeccable detector, deploy Vercel, then run live discovery, launch, and song checks. Remove temporary test data and record deployment.
 
 ## Review focus
 
@@ -32,3 +32,5 @@ Repeated posts must not manufacture popularity. A new member must get useful tra
 Design follows the user's selected default and existing authorization to build and deploy. Current data: three members, 32 posts, one post in the past 30 days. No need to change GCP project.
 
 Local verification: 33 unit tests passed; production build passed. Browser checks passed at 320–1920 px, through view switching, posting, profile, retry, and empty states. A delayed response was ignored after a mode change. A separate local server with a test-only HTTP 503 source verified that room/personal discovery still works while Worldwide returns a recoverable error. Temporary accounts/posts/invites were cleaned. Impeccable detector reported no findings. Independent review found no important defects. No plan deviations.
+
+Deployed code commit `3e4e4ce` to `https://beatbrain.xyz` via `beatbrain-r8emv7i1v-mager1s-projects.vercel.app`. All live discovery, launch, and song-detail checks passed. Local test servers stopped. The API uses recent bounded samples (1,000 community posts and 100 personal posts); it is a transparent ranking system, not a trained model or Spotify history import.
