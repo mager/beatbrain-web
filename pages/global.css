@@ -1624,6 +1624,28 @@ p {
   margin: 0 8px;
   color: #62656d;
 }
+.discovery-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-bottom: 28px;
+}
+.discovery-controls .profile-view-switch {
+  max-width: 100%;
+}
+.discovery-controls .profile-view-switch button {
+  padding-inline: clamp(10px, 2vw, 16px);
+}
+.discovery-note,
+.discovery-reason {
+  color: #aaaeb7;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.discovery-reason {
+  margin-top: 8px;
+}
 .discover-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));

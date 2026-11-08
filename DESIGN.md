@@ -27,6 +27,8 @@ Profile identity and the view switch share a desktop row. The name uses the disp
 
 Discover is the home page and remains at /discover. Social posts have a separate /feed tab. Profile is the member’s feed. Podcasts and credits remain at their existing routes. The separate beatbrain-v2 project remains unchanged.
 
+Discover opens with The room, ranked from Beatbrain posts. For you uses the member's posted artists and shared taste; Worldwide keeps the external discovery feed. Three quiet pressed-state buttons sit below the heading and before the cover wall. A short note explains the active view. Member counts and personal reasons stay below track details. Keep request cancellation, error recovery, empty-state posting, and visible keyboard focus. The first cover is the top-ranked result within the selected view.
+
 ## Posting
 
 Searching stays at a readable form width. Once a track is selected, its cover and note form fill two columns on desktop and stack on mobile. Reuse the song artwork's color sampling and image fallback. Keep one page-level heading; the selected track is an h2. Changing tracks restores search focus and the normal site palette. Preserve the note when changing tracks or when posting fails. A profile's list view places the author, date, title, and artist beside the cover, with the note below them; on phones, longer notes span the row.

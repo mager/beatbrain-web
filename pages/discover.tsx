@@ -3,10 +3,19 @@ import Link from "next/link";
 import Head from "next/head";
 import { ArrowUpRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import AlbumArtwork from "../components/AlbumArtwork";
-import type { Track } from "@types";
+import type { DiscoveryTrack } from "../lib/discovery";
+
+const views = [
+  { id: "room", label: "The room" },
+  { id: "you", label: "For you" },
+  { id: "world", label: "Worldwide" },
+] as const;
 
 export default function Discover() {
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<DiscoveryTrack[]>([]);
+  const [mode, setMode] = useState<(typeof views)[number]["id"]>("room");
+  const [hasTaste, setHasTaste] = useState(false);
+  const [worldwideAvailable, setWorldwideAvailable] = useState(true);
   const [updated, setUpdated] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -23,7 +32,7 @@ export default function Discover() {
         const response = await fetch("/api/discover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: "{}",
+          body: JSON.stringify({ mode }),
           signal: controller.signal,
         });
         if (!response.ok) throw new Error("Discovery unavailable");
@@ -33,13 +42,15 @@ export default function Discover() {
         if (!active) return;
         const seen = new Set<string>();
         setTracks(
-          data.tracks.filter((track: Track) => {
+          data.tracks.filter((track: DiscoveryTrack) => {
             if (!track?.source_id || !track.name || seen.has(track.source_id))
               return false;
             seen.add(track.source_id);
             return true;
           }),
         );
+        setHasTaste(data.hasTaste === true);
+        setWorldwideAvailable(data.worldwideAvailable !== false);
         setUpdated(typeof data.updated === "string" ? data.updated : "");
       } catch {
         if (active) setError(true);
@@ -54,7 +65,7 @@ export default function Discover() {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [attempt]);
+  }, [attempt, mode]);
 
   const date = updated ? new Date(updated) : null;
   const dateLabel =
@@ -75,7 +86,7 @@ export default function Discover() {
         {!loading && !error && tracks.length > 0 && (
           <p>
             {tracks.length} tracks
-            {dateLabel && (
+            {dateLabel && mode === "world" && (
               <>
                 {" "}
                 <span aria-hidden="true">/</span> Updated {dateLabel}
@@ -84,6 +95,43 @@ export default function Discover() {
           </p>
         )}
       </header>
+      <div className="discovery-controls">
+        <div
+          className="profile-view-switch"
+          role="group"
+          aria-label="Discovery view"
+        >
+          {views.map((view) => (
+            <button
+              key={view.id}
+              type="button"
+              aria-pressed={mode === view.id}
+              onClick={() => {
+                if (mode !== view.id) {
+                  setLoading(true);
+                  setError(false);
+                  setMode(view.id);
+                }
+              }}
+            >
+              {view.label}
+            </button>
+          ))}
+        </div>
+        <p className="discovery-note" aria-live="polite">
+          {mode === "room"
+            ? "Our shared taste. Fresh posts rise."
+            : mode === "world"
+              ? "New releases and chart discoveries."
+              : loading
+                ? "Finding your next track…"
+                : !hasTaste
+                  ? "Post a track to teach us your taste."
+                  : !worldwideAvailable
+                    ? "Your taste, from the room. Worldwide picks are unavailable."
+                    : "Your artists. Shared taste. Something new."}
+        </p>
+      </div>
       {loading ? (
         <div
           className="discover-grid"
@@ -91,7 +139,11 @@ export default function Discover() {
           aria-label="Loading discoveries"
         >
           {Array.from({ length: 10 }, (_, i) => (
-            <div key={i} className={`discovery-skeleton${i === 0 ? " discovery-lead" : ""}`} aria-hidden="true">
+            <div
+              key={i}
+              className={`discovery-skeleton${i === 0 ? " discovery-lead" : ""}`}
+              aria-hidden="true"
+            >
               <div />
               <span />
               <span />
@@ -112,7 +164,14 @@ export default function Discover() {
       ) : tracks.length === 0 ? (
         <div className="empty-state">
           <h2>No discoveries yet.</h2>
-          <p>New tracks will appear here.</p>
+          <p>
+            {mode === "room"
+              ? "Post a track. Start the room."
+              : "Try another view or share a track."}
+          </p>
+          <Link href="/create" className="button button-primary">
+            Post a track
+          </Link>
           <button
             className="button button-secondary"
             onClick={() => setAttempt((n) => n + 1)}
@@ -123,7 +182,10 @@ export default function Discover() {
       ) : (
         <div className="discover-grid">
           {tracks.map((track, index) => (
-            <article key={track.source_id} className={`discovery-track${index === 0 ? " discovery-lead" : ""}`}>
+            <article
+              key={track.source_id}
+              className={`discovery-track${index === 0 ? " discovery-lead" : ""}`}
+            >
               <AlbumArtwork
                 src={track.image || ""}
                 title={`${track.name} by ${track.artist}`}
@@ -149,8 +211,14 @@ export default function Discover() {
                   <ArrowUpRightIcon width={18} />
                 </a>
               </div>
+              {track.reason && (
+                <p className="discovery-reason">{track.reason}</p>
+              )}
               {index === 0 && (
-                <Link className="discovery-post-link" href={`/create?track=${track.source_id}`}>
+                <Link
+                  className="discovery-post-link"
+                  href={`/create?track=${track.source_id}`}
+                >
                   <PlusIcon width={17} aria-hidden="true" /> Post this track
                 </Link>
               )}
