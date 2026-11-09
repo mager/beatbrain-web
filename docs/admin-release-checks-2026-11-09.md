@@ -10,6 +10,6 @@ Version 1.2.0, source commit d9acee9. Vercel deployment beatbrain-c29exvs9l-mage
 - Mailjet domain verification and DKIM validation passed. Namecheap forwarding MX and its locked SPF record remain unchanged. Root SPF does not include Mailjet; Mailjet uses its own default return path, with Beatbrain DKIM for alignment.
 - The live Admin sandbox check returned: Mailjet accepted the sender settings. No email was sent. This validates the configured credentials and sender, not inbox delivery.
 - A real invite draft is ready for the owner to review in the open Admin tab. Draft text remains in browser memory only. No live message was sent.
-- Reply forwarding for hello@beatbrain.xyz is not configured; the destination remains a user choice.
+- Reply forwarding for hello@beatbrain.xyz is configured in Namecheap to the owner-selected inbox. The saved alias was verified in the domain controls. Inbox delivery still needs a test message.
 
 Run `npm test`, `npm run build`, and `node --env-file=.env.local --import tsx tests/admin-access-check.mjs` for local checks. The Admin Test email setup button always uses Mailjet SandboxMode. Do not use a real send as a setup test.
