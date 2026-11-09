@@ -1,10 +1,19 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import {
+  Cog6ToothIcon,
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+} from "@heroicons/react/24/outline";
 import packageInfo from "../package.json";
+import { useAppContext } from "../context/AppContext";
+import { isOwner } from "../lib/access";
 const { version } = packageInfo;
 
 export default function FooterCredit() {
+  const {
+    state: { user },
+  } = useAppContext();
   const footer = useRef<HTMLElement>(null);
   useEffect(() => {
     const measure = () =>
@@ -27,15 +36,30 @@ export default function FooterCredit() {
         with agents.
       </p>
       <nav className="footer-links" aria-label="Beatbrain links">
-        <a href="https://github.com/mager/beatbrain-web" target="_blank" rel="noreferrer">
+        <a
+          href="https://github.com/mager/beatbrain-web"
+          target="_blank"
+          rel="noreferrer"
+        >
           GitHub <ArrowUpRightIcon width={14} aria-hidden="true" />
         </a>
-        <a href="https://x.com/beatbrainxyz" target="_blank" rel="noreferrer" aria-label="Beatbrain on X">
+        <a
+          href="https://x.com/beatbrainxyz"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Beatbrain on X"
+        >
           X <ArrowUpRightIcon width={14} aria-hidden="true" />
         </a>
         <Link href="/about">
           About Beatbrain <ArrowRightIcon width={15} aria-hidden="true" />
         </Link>
+        {user && (
+          <Link href="/settings">
+            <Cog6ToothIcon width={16} aria-hidden="true" /> Settings
+          </Link>
+        )}
+        {isOwner(user) && <Link href="/admin">Admin</Link>}
         <a
           className="footer-version"
           href={`https://github.com/mager/beatbrain-web/blob/v${version}/CHANGELOG.md`}

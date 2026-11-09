@@ -1,5 +1,6 @@
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
+import AdminMembers from "../components/AdminMembers";
 import AdminInvites from "../components/AdminInvites";
 import { getSession } from "../lib/auth-api";
 import { isOwner, PRIVATE_CACHE_CONTROL } from "../lib/access";
@@ -24,7 +25,8 @@ export default function Admin({ sender }: { sender: string }) {
         <title>Admin — Beatbrain</title>
       </Head>
       <h1>Bring your people.</h1>
-      <p className="muted">Invites, email drafts, and the waitlist.</p>
+      <p className="muted">Your members and their next music friends.</p>
+      <AdminMembers />
       <AdminInvites sender={sender} />
     </div>
   );

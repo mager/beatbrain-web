@@ -2,6 +2,14 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.5.0 — 2026-11-09
+
+- Show saved Spotify profile photos in Settings and beside track posters, with a fallback for missing images.
+- Move Settings (with a cog) and owner-only Admin into the fixed footer.
+- Add a private, paginated member directory with profiles, email addresses, join dates, and post counts for the owner.
+- Compact the invite history and member rows on desktop and mobile.
+- Add reviewed Limestone songwriting credits from Apple Music. MusicBrainz matches this recording but has no detailed credits; this entry fills that source gap, not all catalog gaps.
+
 ## 1.4.2 — 2026-11-09
 
 - Match music through MusicBrainz's exact Spotify link before name searches, restoring credits for linked remasters such as “Band on the Run.”

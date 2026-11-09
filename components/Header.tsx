@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { isOwner } from "../lib/access";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/AppContext";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -46,21 +45,6 @@ export default function Header() {
           >
             Profile
           </Link>
-          <Link
-            href="/settings"
-            className="settings-link"
-            aria-current={pathname === "/settings" ? "page" : undefined}
-          >
-            Settings
-          </Link>
-          {isOwner(user) && (
-            <Link
-              href="/admin"
-              aria-current={pathname === "/admin" ? "page" : undefined}
-            >
-              Admin
-            </Link>
-          )}
         </nav>
         <GlobalSearch />
         <Link className="button button-primary header-post" href="/create">

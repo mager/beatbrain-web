@@ -58,3 +58,5 @@ About pairs its heading with one silent WebGL record: fine grooves, flowing viol
 ## Global search
 
 The member header has one search field for music and people. Group member names and handles above tracks with album art. Start after two characters and cancel old requests when the query changes. Arrow keys select results, Enter opens them, and Escape closes the dropdown. Keep loading, empty, partial failure, and retry states in the same panel. On phones, place the field on its own full-width row. Search returns member profile fields only; never return email addresses or waitlist data. The post form keeps its separate track-only search.
+
+Admin lists members above invite tools. Use compact rows with an avatar, profile link, private email, join month, and post count. Page through members in batches of 50. Settings and owner-only Admin live in the footer; Settings has a cog. Show the saved Spotify photo in Settings and beside track posters. Use an initial if an image is missing or fails.

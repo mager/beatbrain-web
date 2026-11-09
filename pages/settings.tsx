@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import MemberAvatar from "../components/MemberAvatar";
 import Link from "next/link";
 import { useAppContext } from "../context/AppContext";
 import { authClient } from "../lib/auth-client";
@@ -43,6 +44,19 @@ export default function Settings() {
       <p className="muted">Your profile. Your people. Your room.</p>
       <section className="settings-section">
         <h2>Your profile</h2>
+        <div className="settings-identity">
+          <MemberAvatar
+            image={user?.image}
+            name={user?.name || "You"}
+            className="settings-avatar"
+          />
+          <div>
+            <strong>{user?.name}</strong>
+            <p className="muted">
+              {user?.spotifyId ? "Photo from Spotify" : "Your profile photo"}
+            </p>
+          </div>
+        </div>
         <form className="form-stack" onSubmit={save}>
           <label>
             Username

@@ -15,7 +15,7 @@ type Delivery = "UNSENT" | "SENDING" | "SENT" | "FAILED" | "UNKNOWN";
 const deliveryLabels: Record<Delivery, string> = {
   UNSENT: "Not sent",
   SENDING: "Sending / check status",
-  SENT: "Accepted by Mailjet",
+  SENT: "Email accepted",
   FAILED: "Not sent — retry available",
   UNKNOWN: "Unconfirmed — check Mailjet",
 };
@@ -466,7 +466,7 @@ export default function AdminInvites({ sender }: { sender: string }) {
           )}
         </div>
         <div>
-          <section className="settings-section">
+          <section className="settings-section admin-history">
             <h2>Recent invites</h2>
             {historyError ? (
               <div role="alert">
@@ -514,8 +514,8 @@ export default function AdminInvites({ sender }: { sender: string }) {
               <p className="muted">Your first invite starts here.</p>
             )}
             <p className="field-hint admin-history-note">
-              The latest 50 invites. Links are shown only when created. Pending
-              means the invite has not been used.
+              Pending invites have not been used. Email accepted means Mailjet
+              accepted the message.
             </p>
           </section>
           <Waitlist onInvite={createInvite} busy={busy || Boolean(draft)} />

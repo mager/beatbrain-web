@@ -2387,3 +2387,30 @@ html { scroll-padding-bottom: calc(var(--footer-height, 112px) + 16px); }
   .global-search-field input { font-size: 16px; }
   .global-search-panel { max-height: min(420px, 52dvh); }
 }
+
+/* Member identity stays visible beside the music. */
+.track-posted { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.track-person { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.settings-identity { display: flex; align-items: center; gap: 16px; margin: 20px 0 28px; }
+.settings-identity strong { font-size: 20px; }
+.settings-identity p { margin-top: 4px; font-size: 13px; }
+.settings-avatar { width: 72px; height: 72px; font-size: 24px; }
+.admin-page .settings-section { margin-top: 28px; padding-top: 24px; }
+.admin-page .settings-section h2 { font-size: 24px; margin-bottom: 16px; }
+.admin-member-list li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #303238; }
+.admin-member-list .avatar { width: 40px; height: 40px; }
+.admin-member-identity { min-width: 0; flex: 1; }
+.admin-member-identity a { font-weight: 600; }
+.admin-member-identity a span { margin-left: 8px; font-weight: 400; color: #aaaeb7; }
+.admin-member-identity > span { display: block; font-size: 12px; color: #aaaeb7; overflow-wrap: anywhere; margin-top: 3px; }
+.admin-member-facts { display: grid; gap: 3px; text-align: right; font-size: 12px; color: #aaaeb7; font-variant-numeric: tabular-nums; }
+.admin-invite-list strong { font-size: 14px; }
+.admin-invite-list div > span { display: inline; font-size: 12px; }
+.admin-invite-list div > span + span::before { content: " · "; }
+.admin-history-note { font-size: 12px; max-width: 55ch; }
+@media (max-width: 600px) {
+ .admin-member-list li { flex-wrap: wrap; gap: 8px 12px; }
+ .admin-member-identity a span { display: block; margin-left: 0; font-size: 12px; }
+ .admin-member-facts { flex-basis: 100%; padding-left: 52px; display: flex; gap: 12px; text-align: left; }
+ .footer-links { column-gap: 14px; }
+}

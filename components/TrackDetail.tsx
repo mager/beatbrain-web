@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import MemberAvatar from "./MemberAvatar";
 import TrackHero from "./TrackHero";
 import SpotifyLogo from "./SpotifyLogo";
 import AudioDNA from "./AudioDNA";
@@ -13,7 +14,13 @@ import type { TrackV3 } from "@types";
 
 type Props = {
   track: TrackV3;
-  posts: { author: { name: string; username?: string | null } | null }[];
+  posts: {
+    author: {
+      name: string;
+      image?: string | null;
+      username?: string | null;
+    } | null;
+  }[];
   sourceId: string | null;
 };
 export default function TrackDetail({ track, posts, sourceId }: Props) {
@@ -100,10 +107,12 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
         {people.length > 0 && (
           <p className="track-posted">
             Posted by{" "}
-            {people.slice(0, 5).map((person, i) => (
+            {people.slice(0, 5).map((person) => (
               <span key={person.username}>
-                {i > 0 && ", "}
-                <Link href={`/u/${person.username}`}>{person.username}</Link>
+                <Link className="track-person" href={`/u/${person.username}`}>
+                  <MemberAvatar image={person.image} name={person.name} />
+                  {person.username}
+                </Link>
               </span>
             ))}
             {people.length > 5 && ` and ${people.length - 5} more`}
