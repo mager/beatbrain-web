@@ -3,30 +3,19 @@ import Link from "next/link";
 import { useAppContext } from "../context/AppContext";
 import { authClient } from "../lib/auth-client";
 import { isOwner } from "../lib/access";
-import Waitlist from "../components/Waitlist";
-import {
-  ArrowUpRightIcon,
-  CheckIcon,
-  ClipboardIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 export default function Settings() {
   const {
     state: { user },
     setState,
   } = useAppContext();
   const [username, setUsername] = useState(""),
-    [email, setEmail] = useState(""),
-    [inviteURL, setInviteURL] = useState(""),
     [message, setMessage] = useState(""),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false),
-    [copied, setCopied] = useState(false);
+    [busy, setBusy] = useState(false);
   useEffect(() => {
     setUsername(user?.username || "");
   }, [user?.username]);
-  useEffect(() => {
-    if (inviteURL) document.querySelector(".invite-result")?.scrollIntoView({ block: "nearest" });
-  }, [inviteURL]);
   async function save(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -44,33 +33,6 @@ export default function Settings() {
       setMessage("Your profile is saved.");
     } catch (e) {
       setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
-  async function invite(event: React.FormEvent) {
-    event.preventDefault();
-    await createInvite(email);
-  }
-  async function createInvite(recipient: string): Promise<boolean> {
-    setBusy(true);
-    setEmail(recipient);
-    setError("");
-    setInviteURL("");
-    setCopied(false);
-    try {
-      const response = await fetch("/api/invites", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: recipient }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error);
-      setInviteURL(data.url);
-      return true;
-    } catch (e) {
-      setError((e as Error).message);
-      return false;
     } finally {
       setBusy(false);
     }
@@ -108,63 +70,12 @@ export default function Settings() {
         </form>
       </section>
       {isOwner(user) && (
-        <>
         <section className="settings-section">
-          <h2>Bring your people.</h2>
-          <p className="muted">
-            Make a private invite for a friend. Each link works once, for their
-            email, and expires in 7 days.
-          </p>
-          <form onSubmit={invite} className="form-stack">
-            <label>
-              Their email
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </label>
-            <button className="button button-primary" disabled={busy}>
-              Create invite <ArrowUpRightIcon width={18} />
-            </button>
-          </form>
-          {inviteURL && (
-            <div className="invite-result">
-              <label>
-                Invite link
-                <input
-                  readOnly
-                  value={inviteURL}
-                  onFocus={(e) => e.target.select()}
-                />
-              </label>
-              <button
-                className="button button-secondary"
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(inviteURL);
-                    setCopied(true);
-                  } catch {
-                    setError("Select and copy the link above.");
-                  }
-                }}
-              >
-                {copied ? (
-                  <CheckIcon width={18} />
-                ) : (
-                  <ClipboardIcon width={18} />
-                )}{" "}
-                {copied ? "Copied" : "Copy link"}
-              </button>
-              <p className="field-hint">
-                Send this link to your friend. No email has been sent.
-              </p>
-            </div>
-          )}
+          <h2>Your people</h2>
+          <Link href="/admin" className="button button-secondary">
+            Open admin <ArrowUpRightIcon width={18} />
+          </Link>
         </section>
-        <Waitlist onInvite={createInvite} busy={busy} />
-        </>
       )}
       {error && (
         <p className="form-error" role="alert">

@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { version } from "../package.json";
+import packageInfo from "../package.json";
+const { version } = packageInfo;
 
 export default function FooterCredit() {
   const footer = useRef<HTMLElement>(null);

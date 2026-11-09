@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const releaseVersion = JSON.parse(readFileSync(new URL("../package.json", import.meta.url))).version;
 import { randomBytes, createHash } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 import { chromium } from "@playwright/test";
@@ -222,7 +224,7 @@ try {
     "/about",
   );
   assert.match(
-    await page.getByRole("link", { name: /v1.1.0/ }).getAttribute("href"),
+    await page.getByRole("link", { name: `v${releaseVersion}` }).getAttribute("href"),
     /github.com\/mager\/beatbrain-web\/blob\/.+\/CHANGELOG.md/,
   );
   await page

@@ -4,6 +4,7 @@ import { auth } from "../../lib/auth";
 import prisma from "../../lib/prisma";
 import { isOwner, isSameOrigin, PRIVATE_CACHE_CONTROL } from "../../lib/access";
 import { newInvite, normalizeInviteEmail } from "../../lib/invites";
+import { getMailjetSettings } from "../../lib/mailjet";
 
 const inviteFields = {
   id: true,
@@ -11,6 +12,10 @@ const inviteFields = {
   createdAt: true,
   expiresAt: true,
   usedAt: true,
+  emailStatus: true,
+  emailSentAt: true,
+  emailAttemptedAt: true,
+  emailMessageId: true,
 } as const;
 
 export default async function handler(
@@ -39,7 +44,7 @@ export default async function handler(
         orderBy: { createdAt: "desc" },
         take: 50,
       });
-      return res.status(200).json({ invites });
+      return res.status(200).json({ invites, mail: getMailjetSettings() });
     }
     if (!isSameOrigin(req.headers.origin))
       return res

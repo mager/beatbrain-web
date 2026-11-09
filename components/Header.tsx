@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isOwner } from "../lib/access";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/AppContext";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -51,6 +52,14 @@ export default function Header() {
           >
             Settings
           </Link>
+          {isOwner(user) && (
+            <Link
+              href="/admin"
+              aria-current={pathname === "/admin" ? "page" : undefined}
+            >
+              Admin
+            </Link>
+          )}
         </nav>
         <Link className="button button-primary header-post" href="/create">
           <PlusIcon width={17} />

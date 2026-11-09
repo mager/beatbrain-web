@@ -144,9 +144,21 @@ model Invite {
   createdAt DateTime  @default(now())
   expiresAt DateTime
   usedAt    DateTime?
+  emailStatus InviteEmailStatus @default(UNSENT)
+  emailSentAt DateTime?
+  emailAttemptedAt DateTime?
+  emailMessageId String?
 
   @@index([email])
   @@map("invites")
+}
+
+enum InviteEmailStatus {
+  UNSENT
+  SENDING
+  SENT
+  FAILED
+  UNKNOWN
 }
 
 // A Spotify waitlist entry grants no account, session, or member access.

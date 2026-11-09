@@ -2,6 +2,14 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.2.0 — 2026-11-09
+
+- Open Admin from the owner navigation to manage invites and the waitlist.
+- Review and edit invite emails, then send them directly through Mailjet.
+- Track email acceptance separately from invite use. Prevent duplicate sends and keep uncertain sends from retrying automatically.
+- Test the email setup without delivering a message. Keep Mailjet keys on the server.
+- Protect an edited draft until it is explicitly discarded.
+
 ## 1.1.0 — 2026-11-09
 
 - Show some love: tap the heart on a post. Tap again to remove your reaction.

@@ -46,3 +46,7 @@ Credits read as grouped liner notes: songwriting, performance, and production. A
 Each post has one small heart control with its love count. Selected hearts use the room accent. Keep a 44 px touch target, a pressed state, pending lock, and an inline retry error. Reactions retain their confirmed state when switching a profile between Grid and Feed. At mobile widths, the heart sits below the note. Profiles show the stored join month and year in UTC.
 
 A quiet fixed footer stays at the bottom of the viewport. Measure its wrapped height and reserve that space in the page, including the device safe area. Keep the Chicago credit, an explicit About Beatbrain link, and a version link to the same release's public GitHub changelog. Read the version from package.json; create the matching Git tag before deployment.
+
+## Admin
+
+Only the owner sees Admin. Put invite preparation and email review beside recent invites and the waitlist on desktop; stack them on phones. Protect the current draft until it is sent or explicitly discarded. Keep recipient and link read-only. Show send failure beside the draft, and use a status check after an uncertain send. The email setup check sends no mail.
