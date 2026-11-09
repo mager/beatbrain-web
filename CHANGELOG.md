@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.4.2 — 2026-11-09
+
+- Match music through MusicBrainz's exact Spotify link before name searches, restoring credits for linked remasters such as “Band on the Run.”
+- Load songwriting credits with the recording to reduce metadata requests.
+- Reject conflicting links, mismatched recording codes, live/remix title differences, and incompatible durations.
+
 ## 1.4.1 — 2026-11-09
 
 - Restore verified songwriting, performance, and production credits for “Yoda” by Tech N9ne, with an Apple Music source link.
