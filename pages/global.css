@@ -1816,11 +1816,17 @@ p {
 .about-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
-  margin-top: 32px;
-  font-size: 14px;
+  gap: 12px 36px;
+  margin-top: 24px;
+  font-size: 17px;
 }
-.about-attribution { margin-top: 32px; font-size: 14px; }
+.about-links a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; text-decoration: none; }
+.about-links svg { color: var(--room-accent); }
+.about-attribution { margin-top: 24px; padding-top: 20px; border-top: 1px solid #303238; font-size: 13px; line-height: 1.7; }
+.about-attribution p { margin: 0; }
+.about-attribution a { white-space: nowrap; text-underline-offset: 3px; }
+.about-attribution .about-license { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: #aaaeb7; text-decoration: none; }
+.about-attribution .about-license:hover { color: var(--room-accent); }
 @media (max-width: 1100px) {
   .discover-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));

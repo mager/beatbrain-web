@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Head from "next/head";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import RadiantRecord from "../components/RadiantRecord";
 
 export default function About() {
@@ -9,12 +9,12 @@ export default function About() {
         <title>Music charms the soul — Beatbrain</title>
       </Head>
       <div className="about-hero">
-      <h1 className="display-title">
-        Music charms
-        <br />
-        the soul.
-      </h1>
-      <RadiantRecord />
+        <h1 className="display-title">
+          Music charms
+          <br />
+          the soul.
+        </h1>
+        <RadiantRecord />
       </div>
       <div className="about-story">
         <p className="about-lead">
@@ -39,22 +39,24 @@ export default function About() {
             </a>
             , with agents and a lot of music.
           </p>
-          <div className="about-links">
+          <nav className="about-links" aria-label="Follow Beatbrain">
             <a href="https://github.com/mager/beatbrain-web" target="_blank" rel="noreferrer">
-              GitHub
+              GitHub <ArrowUpRightIcon width={18} aria-hidden="true" />
             </a>
-            <a href="https://x.com/beatbrainxyz" target="_blank" rel="noreferrer">
-              @beatbrainxyz on X
+            <a href="https://x.com/beatbrainxyz" target="_blank" rel="noreferrer" aria-label="Beatbrain on X (@beatbrainxyz)">
+              X <ArrowUpRightIcon width={18} aria-hidden="true" />
             </a>
-            <Link href="/">Discover music</Link>
-            <Link href="/feed">See the feed</Link>
+          </nav>
+          <div className="about-attribution">
+            <p>
+              With music data from{" "}
+              <a href="https://musicbrainz.org" target="_blank" rel="noreferrer">MusicBrainz</a>
+              {" "}and its contributors.
+            </p>
+            <a className="about-license" href="https://musicbrainz.org/doc/About/Data_License" target="_blank" rel="noreferrer">
+              Data licenses <ArrowUpRightIcon width={14} aria-hidden="true" />
+            </a>
           </div>
-          <p className="about-attribution">
-            Music metadata and credits include data from{" "}
-            <a href="https://musicbrainz.org" target="_blank" rel="noreferrer">MusicBrainz</a>
-            {" "}and its contributors.{" "}
-            <a href="https://musicbrainz.org/doc/About/Data_License" target="_blank" rel="noreferrer">Data licenses</a>.
-          </p>
         </div>
       </div>
     </div>
