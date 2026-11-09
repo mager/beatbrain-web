@@ -26,7 +26,13 @@ export default function FooterCredit() {
         </a>{" "}
         with agents.
       </p>
-      <nav className="footer-links" aria-label="About and releases">
+      <nav className="footer-links" aria-label="Beatbrain links">
+        <a href="https://github.com/mager/beatbrain-web" target="_blank" rel="noreferrer">
+          GitHub <ArrowUpRightIcon width={14} aria-hidden="true" />
+        </a>
+        <a href="https://x.com/beatbrainxyz" target="_blank" rel="noreferrer" aria-label="Beatbrain on X">
+          X <ArrowUpRightIcon width={14} aria-hidden="true" />
+        </a>
         <Link href="/about">
           About Beatbrain <ArrowRightIcon width={15} aria-hidden="true" />
         </Link>

@@ -36,12 +36,21 @@ export default function About() {
             , with agents and a lot of music.
           </p>
           <div className="about-links">
-            <Link href="/">Discover music</Link>
-            <Link href="/feed">See the feed</Link>
-            <a href="https://github.com/mager" target="_blank" rel="noreferrer">
+            <a href="https://github.com/mager/beatbrain-web" target="_blank" rel="noreferrer">
               GitHub
             </a>
+            <a href="https://x.com/beatbrainxyz" target="_blank" rel="noreferrer">
+              @beatbrainxyz on X
+            </a>
+            <Link href="/">Discover music</Link>
+            <Link href="/feed">See the feed</Link>
           </div>
+          <p className="about-attribution">
+            Music metadata and credits include data from{" "}
+            <a href="https://musicbrainz.org" target="_blank" rel="noreferrer">MusicBrainz</a>
+            {" "}and its contributors.{" "}
+            <a href="https://musicbrainz.org/doc/About/Data_License" target="_blank" rel="noreferrer">Data licenses</a>.
+          </p>
         </div>
       </div>
     </div>

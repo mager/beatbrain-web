@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.2.1 — 2026-11-09
+
+- Put GitHub and Beatbrain on X first in the footer and About links.
+- Credit MusicBrainz contributors on About and link to their data licenses.
+- Keep the footer links within narrow phone screens.
+
 ## 1.2.0 — 2026-11-09
 
 - Open Admin from the owner navigation to manage invites and the waitlist.
