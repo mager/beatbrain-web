@@ -54,3 +54,7 @@ Only the owner sees Admin. Put invite preparation and email review beside recent
 ## Radiant record
 
 About pairs its heading with one silent WebGL record: fine grooves, flowing violet/cyan/amber light, and a dark spindle. Mouse position shifts the light and tilt; touch keeps the autonomous composition. The visual stacks below the heading on phones. Keep a visible pause/play control, start still for reduced motion, stop when hidden or offscreen, cap animation at 30 fps and the drawing buffer at 900 px per edge. A static SVG record remains if WebGL fails. The effect uses no audio input, tracking, or new package.
+
+## Global search
+
+The member header has one search field for music and people. Group member names and handles above tracks with album art. Start after two characters and cancel old requests when the query changes. Arrow keys select results, Enter opens them, and Escape closes the dropdown. Keep loading, empty, partial failure, and retry states in the same panel. On phones, place the field on its own full-width row. Search returns member profile fields only; never return email addresses or waitlist data. The post form keeps its separate track-only search.

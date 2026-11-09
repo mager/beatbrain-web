@@ -3,6 +3,7 @@ import { isOwner } from "../lib/access";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/AppContext";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import GlobalSearch from "./GlobalSearch";
 export default function Header() {
   const {
     state: { user },
@@ -61,6 +62,7 @@ export default function Header() {
             </Link>
           )}
         </nav>
+        <GlobalSearch />
         <Link className="button button-primary header-post" href="/create">
           <PlusIcon width={17} />
           <span>Post a track</span>

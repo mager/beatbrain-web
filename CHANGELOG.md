@@ -2,6 +2,13 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.4.0 — 2026-11-09
+
+- Search music and members together from the site header.
+- Find people by name or handle and tracks by song or artist, with album art in one dropdown.
+- Support arrow keys, Enter, Escape, clear, and retry on desktop and phones.
+- Keep available results when one search source fails, and keep member emails and waitlist entries private.
+
 ## 1.3.1 — 2026-11-09
 
 - Simplify About to two main external links: GitHub and X.
