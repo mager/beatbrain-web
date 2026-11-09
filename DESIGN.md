@@ -40,3 +40,9 @@ Searching stays at a readable form width. Once a track is selected, its cover an
 Song pages use a dominant color sampled from the actual cover. Broad colored areas outrank small details; black, white, and transparent pixels do not set the accent. The accent has at least 7:1 contrast with the dark canvas and button text. Monochrome or unavailable covers use a neutral accent. The header, primary action, artist name, links, and focus marks share the song accent. Navigation away restores the site palette. No extra image service or color package is needed.
 
 Credits read as grouped liner notes: songwriting, performance, and production. Album, release date, length, genres, known musical facts, releases, and source links accompany them. Never infer missing key, tempo, or credits. Metadata may be incomplete when a source has no matching recording.
+
+## Reactions and release footer
+
+Each post has one small heart control with its love count. Selected hearts use the room accent. Keep a 44 px touch target, a pressed state, pending lock, and an inline retry error. Reactions retain their confirmed state when switching a profile between Grid and Feed. At mobile widths, the heart sits below the note. Profiles show the stored join month and year in UTC.
+
+A quiet fixed footer stays at the bottom of the viewport. Measure its wrapped height and reserve that space in the page, including the device safe area. Keep the Chicago credit, an explicit About Beatbrain link, and a version link to the same release's public GitHub changelog. Read the version from package.json; create the matching Git tag before deployment.

@@ -1,8 +1,11 @@
 import Link from "next/link";
+import LoveButton, { type LoveState } from "./LoveButton";
 import AlbumArtwork from "./AlbumArtwork";
 import { ArrowUpRightIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 export type FeedPost = {
   id: number;
+  loveCount: number;
+  lovedByViewer: boolean;
   content: string | null;
   createdAt: string;
   author: {
@@ -12,7 +15,15 @@ export type FeedPost = {
   } | null;
   track: { title: string; artist: string; sourceId: string; image: string };
 };
-export default function PostGrid({ posts, layout }: { posts: FeedPost[]; layout?: "list" }) {
+export default function PostGrid({
+  posts,
+  layout,
+  onLoveChange,
+}: {
+  posts: FeedPost[];
+  layout?: "list";
+  onLoveChange?: (postId: number, state: LoveState) => void;
+}) {
   if (!posts.length)
     return (
       <div className="empty-state">
@@ -78,6 +89,13 @@ export default function PostGrid({ posts, layout }: { posts: FeedPost[]; layout?
             </a>
           </div>
           {post.content && <p className="post-note">{post.content}</p>}
+          <LoveButton
+            postId={post.id}
+            title={post.track.title}
+            lovedByViewer={post.lovedByViewer}
+            loveCount={post.loveCount}
+            onChange={onLoveChange}
+          />
         </article>
       ))}
     </div>

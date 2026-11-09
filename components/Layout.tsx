@@ -34,11 +34,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </Head>
       {!entry && <Header />}
       <main id="main-content">{children}</main>
-      {!entry && (
-        <footer className="site-footer">
-          <FooterCredit />
-        </footer>
-      )}
+      <FooterCredit />
     </div>
   );
 }

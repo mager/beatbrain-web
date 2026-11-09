@@ -1,4 +1,5 @@
 import prisma from "./prisma";
+import { postSelection, serializePost } from "./post-view";
 
 export async function getFeed(
   viewerID: string,
@@ -11,18 +12,7 @@ export async function getFeed(
       : {},
     take: Math.max(1, Math.min(limit, 50)),
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      author: { select: { name: true, username: true, image: true } },
-      track: {
-        select: { title: true, artist: true, sourceId: true, image: true },
-      },
-    },
+    select: postSelection(viewerID),
   });
-  return posts.map((post) => ({
-    ...post,
-    createdAt: post.createdAt.toISOString(),
-  }));
+  return posts.map(serializePost);
 }

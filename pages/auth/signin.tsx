@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { LockClosedIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { authClient } from "../../lib/auth-client";
 import SpotifyLogo from "../../components/SpotifyLogo";
-import FooterCredit from "../../components/FooterCredit";
 import { safeReturnPath } from "../../lib/access";
 
 export default function SignIn() {
@@ -193,9 +192,6 @@ export default function SignIn() {
         </>
         )}
       </section>
-      <footer className="entry-footer">
-        <FooterCredit />
-      </footer>
     </div>
   );
 }

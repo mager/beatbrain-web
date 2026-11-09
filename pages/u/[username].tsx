@@ -1,5 +1,6 @@
 import type { GetServerSideProps } from "next";
 import prisma from "../../lib/prisma";
+import { postSelection, serializePost } from "../../lib/post-view";
 import type { FeedPost } from "../../components/PostGrid";
 import ProfilePosts from "../../components/ProfilePosts";
 import FollowButton from "../../components/FollowButton";
@@ -45,21 +46,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     where: { authorId: user.id },
     take: 100,
     orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      author: { select: { name: true, username: true, image: true } },
-      track: {
-        select: { title: true, artist: true, sourceId: true, image: true },
-      },
-    },
+    select: postSelection(session.user.id),
   });
   const { _count, followers, following, ...profileUser } = user;
   return {
     props: {
       user: { ...profileUser, createdAt: user.createdAt.toISOString() },
-      posts: posts.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() })),
+      posts: posts.map(serializePost),
       social: {
         initialFollowers: _count.followers,
         followingCount: _count.following,
@@ -105,10 +98,18 @@ export default function Profile({
               {posts.length === 1 ? "post" : "posts"}
             </span>
           </p>
+          <p className="member-since">
+            Member since{" "}
+            {new Date(user.createdAt).toLocaleDateString("en-US", {
+              month: "long",
+              year: "numeric",
+              timeZone: "UTC",
+            })}
+          </p>
           <FollowButton key={user.id} username={user.username} {...social} />
         </div>
       </section>
-      <ProfilePosts posts={posts} />
+      <ProfilePosts key={user.id} posts={posts} />
     </div>
   );
 }
