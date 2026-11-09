@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.3.0 — 2026-11-09
+
+- Add a radiant, interactive record shader to About.
+- Let members pause the visual; start still for reduced motion and stop rendering offscreen.
+- Keep a static record when graphics are unavailable, with no audio capture or added dependencies.
+
 ## 1.2.1 — 2026-11-09
 
 - Put GitHub and Beatbrain on X first in the footer and About links.

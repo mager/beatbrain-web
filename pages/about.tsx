@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
+import RadiantRecord from "../components/RadiantRecord";
 
 export default function About() {
   return (
@@ -7,11 +8,14 @@ export default function About() {
       <Head>
         <title>Music charms the soul — Beatbrain</title>
       </Head>
+      <div className="about-hero">
       <h1 className="display-title">
         Music charms
         <br />
         the soul.
       </h1>
+      <RadiantRecord />
+      </div>
       <div className="about-story">
         <p className="about-lead">
           A song finds you.

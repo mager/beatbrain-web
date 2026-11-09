@@ -50,3 +50,7 @@ A quiet fixed footer stays at the bottom of the viewport. Measure its wrapped he
 ## Admin
 
 Only the owner sees Admin. Put invite preparation and email review beside recent invites and the waitlist on desktop; stack them on phones. Protect the current draft until it is sent or explicitly discarded. Keep recipient and link read-only. Show send failure beside the draft, and use a status check after an uncertain send. The email setup check sends no mail.
+
+## Radiant record
+
+About pairs its heading with one silent WebGL record: fine grooves, flowing violet/cyan/amber light, and a dark spindle. Mouse position shifts the light and tilt; touch keeps the autonomous composition. The visual stacks below the heading on phones. Keep a visible pause/play control, start still for reduced motion, stop when hidden or offscreen, cap animation at 30 fps and the drawing buffer at 900 px per edge. A static SVG record remains if WebGL fails. The effect uses no audio input, tracking, or new package.
