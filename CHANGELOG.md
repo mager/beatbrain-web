@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.4.1 — 2026-11-09
+
+- Restore verified songwriting, performance, and production credits for “Yoda” by Tech N9ne, with an Apple Music source link.
+- Distinguish a failed metadata lookup from a missing recording match or missing source credits.
+- Keep reviewed credits available when MusicBrainz cannot be reached.
+
 ## 1.4.0 — 2026-11-09
 
 - Search music and members together from the site header.

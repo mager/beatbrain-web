@@ -121,7 +121,13 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
             />
           ) : (
             <p className="metadata-note">
-              Credits aren’t available for this recording yet.
+              {track.metadata_status === "unavailable"
+                ? "We could not load credits right now. Refresh to try again."
+                : track.metadata_status === "matched"
+                  ? "MusicBrainz has no detailed credits for this recording."
+                  : track.metadata_status === "unmatched"
+                    ? "No matching credits record found."
+                    : "No verified credits found yet."}
             </p>
           )}
           {sourceLinks.length > 0 && (

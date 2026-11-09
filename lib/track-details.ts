@@ -64,6 +64,7 @@ export function trackSourceLinks(track: {
       url: `https://musicbrainz.org/recording/${track.id}`,
     });
   const names: Record<string, string> = {
+    apple_music: "Apple Music credits",
     genius: "Genius",
     lastfm: "Last.fm",
     wikipedia: "Wikipedia",

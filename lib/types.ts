@@ -156,6 +156,7 @@ export type TrackAlbum = {
 };
 
 export type TrackV3 = {
+  metadata_status?: "matched" | "unmatched" | "unavailable" | null;
   album?: TrackAlbum | null;
   id: string;
   artist: string;
