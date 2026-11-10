@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.6.1 — 2026-11-09
+
+- Restore credits when a single has moved to an album, only when two matching album editions agree on every credit.
+- Match both credited and current MusicBrainz artist names, while keeping ambiguous recordings rejected.
+- Refresh the metadata cache so previously missing credits can be checked again.
+
 ## 1.6.0 — 2026-11-09
 
 - Find additional songwriters, performers, producers, and engineers through strictly matched Apple Music song credits, with source links.
