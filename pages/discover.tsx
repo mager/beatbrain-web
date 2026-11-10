@@ -132,6 +132,56 @@ export default function Discover() {
                     : "Your artists. Shared taste. Something new."}
         </p>
       </div>
+      {mode === "world" && (
+        <details className="discovery-sources">
+          <summary>Where the music comes from</summary>
+          <p>Melodex checks these sources. Each source updates separately.</p>
+          <nav aria-label="Worldwide music sources">
+            <a
+              href="https://open.spotify.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Spotify new releases
+            </a>
+            <a
+              href="https://www.billboard.com/charts/hot-100/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Billboard Hot 100
+            </a>
+            <a
+              href="https://www.hotnewhiphop.com/top100"
+              target="_blank"
+              rel="noreferrer"
+            >
+              HotNewHipHop
+            </a>
+            <a
+              href="https://pitchfork.com/reviews/best/tracks/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Pitchfork
+            </a>
+            <a
+              href="https://rss.marketingtools.apple.com/api/v2/us/music/most-played/50/songs.json"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Apple Music · US Top 50
+            </a>
+          </nav>
+          <p>
+            Track matching and metadata: Spotify and{" "}
+            <a href="https://musicbrainz.org" target="_blank" rel="noreferrer">
+              MusicBrainz
+            </a>
+            .
+          </p>
+        </details>
+      )}
       {loading ? (
         <div
           className="discover-grid"

@@ -2,6 +2,15 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.6.0 — 2026-11-09
+
+- Find additional songwriters, performers, producers, and engineers through strictly matched Apple Music song credits, with source links.
+- Keep failed credit lookups retryable and collect writers from all linked MusicBrainz works.
+- Show all track artists, explicit labels, track numbers, record labels, and release copyrights when available.
+- Stop audio-analysis calls by default where Spotify access is unavailable.
+- Replace Reddit with Apple Music's US Top 50 in Worldwide discovery, and list the music sources.
+- Repair Pitchfork ingestion, refresh Spotify server tokens, and separate the daily music job from podcast discovery.
+
 ## 1.5.0 — 2026-11-09
 
 - Show saved Spotify profile photos in Settings and beside track posters, with a fallback for missing images.

@@ -147,6 +147,9 @@ export type TrackV2 = {
 };
 
 export type TrackAlbum = {
+  label?: string;
+  total_tracks?: number;
+  copyrights?: string[];
   id: string;
   name: string;
   release_date: string;
@@ -156,6 +159,11 @@ export type TrackAlbum = {
 };
 
 export type TrackV3 = {
+  artists?: { id: string; name: string; url: string }[];
+  explicit?: boolean;
+  track_number?: number;
+  disc_number?: number;
+  credits_status?: "available" | "missing" | "unavailable" | null;
   metadata_status?: "matched" | "unmatched" | "unavailable" | null;
   album?: TrackAlbum | null;
   id: string;

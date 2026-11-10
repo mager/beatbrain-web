@@ -3,6 +3,11 @@ import { GetTrackResponseV3, TrackV3 } from "@types";
 export const adaptTrack = ({ track }: GetTrackResponseV3): TrackV3 => {
   return {
     id: track.id || "",
+    artists: track.artists || [],
+    explicit: track.explicit === true,
+    track_number: track.track_number || 0,
+    disc_number: track.disc_number || 0,
+    credits_status: track.credits_status || null,
     metadata_status: track.metadata_status || null,
     album: track.album || null,
     name: track.name,

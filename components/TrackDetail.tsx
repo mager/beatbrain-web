@@ -25,7 +25,20 @@ type Props = {
 };
 export default function TrackDetail({ track, posts, sourceId }: Props) {
   const { onArtworkLoad } = useAlbumTheme(track.image);
+  const artistNames = track.artists?.length
+    ? track.artists.map((artist) => artist.name).join(", ")
+    : track.artist;
   const facts = trackFacts(track.meta);
+  if (track.track_number > 0)
+    facts.push({
+      label: "Track",
+      value: track.album?.total_tracks
+        ? `${track.track_number} of ${track.album.total_tracks}`
+        : String(track.track_number),
+    });
+  if (track.disc_number > 1)
+    facts.push({ label: "Disc", value: String(track.disc_number) });
+  if (track.explicit) facts.push({ label: "Content", value: "Explicit" });
   const sourceLinks = trackSourceLinks(track);
   const genres = Array.from(new Set(track.genres || [])).slice(0, 10);
   const people = Array.from(
@@ -42,11 +55,11 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
   return (
     <>
       <Head>
-        <title>{`${track.name} — ${track.artist} — Beatbrain`}</title>
+        <title>{`${track.name} — ${artistNames} — Beatbrain`}</title>
       </Head>
       <TrackHero
         name={track.name}
-        artist={track.artist}
+        artist={artistNames}
         image={track.image}
         releaseDate={track.release_date}
         onArtworkLoad={onArtworkLoad}
@@ -130,13 +143,16 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
             />
           ) : (
             <p className="metadata-note">
-              {track.metadata_status === "unavailable"
+              {track.credits_status === "unavailable" ||
+              track.metadata_status === "unavailable"
                 ? "We could not load credits right now. Refresh to try again."
-                : track.metadata_status === "matched"
-                  ? "MusicBrainz has no detailed credits for this recording."
-                  : track.metadata_status === "unmatched"
-                    ? "No matching credits record found."
-                    : "No verified credits found yet."}
+                : track.credits_status === "missing"
+                  ? "No verified credits found for this recording."
+                  : track.metadata_status === "matched"
+                    ? "MusicBrainz has no detailed credits for this recording."
+                    : track.metadata_status === "unmatched"
+                      ? "No matching credits record found."
+                      : "No verified credits found yet."}
             </p>
           )}
           {sourceLinks.length > 0 && (
@@ -153,6 +169,24 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
                 </a>
               ))}
             </nav>
+          )}
+          {(track.album?.label || track.album?.copyrights?.length > 0) && (
+            <details className="recording-identifiers">
+              <summary>Release details</summary>
+              {track.album.label && (
+                <dl>
+                  <div>
+                    <dt>Label</dt>
+                    <dd>{track.album.label}</dd>
+                  </div>
+                </dl>
+              )}
+              {track.album.copyrights?.map((line) => (
+                <p className="release-copyright" key={line}>
+                  {line}
+                </p>
+              ))}
+            </details>
           )}
           {(track.isrc || track.id) && (
             <details className="recording-identifiers">
