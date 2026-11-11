@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Keep the Humans page's music in view on the narrowest phones. */
+@media (max-width: 359px) {
+  .header-inner .humans-header-post { width: 46px; min-height: 46px; padding: 0; }
+  .humans-header-post > span { display: none; }
+}
+
 @layer base {
   :root {
     --terminal-bg: #101113;

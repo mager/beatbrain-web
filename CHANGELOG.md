@@ -2,6 +2,13 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.7.0 — 2026-11-11
+
+- Meet members on Humans, with recent album covers, profile photos, and clear links to their profiles.
+- Search by name, handle, or posted artist. Filter by people you follow or members who posted in the last 30 days.
+- Sort by post count, name, or join date, and load more members without losing your filters.
+- Keep member browsing private, with safe profile fields, retry controls, and layouts for desktop and phones.
+
 ## 1.6.1 — 2026-11-09
 
 - Restore credits when a single has moved to an album, only when two matching album editions agree on every credit.

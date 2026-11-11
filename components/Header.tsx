@@ -38,6 +38,12 @@ export default function Header() {
             Feed
           </Link>
           <Link
+            href="/humans"
+            aria-current={pathname === "/humans" ? "page" : undefined}
+          >
+            Humans
+          </Link>
+          <Link
             href={user?.username ? `/u/${user.username}` : "/settings"}
             aria-current={
               asPath === `/u/${user?.username}` ? "page" : undefined
@@ -47,7 +53,7 @@ export default function Header() {
           </Link>
         </nav>
         <GlobalSearch />
-        <Link className="button button-primary header-post" href="/create">
+        <Link className={`button button-primary header-post${pathname === "/humans" ? " humans-header-post" : ""}`} href="/create" aria-label="Post a track">
           <PlusIcon width={17} />
           <span>Post a track</span>
         </Link>
