@@ -2,6 +2,11 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.8.2 — 2026-11-11
+
+- Make song credits more compact with a smaller heading, tighter rows, and smaller role icons.
+- Keep every credit, role, and creator link visible in both themes and on phones.
+
 ## 1.8.1 — 2026-11-11
 
 - Replace the mixed raster credit icons with 37 original studio-style vector drawings.
