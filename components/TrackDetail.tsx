@@ -7,9 +7,10 @@ import SpotifyLogo from "./SpotifyLogo";
 import AudioDNA from "./AudioDNA";
 import LoudnessMap from "./LoudnessMap";
 import Credits from "./Credits";
+import TrackInstruments from "./TrackInstruments";
 import Releases from "./Releases";
 import { useAlbumTheme } from "../lib/use-album-theme";
-import { trackFacts, trackSourceLinks } from "../lib/track-details";
+import { formatReleaseDate, trackFacts, trackSourceLinks } from "../lib/track-details";
 import type { TrackV3 } from "@types";
 
 type Props = {
@@ -49,9 +50,9 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
     ).values(),
   );
   const hasCredits =
-    track.instruments?.length ||
     track.production_credits?.length ||
     track.song_credits?.length;
+  const releaseDate = formatReleaseDate(track.release_date);
   return (
     <>
       <Head>
@@ -61,12 +62,14 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
         name={track.name}
         artist={artistNames}
         image={track.image}
-        releaseDate={track.release_date}
         onArtworkLoad={onArtworkLoad}
+        className="song-hero"
+        afterArtist={<TrackInstruments instruments={track.instruments || []} />}
       >
+        <div className="song-summary">
         {track.album?.name && (
           <p className="track-album">
-            From{" "}
+            Album{" "}
             {track.album.id && /^[a-zA-Z0-9]{22}$/.test(track.album.id) ? (
               <a
                 href={`https://open.spotify.com/album/${track.album.id}`}
@@ -80,6 +83,8 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
             )}
           </p>
         )}
+        {releaseDate && <p className="track-release">Released {releaseDate}</p>}
+        </div>
         {facts.length > 0 && (
           <dl className="track-facts">
             {facts.map((fact) => (
@@ -132,16 +137,15 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
           </p>
         )}
       </TrackHero>
-      <div className="room-container liner-notes">
+      <div className="room-container liner-notes song-notes">
         <section className="liner-credits">
           <h2>Credits</h2>
           {hasCredits ? (
             <Credits
-              instruments={track.instruments || []}
               production_credits={track.production_credits || []}
               song_credits={track.song_credits || []}
             />
-          ) : (
+          ) : !track.instruments?.length ? (
             <p className="metadata-note">
               {track.credits_status === "unavailable" ||
               track.metadata_status === "unavailable"
@@ -154,7 +158,7 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
                       ? "No matching credits record found."
                       : "No verified credits found yet."}
             </p>
-          )}
+          ) : <p className="metadata-note">Performance credits are listed above.</p>}
           {sourceLinks.length > 0 && (
             <nav className="track-sources" aria-label="Track sources">
               {sourceLinks.map((link) => (

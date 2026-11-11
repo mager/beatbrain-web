@@ -22,6 +22,7 @@ try {
   const context = await browser.newContext({
     baseURL: base,
     viewport: { width: 1440, height: 1050 },
+    colorScheme: "dark",
   });
   const signup = await context.request.post("/api/auth/sign-up/email", {
     headers: { Origin: base, "x-invite-token": token },
@@ -43,9 +44,9 @@ try {
   await page.getByRole("heading", {
     name: "Fortnight (feat. Post Malone)", exact: true, level: 1,
   }).waitFor();
-  assert.ok((await page.locator(".credit-row").count()) >= 8,
+  assert.ok((await page.locator(".credit-person, .track-instrument").count()) >= 8,
     "Fortnight guest-title mismatch must not hide credits");
-  const fortnightCredits = await page.locator(".credit-row").allTextContents();
+  const fortnightCredits = await page.locator(".credit-person, .track-instrument").allTextContents();
   for (const name of ["Jack Antonoff", "Taylor Swift", "Post Malone", "Serban Ghenea", "Bryce Bordone", "Jack Manning"]) {
     assert.ok(fortnightCredits.some((text) => text.includes(name)), `${name} credit visible`);
   }
@@ -67,7 +68,7 @@ try {
   await page.getByRole("heading", { name: "Credits", exact: true }).waitFor();
   assert.equal(await page.title(), "Manchild — Sabrina Carpenter — Beatbrain");
   assert.ok(
-    (await page.locator(".credit-row").count()) >= 8,
+    (await page.locator(".credit-person, .track-instrument").count()) >= 8,
     "real credits visible",
   );
   await page.waitForFunction(() => {

@@ -10,6 +10,8 @@ type Props = {
   children?: ReactNode;
   onArtworkLoad?: (image: HTMLImageElement) => void;
   headingLevel?: 1 | 2;
+  afterArtist?: ReactNode;
+  className?: string;
 };
 export default function TrackHero({
   name,
@@ -19,6 +21,8 @@ export default function TrackHero({
   children,
   onArtworkLoad,
   headingLevel = 1,
+  afterArtist,
+  className = "",
 }: Props) {
   const Heading = headingLevel === 1 ? "h1" : "h2";
   const date = formatReleaseDate(releaseDate);
@@ -38,7 +42,7 @@ export default function TrackHero({
     else onArtworkError(img);
   }, [image, onArtworkLoad, onArtworkError]);
   return (
-    <section className="room-container track-hero">
+    <section className={`room-container track-hero ${className}`}>
       {image && failedSource !== image ? (
         <img
           ref={artwork}
@@ -57,9 +61,10 @@ export default function TrackHero({
           <MusicalNoteIcon width={64} />
         </div>
       )}
-      <div>
+      <div className="track-info">
         <Heading className="track-title">{name}</Heading>
         <p className="track-artist">{artist}</p>
+        {afterArtist}
         {date && <p className="track-release">Released {date}</p>}
         {children}
       </div>

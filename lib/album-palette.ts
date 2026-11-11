@@ -39,6 +39,21 @@ function palette(color: RGB): AlbumPalette {
 }
 export const FALLBACK_PALETTE: AlbumPalette = palette([216, 213, 207]);
 
+export function paletteForTheme(value: AlbumPalette, theme: "light" | "dark"): AlbumPalette {
+  if (theme === "dark") return value;
+  const page: RGB = [247, 246, 242];
+  let accent = rgb(value.accent);
+  for (let i = 0; i < 60 && contrastRatio(hex(accent), hex(page)) < 7; i++)
+    accent = mix(accent, [0, 0, 0], 0.08);
+  return {
+    accent: hex(accent),
+    hover: hex(mix(accent, [0, 0, 0], 0.16)),
+    surface: hex(mix(page, accent, 0.04)),
+    border: hex(mix(page, accent, 0.25)),
+    muted: hex(mix(accent, [60, 60, 60], 0.4)),
+  };
+}
+
 /** Use broad areas of color, not a single bright pixel or black/white borders. */
 export function paletteFromPixels(pixels: Uint8ClampedArray): AlbumPalette {
   const buckets = new Map<

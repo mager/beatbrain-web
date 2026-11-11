@@ -4,13 +4,13 @@ const styles = {
   control: (provided, state) => ({
     ...provided,
     border: '1px solid',
-    borderColor: state.isFocused ? '#c9a461' : '#23233a',
+    borderColor: state.isFocused ? 'var(--room-accent)' : 'var(--border-color)',
     borderRadius: '6px',
     boxShadow: state.isFocused ? '0 0 0 1px rgba(201,164,97,0.15)' : 'none',
     transition: 'all 0.2s ease',
-    backgroundColor: '#15151c',
+    backgroundColor: 'var(--surface-bg)',
     '&:hover': {
-      borderColor: state.isFocused ? '#c9a461' : '#2e2e44',
+      borderColor: state.isFocused ? 'var(--room-accent)' : 'var(--border-strong)',
       cursor: 'text',
     },
     padding: '2px 8px 2px 12px',
@@ -25,21 +25,21 @@ const styles = {
   }),
   input: (provided) => ({
     ...provided,
-    color: '#bfc0cb',
+    color: 'var(--text-primary)',
     fontSize: '14px',
     fontFamily: 'var(--font-body), JetBrains Mono, monospace',
     letterSpacing: '-0.01em',
   }),
   placeholder: (provided) => ({
     ...provided,
-    color: '#7a7a96',
+    color: 'var(--text-muted)',
     fontSize: '14px',
     fontFamily: 'var(--font-body), JetBrains Mono, monospace',
     letterSpacing: '-0.01em',
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: '#bfc0cb',
+    color: 'var(--text-primary)',
   }),
   valueContainer: (provided) => ({
     ...provided,
@@ -47,23 +47,23 @@ const styles = {
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isFocused ? '#1e1e2a' : 'transparent',
-    color: state.isFocused ? '#c9a461' : '#bfc0cb',
+    backgroundColor: state.isFocused ? 'var(--surface-raised)' : 'transparent',
+    color: state.isFocused ? 'var(--room-accent)' : 'var(--text-primary)',
     padding: '10px 14px',
     cursor: 'pointer',
     transition: 'all 0.15s ease',
-    borderBottom: '1px solid #1a1a28',
+    borderBottom: '1px solid var(--border-color)',
     '&:last-child': {
       borderBottom: 'none',
     },
     '&:active': {
-      backgroundColor: '#1e1e2a',
+      backgroundColor: 'var(--surface-raised)',
     },
   }),
   menu: (provided) => ({
     ...provided,
-    backgroundColor: '#15151c',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px #23233a',
+    backgroundColor: 'var(--surface-bg)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-color)',
     border: 'none',
     borderRadius: '6px',
     padding: '4px 0',
@@ -79,28 +79,28 @@ const styles = {
   }),
   noOptionsMessage: (provided) => ({
     ...provided,
-    color: '#52526e',
+    color: 'var(--text-muted)',
     fontSize: '13px',
     fontFamily: 'var(--font-body), JetBrains Mono, monospace',
   }),
   loadingMessage: (provided) => ({
     ...provided,
-    color: '#52526e',
+    color: 'var(--text-muted)',
     fontSize: '13px',
   }),
   clearIndicator: (provided) => ({
     ...provided,
-    color: '#52526e',
+    color: 'var(--text-muted)',
     cursor: 'pointer',
     padding: '4px',
     '&:hover': {
-      color: '#bfc0cb',
+      color: 'var(--text-primary)',
     },
   }),
 };
 
 const SearchIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7a7a96" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
     <circle cx="11" cy="11" r="8" />
     <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>

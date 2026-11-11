@@ -2,6 +2,15 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.8.0 — 2026-11-11
+
+- Put instruments, voices, player names, and the original illustrated icons beside the song information.
+- Group writing and production credits by person, with labeled role icons and preserved creator links.
+- Use a compact cover and song layout on phones.
+- Follow the system light or dark theme by default; save a member's choice from the footer light switch.
+- Keep album-derived colors readable in both themes, including forms and search results.
+- Use GitHub and X icons and update the Chicago footer credit.
+
 ## 1.7.0 — 2026-11-11
 
 - Meet members on Humans, with recent album covers, profile photos, and clear links to their profiles.

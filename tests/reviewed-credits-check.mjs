@@ -22,6 +22,7 @@ try {
   const context = await browser.newContext({
     baseURL: base,
     viewport: { width: 1440, height: 1050 },
+    colorScheme: "dark",
   });
   const signup = await context.request.post("/api/auth/sign-up/email", {
     headers: { Origin: base, "x-invite-token": token },
@@ -43,10 +44,10 @@ try {
     .getByRole("heading", { name: "Not a Pretty Girl", exact: true, level: 1 })
     .waitFor();
   assert.ok(
-    (await page.locator(".credit-row").count()) >= 6,
+    (await page.locator(".credit-person, .track-instrument").count()) >= 6,
     "reviewed credits must be shown for Not a Pretty Girl",
   );
-  const credits = await page.locator(".credit-row").allTextContents();
+  const credits = await page.locator(".credit-person, .track-instrument").allTextContents();
   for (const name of [
     "Belize Kazi",
     "Clairo",
@@ -86,7 +87,7 @@ try {
   }
   await page.reload();
   assert.ok(
-    (await page.locator(".credit-row").count()) >= 6,
+    (await page.locator(".credit-person, .track-instrument").count()) >= 6,
     "cached requests retain reviewed credits",
   );
   assert.deepEqual(errors, []);

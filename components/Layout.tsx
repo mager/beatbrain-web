@@ -5,6 +5,7 @@ import Head from "next/head";
 import { Archivo, Space_Grotesk } from "next/font/google";
 import FooterCredit from "./FooterCredit";
 import Header from "./Header";
+import { useTheme } from "../context/ThemeContext";
 const font = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
@@ -18,6 +19,7 @@ const heading = Archivo({
   display: "swap",
 });
 export default function Layout({ children }: { children: ReactNode }) {
+  const { theme } = useTheme();
   const router = useRouter();
   const entry = router.pathname === "/auth/signin";
   return (
@@ -29,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           content="An invite-only listening room for you and your music friends."
         />
         <meta name="robots" content="noindex,nofollow" />
-        <meta name="theme-color" content="#101113" />
+        <meta name="theme-color" content={theme === "light" ? "#f7f6f2" : "#101113"} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       {!entry && <Header />}

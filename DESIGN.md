@@ -1,6 +1,10 @@
 # Beatbrain: the record room
 
-The user chose a dark, album-led room with gentle 3D tilt, art-colored light, and smooth focus states. This is an operating interface: music posts and people remain the task.
+The user chose an album-led room with gentle 3D tilt, art-colored light, and smooth focus states. This is an operating interface: music posts and people remain the task.
+
+## Theme
+
+Follow the system color scheme until the visitor chooses a theme with the footer light bulb. Save that choice locally and apply it before first paint. System changes remain live until an explicit choice is saved. Both themes use the same layout and artwork. Light uses warm paper (#f7f6f2), dark text (#242328), and a deep purple accent (#713b88). Dark keeps the existing palette. Album accents must meet 7:1 against the active page and button text.
 
 ## Tokens
 
@@ -39,13 +43,13 @@ Searching stays at a readable form width. Once a track is selected, its cover an
 
 Song pages use a dominant color sampled from the actual cover. Broad colored areas outrank small details; black, white, and transparent pixels do not set the accent. The accent has at least 7:1 contrast with the dark canvas and button text. Monochrome or unavailable covers use a neutral accent. The header, primary action, artist name, links, and focus marks share the song accent. Navigation away restores the site palette. No extra image service or color package is needed.
 
-Credits read as grouped liner notes: songwriting, performance, and production. Album, release date, length, genres, known musical facts, releases, and source links accompany them. Never infer missing key, tempo, or credits. Metadata may be incomplete when a source has no matching recording.
+Instruments and voices sit directly below the artist with original illustrated icons, readable instrument names, and players. Writing and production credits are grouped by person with small role icons. Combine stable IDs; keep unverified name-only credits and spelling variants separate. On phones a small cover sits beside the title, followed by instruments across the width. Album, release date, length, genres, known musical facts, releases, and source links accompany them. Never infer missing key, tempo, or credits. Metadata may be incomplete when a source has no matching recording.
 
 ## Reactions and release footer
 
 Each post has one small heart control with its love count. Selected hearts use the room accent. Keep a 44 px touch target, a pressed state, pending lock, and an inline retry error. Reactions retain their confirmed state when switching a profile between Grid and Feed. At mobile widths, the heart sits below the note. Profiles show the stored join month and year in UTC.
 
-A quiet fixed footer stays at the bottom of the viewport. Measure its wrapped height and reserve that space in the page, including the device safe area. Keep the Chicago credit, an explicit About Beatbrain link, and a version link to the same release's public GitHub changelog. Read the version from package.json; create the matching Git tag before deployment.
+A quiet fixed footer stays at the bottom of the viewport. Measure its wrapped height and reserve that space in the page, including the device safe area. Keep “Built with 💜 in Chicago by @mager with help from magerbot”, GitHub and X icon links, a light bulb theme switch, an explicit About Beatbrain link, and a version link to the same release's public GitHub changelog. Read the version from package.json; create the matching Git tag before deployment.
 
 ## Admin
 

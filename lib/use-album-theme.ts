@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTheme } from "../context/ThemeContext";
 import {
   FALLBACK_PALETTE,
   paletteFromPixels,
+  paletteForTheme,
   type AlbumPalette,
 } from "./album-palette";
 const cache = new Map<string, AlbumPalette>();
 
 export function useAlbumTheme(source: string) {
+  const { theme } = useTheme();
   const [sample, setSample] = useState<{
     source: string;
     palette: AlbumPalette;
@@ -40,14 +43,15 @@ export function useAlbumTheme(source: string) {
   useEffect(() => {
     const shell = document.querySelector<HTMLElement>(".app-shell");
     if (!shell) return;
+    const colors = paletteForTheme(palette, theme);
     const values = {
-      "--room-accent": palette.accent,
-      "--accent": palette.accent,
-      "--room-accent-hover": palette.hover,
-      "--room-on-accent": "#101113",
-      "--song-surface": palette.surface,
-      "--song-border": palette.border,
-      "--song-muted": palette.muted,
+      "--room-accent": colors.accent,
+      "--accent": colors.accent,
+      "--room-accent-hover": colors.hover,
+      "--room-on-accent": theme === "light" ? "#f7f6f2" : "#101113",
+      "--song-surface": colors.surface,
+      "--song-border": colors.border,
+      "--song-muted": colors.muted,
     };
     const previous = Object.keys(values).map((key) => [
       key,
@@ -55,7 +59,7 @@ export function useAlbumTheme(source: string) {
     ]);
     for (const [key, value] of Object.entries(values))
       shell.style.setProperty(key, value);
-    shell.dataset.albumTheme = palette.accent;
+    shell.dataset.albumTheme = colors.accent;
     return () => {
       for (const [key, value] of previous) {
         if (value) shell.style.setProperty(key, value);
@@ -63,6 +67,6 @@ export function useAlbumTheme(source: string) {
       }
       delete shell.dataset.albumTheme;
     };
-  }, [palette]);
+  }, [palette, theme]);
   return { onArtworkLoad };
 }

@@ -52,7 +52,7 @@ const CreditGroup: React.FC<{ credit: CreatorCredit; defaultExpanded: boolean }>
 
         {/* Label + count */}
         <div className="flex items-baseline gap-3 min-w-0">
-          <span className="font-mono text-sm text-phosphor group-hover:text-white transition-colors uppercase tracking-wider">
+          <span className="font-mono text-sm text-phosphor group-hover:text-phosphor transition-colors uppercase tracking-wider">
             {credit.type}
           </span>
           <span className="font-mono text-xs text-phosphor-dim/60">
