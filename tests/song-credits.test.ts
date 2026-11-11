@@ -34,8 +34,8 @@ test("empty names and empty roles do not produce empty credit entries", () => {
 
 test("instrument and role icons accept source casing and preserve specific instruments", () => {
   for (const [name, expected] of [
-    ["Pedal Steel Guitar", "guitar"], [" Vocals ", "vocal"],
-    ["Programming", "drum-machine"], ["Fretless Bass", "fretless-bass"],
+    ["Pedal Steel Guitar", "pedal-steel"], [" Vocals ", "vocal"],
+    ["Acoustic Guitar", "acoustic-guitar"], ["Programming", "drum-machine"], ["Fretless Bass", "fretless-bass"],
     ["Double Bass", "double-bass"], ["Songwriter", "writer"],
     ["Engineer", "recording"], ["Mastering", "mix"], ["Unknown instrument", null],
   ]) assert.equal(resolveRelationIcon(name as string), expected, name as string);

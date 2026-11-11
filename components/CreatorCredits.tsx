@@ -46,7 +46,7 @@ const CreditGroup: React.FC<{ credit: CreatorCredit; defaultExpanded: boolean }>
         </span>
 
         {/* Icon */}
-        <div className="flex flex-col justify-center items-center w-9 h-9 bg-terminal-surface border border-terminal-border rounded flex-shrink-0">
+        <div className="flex flex-col justify-center items-center w-9 h-9 text-phosphor flex-shrink-0">
           <RelationIcon name={credit.type} />
         </div>
 

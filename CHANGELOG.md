@@ -2,6 +2,13 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.8.1 — 2026-11-11
+
+- Replace the mixed raster credit icons with 37 original studio-style vector drawings.
+- Remove white icon tiles and use the active theme's ink color on transparent backgrounds.
+- Give pedal steel and acoustic guitar distinct shapes; use a fader desk for mixing.
+- Keep all drawings clear at instrument and credit sizes, with accessible labels and a matching fallback.
+
 ## 1.8.0 — 2026-11-11
 
 - Put instruments, voices, player names, and the original illustrated icons beside the song information.

@@ -11,7 +11,9 @@
 .instrument-players { margin-top: 5px; color: var(--text-muted, #aaaeb7); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
 .instrument-players a, .credit-person h3 a { text-decoration: underline; text-decoration-color: var(--song-border, #454850); text-underline-offset: 4px; }
 .instrument-players a:hover, .credit-person h3 a:hover { color: var(--room-accent); text-decoration-color: currentColor; }
-.track-instrument .relation-icon, .credit-person-roles .relation-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; background: #fff; color: #101113; border-radius: 3px; }
+.relation-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; color: inherit; }
+.relation-drawing { display: block; overflow: visible; }
+.track-instrument .relation-icon { color: var(--room-accent, var(--text-primary)); }
 .track-instrument .relation-icon { width: 46px; height: 46px; }
 .track-instrument .relation-icon img, .track-instrument .relation-icon svg { width: 38px; height: 38px; }
 .song-summary { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--text-muted, #aaaeb7); font-size: 13px; }
@@ -32,6 +34,7 @@
 .credit-person-roles li > span:last-child { overflow-wrap: anywhere; text-transform: capitalize; }
 .credit-person-roles .relation-icon { width: 23px; height: 23px; }
 .credit-person-roles .relation-icon img, .credit-person-roles .relation-icon svg { width: 19px; height: 19px; }
+.credit-person-roles .relation-drawing { stroke-width: 2.4; }
 .song-notes .release-list a { padding: 12px 0; gap: 12px; }
 .song-notes .release-list img, .song-notes .release-placeholder { width: 48px; height: 48px; }
 @media (max-width: 1000px) {

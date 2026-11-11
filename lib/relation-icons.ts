@@ -1,5 +1,7 @@
 const supported = [
   // Instruments
+  "acoustic-guitar",
+  "pedal-steel",
   "bass",
   "banjo",
   "bell",
@@ -49,11 +51,11 @@ const iconAliases: Record<string, string> = {
   "mastering": "mix",
   "mixing": "mix",
 
-  "pedal steel guitar": "guitar",
-  "steel guitar": "guitar",
-  "acoustic guitar": "guitar",
+  "pedal steel guitar": "pedal-steel",
+  "steel guitar": "pedal-steel",
+  "acoustic guitar": "acoustic-guitar",
   "electric guitar": "guitar",
-  "classical guitar": "guitar",
+  "classical guitar": "acoustic-guitar",
   "slide guitar": "guitar",
   "lap steel guitar": "guitar",
   "bass guitar": "bass",
