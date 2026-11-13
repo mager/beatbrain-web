@@ -69,3 +69,32 @@
   .song-hero { grid-template-columns: 96px minmax(0, 1fr); gap: 8px 14px; }
   .track-instruments > ul, .credit-people { grid-template-columns: 1fr; }
 }
+
+/* Explicit recording links keep the song's history close to its credits. */
+.song-connections header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+.song-notes .song-connections h2 { font-size: 28px; margin: 0; }
+.song-connections-source { display: inline-flex; align-items: center; gap: 4px; color: var(--text-muted); font-size: 12px; text-underline-offset: 3px; }
+.song-connections-source:hover { text-decoration: underline; }
+.song-connections-list li { border-top: 1px solid var(--song-border, #303238); }
+.song-connections-list a { display: grid; grid-template-columns: 86px minmax(0, 1fr) 17px; align-items: center; gap: 12px; min-height: 56px; padding: 12px 0; }
+.song-connection-label { color: var(--room-accent); font-size: 12px; line-height: 1.5; }
+.song-connection-track { display: grid; gap: 3px; min-width: 0; overflow-wrap: anywhere; }
+.song-connection-track strong { font-size: 15px; font-weight: 500; line-height: 1.4; }
+.song-connection-track > span { color: var(--text-muted); font-size: 12px; line-height: 1.5; }
+.song-connection-track .song-connection-version { font-size: 11px; }
+.song-connections-list a > svg { color: var(--text-muted); }
+.song-connections-list a:hover strong { color: var(--room-accent); text-decoration: underline; text-underline-offset: 3px; }
+.song-connections-more summary { cursor: pointer; width: fit-content; padding: 12px 0; color: var(--text-muted); font-size: 12px; }
+.connections-hide, .song-connections-more[open] .connections-show { display: none; }
+.song-connections-more[open] .connections-hide { display: inline; }
+@media (max-width: 380px) {
+  .song-connections-list a { grid-template-columns: 70px minmax(0, 1fr) 17px; gap: 8px; }
+}
+.song-notes .song-studios h2 { font-size: 28px; margin-bottom: 12px; }
+.song-studios-list li { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--song-border, #303238); }
+.song-studios-list li > svg { flex: 0 0 auto; margin-top: 2px; color: var(--room-accent); }
+.song-studios-list li > div { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
+.song-studio-role, .song-studio-detail { color: var(--text-muted); font-size: 12px; line-height: 1.5; }
+.song-studios-list a { font-size: 15px; font-weight: 500; line-height: 1.4; text-underline-offset: 3px; }
+.song-studios-list a svg { display: inline; margin-left: 5px; color: var(--text-muted); }
+.song-studios-list a:hover { color: var(--room-accent); text-decoration: underline; }

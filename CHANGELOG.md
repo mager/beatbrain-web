@@ -2,6 +2,13 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.0 — 2026-11-13
+
+- Explore samples, remixes, and edits through compact Song connections on song pages.
+- Show recording, mixing, and production places with source dates and links to MusicBrainz.
+- Keep source relationship direction and additional recording credits; hide sections when no data is available.
+- Keep recording links on the correct MusicBrainz record, including merged IDs, and avoid cover-art lookup delays.
+
 ## 1.8.2 — 2026-11-11
 
 - Make song credits more compact with a smaller heading, tighter rows, and smaller role icons.

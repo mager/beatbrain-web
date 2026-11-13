@@ -68,3 +68,7 @@ Admin lists members above invite tools. Use compact rows with an avatar, profile
 ## Instrument drawings
 
 Use the original SVG symbol set in public/images/instruments.svg for all instrument and credit icons. The transparent 48-unit canvas, round line caps, and consistent detail come from drawings in studio manuals. Use 2-unit strokes at the instrument size and 2.4-unit strokes at the small credit size. Instrument ink follows the song accent; credit ink follows the readable secondary text. Do not add background tiles, gradients, textures, or shadows. Pedal steel and acoustic guitar have their own silhouettes. Unknown roles use the matching note symbol and retain their visible text label.
+
+## Song connections and studios
+
+Below the song header, the right column starts with compact Song connections, then Studios & places, then releases. Use explicit MusicBrainz samples, remixes, and edits with direction-specific labels. Show four connections and three places before a native expansion control. Titles link to the exact recording; studio names link to the MusicBrainz place. Keep optional artist, version, area, and date precision visible. Use the album accent for relation labels and a simple map pin for places. Hide absent sections; never infer connections or studio locations. Preserve canonical merged IDs and reject unrelated Spotify upgrades.

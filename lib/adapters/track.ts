@@ -1,7 +1,11 @@
 import { GetTrackResponseV3, TrackV3 } from "@types";
+import { normalizeConnections } from "../song-connections";
+import { normalizeStudios } from "../song-studios";
 
 export const adaptTrack = ({ track }: GetTrackResponseV3): TrackV3 => {
   return {
+    connections: normalizeConnections(track.connections),
+    studios: normalizeStudios(track.studios),
     id: track.id || "",
     artists: track.artists || [],
     explicit: track.explicit === true,

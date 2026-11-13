@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         );
         if (v2Resp.ok) {
           const v2Body = await v2Resp.json();
-          if (v2Body.track) {
+          if (v2Body.track?.id && v2Body.track.id.toLowerCase() === mbBody.track.id?.toLowerCase()) {
             track = adaptTrack(v2Body);
           }
         }

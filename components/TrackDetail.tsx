@@ -9,6 +9,8 @@ import LoudnessMap from "./LoudnessMap";
 import Credits from "./Credits";
 import TrackInstruments from "./TrackInstruments";
 import Releases from "./Releases";
+import SongConnections from "./SongConnections";
+import SongStudios from "./SongStudios";
 import { useAlbumTheme } from "../lib/use-album-theme";
 import { formatReleaseDate, trackFacts, trackSourceLinks } from "../lib/track-details";
 import type { TrackV3 } from "@types";
@@ -214,8 +216,10 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
         </section>
         {track.features ||
         track.analysis?.segments?.length ||
-        track.releases?.length ? (
+        track.releases?.length || track.connections?.length || track.studios?.length ? (
           <div className="liner-extra">
+            <SongConnections connections={track.connections} recordingID={track.id} />
+            <SongStudios studios={track.studios} />
             {track.features && (
               <section>
                 <h2>Audio DNA</h2>

@@ -159,6 +159,8 @@ export type TrackAlbum = {
 };
 
 export type TrackV3 = {
+	studios?: SongStudio[];
+	connections?: SongConnection[];
   artists?: { id: string; name: string; url: string }[];
   explicit?: boolean;
   track_number?: number;
@@ -184,6 +186,25 @@ export type TrackV3 = {
   popularity: number | null;
   preview_url: string | null;
   source_id: string | null;
+};
+
+export type SongConnection = {
+  id: string;
+  title: string;
+  artist?: string;
+  disambiguation?: string;
+  type: string;
+  direction: string;
+};
+
+export type SongStudio = {
+  id: string;
+  name: string;
+  area?: string;
+  type: string;
+  begin?: string;
+  end?: string;
+  additional?: boolean;
 };
 
 export type GetTrackResponseV3 = {
