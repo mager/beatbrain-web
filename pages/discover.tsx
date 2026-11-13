@@ -120,9 +120,6 @@ export default function Discover() {
                     : "Your artists. Shared taste. Something new."}
         </p>
       </div>
-      {mode === "world" && (
-        <DiscoverySources sources={sources} loading={loading} error={error} />
-      )}
       {loading ? (
         <div
           className="discover-grid"
@@ -216,6 +213,9 @@ export default function Discover() {
             </article>
           ))}
         </div>
+      )}
+      {mode === "world" && (
+        <DiscoverySources sources={sources} loading={loading} error={error} />
       )}
     </div>
   );

@@ -2,6 +2,10 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.2 — 2026-11-13
+
+- Move Worldwide source details below the tracks. Keep the list collapsed by default.
+
 ## 1.9.1 — 2026-11-13
 
 - Show when each Worldwide discovery source was checked, with a clear delayed state when a refresh fails.
