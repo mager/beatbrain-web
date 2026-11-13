@@ -2,6 +2,13 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.1 — 2026-11-13
+
+- Show when each Worldwide discovery source was checked, with a clear delayed state when a refresh fails.
+- Keep saved discoveries visible while a source recovers. Do not label the whole feed with only the newest source date.
+- Melodex now paces Spotify requests, shares rate-limit cooldowns, retries incomplete matches, and keeps good snapshots when a provider fails.
+- Occipital combines concurrent discovery reads in a short process cache to reduce database use.
+
 ## 1.9.0 — 2026-11-13
 
 - Explore samples, remixes, and edits through compact Song connections on song pages.

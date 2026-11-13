@@ -1,3 +1,5 @@
+import DiscoverySources from "../components/DiscoverySources";
+import { parseSourceHealth, type SourceHealth } from "../lib/discovery-health";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
@@ -16,7 +18,7 @@ export default function Discover() {
   const [mode, setMode] = useState<(typeof views)[number]["id"]>("room");
   const [hasTaste, setHasTaste] = useState(false);
   const [worldwideAvailable, setWorldwideAvailable] = useState(true);
-  const [updated, setUpdated] = useState("");
+  const [sources, setSources] = useState<SourceHealth[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -51,7 +53,7 @@ export default function Discover() {
         );
         setHasTaste(data.hasTaste === true);
         setWorldwideAvailable(data.worldwideAvailable !== false);
-        setUpdated(typeof data.updated === "string" ? data.updated : "");
+        setSources(parseSourceHealth(data.sources));
       } catch {
         if (active) setError(true);
       } finally {
@@ -67,15 +69,6 @@ export default function Discover() {
     };
   }, [attempt, mode]);
 
-  const date = updated ? new Date(updated) : null;
-  const dateLabel =
-    date && !Number.isNaN(date.getTime())
-      ? date.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          timeZone: "UTC",
-        })
-      : "";
   return (
     <div className="room-container discover-page">
       <Head>
@@ -86,12 +79,7 @@ export default function Discover() {
         {!loading && !error && tracks.length > 0 && (
           <p>
             {tracks.length} tracks
-            {dateLabel && mode === "world" && (
-              <>
-                {" "}
-                <span aria-hidden="true">/</span> Updated {dateLabel}
-              </>
-            )}
+
           </p>
         )}
       </header>
@@ -133,54 +121,7 @@ export default function Discover() {
         </p>
       </div>
       {mode === "world" && (
-        <details className="discovery-sources">
-          <summary>Where the music comes from</summary>
-          <p>Melodex checks these sources. Each source updates separately.</p>
-          <nav aria-label="Worldwide music sources">
-            <a
-              href="https://open.spotify.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Spotify new releases
-            </a>
-            <a
-              href="https://www.billboard.com/charts/hot-100/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Billboard Hot 100
-            </a>
-            <a
-              href="https://www.hotnewhiphop.com/top100"
-              target="_blank"
-              rel="noreferrer"
-            >
-              HotNewHipHop
-            </a>
-            <a
-              href="https://pitchfork.com/reviews/best/tracks/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Pitchfork
-            </a>
-            <a
-              href="https://rss.marketingtools.apple.com/api/v2/us/music/most-played/50/songs.json"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Apple Music · US Top 50
-            </a>
-          </nav>
-          <p>
-            Track matching and metadata: Spotify and{" "}
-            <a href="https://musicbrainz.org" target="_blank" rel="noreferrer">
-              MusicBrainz
-            </a>
-            .
-          </p>
-        </details>
+        <DiscoverySources sources={sources} loading={loading} error={error} />
       )}
       {loading ? (
         <div

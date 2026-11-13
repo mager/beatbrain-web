@@ -1,3 +1,4 @@
+import { parseSourceHealth } from "../../../lib/discovery-health";
 import { backendFetch } from "../../../lib/backend";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SERVER_HOST } from "@util";
@@ -45,6 +46,7 @@ async function worldwide() {
   }
   return {
     tracks: tracks.slice(0, 60),
+    sources: parseSourceHealth(data.sources),
     updated: typeof data.updated === "string" ? data.updated : "",
   };
 }
