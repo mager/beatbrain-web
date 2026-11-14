@@ -2,6 +2,11 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.3 — 2026-11-14
+
+- Keep the footer in one compact row on phones and desktop.
+- Keep the theme switch and social icons visible; put extra links and the full maker credit under More.
+
 ## 1.9.2 — 2026-11-13
 
 - Move Worldwide source details below the tracks. Keep the list collapsed by default.

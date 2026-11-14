@@ -49,7 +49,7 @@ Instruments and voices sit directly below the artist with original studio-style 
 
 Each post has one small heart control with its love count. Selected hearts use the room accent. Keep a 44 px touch target, a pressed state, pending lock, and an inline retry error. Reactions retain their confirmed state when switching a profile between Grid and Feed. At mobile widths, the heart sits below the note. Profiles show the stored join month and year in UTC.
 
-A quiet fixed footer stays at the bottom of the viewport. Measure its wrapped height and reserve that space in the page, including the device safe area. Keep “Built with 💜 in Chicago by @mager with help from magerbot”, GitHub and X icon links, a light bulb theme switch, an explicit About Beatbrain link, and a version link to the same release's public GitHub changelog. Read the version from package.json; create the matching Git tag before deployment.
+A quiet fixed footer uses one 52 px row, plus the device safe area. Show a “💜 Chicago” About link, GitHub and X icons, the light bulb, and a More disclosure. Put About, member Settings, owner-only Admin, the version/changelog link, and the full “Built with 💜 in Chicago by @mager with help from magerbot” credit inside More. Keep each toolbar control at least 44 px square. The disclosure opens above the bar, closes on Escape, outside press, or navigation, and stays within the viewport. Measure the footer and reserve its height in the page. Read the version from package.json; create the matching Git tag before deployment.
 
 ## Admin
 

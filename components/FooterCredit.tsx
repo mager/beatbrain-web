@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   Cog6ToothIcon,
-  ArrowRightIcon,
+  EllipsisHorizontalIcon,
   ArrowUpRightIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
@@ -14,6 +15,8 @@ const { version } = packageInfo;
 
 export default function FooterCredit() {
   const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
+  const more = useRef<HTMLDetailsElement>(null);
   const {
     state: { user },
   } = useAppContext();
@@ -22,23 +25,31 @@ export default function FooterCredit() {
     const measure = () =>
       document.documentElement.style.setProperty(
         "--footer-height",
-        `${footer.current?.getBoundingClientRect().height || 100}px`,
+        `${footer.current?.getBoundingClientRect().height || 52}px`,
       );
     measure();
     const observer = new ResizeObserver(measure);
     if (footer.current) observer.observe(footer.current);
     return () => observer.disconnect();
   }, []);
+  useEffect(() => {
+    const close = () => { if (more.current) more.current.open = false; };
+    const outside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !more.current?.contains(event.target)) close();
+    };
+    document.addEventListener("pointerdown", outside);
+    router.events.on("routeChangeStart", close);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      router.events.off("routeChangeStart", close);
+    };
+  }, [router.events]);
   return (
     <footer className="site-footer" ref={footer}>
-      <p className="footer-credit">
-        Built with <span role="img" aria-label="love">💜</span> in Chicago by{" "}
-        <a href="https://mager.co" target="_blank" rel="noreferrer">
-          @mager
-        </a>{" "}
-        with help from magerbot
-      </p>
-      <nav className="footer-links" aria-label="Beatbrain links">
+      <Link href="/about" className="footer-signature" aria-label="About Beatbrain, made with love in Chicago">
+        <span aria-hidden="true">💜</span> Chicago
+      </Link>
+      <div className="footer-links" role="group" aria-label="Beatbrain links">
         <a
           href="https://github.com/mager/beatbrain-web"
           target="_blank"
@@ -65,25 +76,35 @@ export default function FooterCredit() {
           aria-pressed={theme === "light"}>
           <LightBulbIcon width={19} aria-hidden="true" />
         </button>
-        <Link href="/about">
-          About Beatbrain <ArrowRightIcon width={15} aria-hidden="true" />
-        </Link>
-        {user && (
-          <Link href="/settings">
-            <Cog6ToothIcon width={16} aria-hidden="true" /> Settings
-          </Link>
-        )}
-        {isOwner(user) && <Link href="/admin">Admin</Link>}
-        <a
-          className="footer-version"
-          href={`https://github.com/mager/beatbrain-web/blob/v${version}/CHANGELOG.md`}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`v${version} — changelog on GitHub`}
-        >
-          v{version} <ArrowUpRightIcon width={14} aria-hidden="true" />
-        </a>
-      </nav>
+        <details className="footer-more" ref={more} onKeyDown={(event) => {
+          if (event.key === "Escape" && more.current?.open) {
+            event.preventDefault();
+            more.current.open = false;
+            more.current.querySelector("summary")?.focus();
+          }
+        }}>
+          <summary className="footer-icon" aria-label="More Beatbrain links" title="More">
+            <EllipsisHorizontalIcon width={21} aria-hidden="true" />
+          </summary>
+          <div className="footer-more-panel">
+            <nav className="footer-more-links" aria-label="More Beatbrain links">
+              <Link href="/about">About Beatbrain</Link>
+              {user && <Link href="/settings"><Cog6ToothIcon width={16} aria-hidden="true" /> Settings</Link>}
+              {isOwner(user) && <Link href="/admin">Admin</Link>}
+              <a className="footer-version"
+                href={`https://github.com/mager/beatbrain-web/blob/v${version}/CHANGELOG.md`}
+                target="_blank" rel="noreferrer" aria-label={`v${version} — changelog on GitHub`}>
+                v{version} <ArrowUpRightIcon width={14} aria-hidden="true" />
+              </a>
+            </nav>
+            <p className="footer-credit">
+              Built with <span role="img" aria-label="love">💜</span> in Chicago by{" "}
+              <a href="https://mager.co" target="_blank" rel="noreferrer">@mager</a>{" "}
+              with help from magerbot
+            </p>
+          </div>
+        </details>
+      </div>
     </footer>
   );
 }
