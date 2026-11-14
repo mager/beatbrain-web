@@ -46,8 +46,10 @@ export default function FooterCredit() {
   }, [router.events]);
   return (
     <footer className="site-footer" ref={footer}>
-      <Link href="/about" className="footer-signature" aria-label="About Beatbrain, made with love in Chicago">
-        <span aria-hidden="true">💜</span> Chicago
+      <Link href="/about" className="footer-signature">
+        <span className="footer-signature-short">💜 Chicago</span>
+        <span className="footer-signature-full">With 💜 by @magerbot from Chicago</span>
+        <span className="sr-only"> — About Beatbrain</span>
       </Link>
       <div className="footer-links" role="group" aria-label="Beatbrain links">
         <a
