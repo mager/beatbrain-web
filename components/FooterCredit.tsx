@@ -99,11 +99,6 @@ export default function FooterCredit() {
                 v{version} <ArrowUpRightIcon width={14} aria-hidden="true" />
               </a>
             </nav>
-            <p className="footer-credit">
-              Built with <span role="img" aria-label="love">💜</span> in Chicago by{" "}
-              <a href="https://mager.co" target="_blank" rel="noreferrer">@mager</a>{" "}
-              with help from magerbot
-            </p>
           </div>
         </details>
       </div>

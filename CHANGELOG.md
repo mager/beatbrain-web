@@ -2,6 +2,10 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.5 — 2026-11-14
+
+- Remove the duplicate credit from the footer’s More menu.
+
 ## 1.9.4 — 2026-11-14
 
 - Show “With 💜 by @magerbot from Chicago” in the desktop footer.

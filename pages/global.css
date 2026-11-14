@@ -2335,7 +2335,7 @@ html { scroll-padding-bottom: calc(var(--footer-height, 52px) + 16px); }
 .footer-more-panel {
   position: absolute; right: 0; bottom: calc(100% + 8px);
   width: min(280px, calc(100vw - 32px)); max-height: calc(100dvh - var(--footer-height, 52px) - 24px); overflow-y: auto;
-  padding: 8px 16px 16px; text-align: left;
+  padding: 8px 16px; text-align: left;
   background: var(--page-bg); border: 1px solid var(--border-color); border-radius: 6px;
   box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
 }
@@ -2343,8 +2343,6 @@ html { scroll-padding-bottom: calc(var(--footer-height, 52px) + 16px); }
 .footer-more-links a { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .site-footer .footer-version { color: var(--text-muted); font-variant-numeric: tabular-nums; }
 .site-footer .footer-version:hover { color: var(--room-accent); }
-.footer-credit { margin: 8px 0 0; padding-top: 12px; border-top: 1px solid var(--border-color); color: var(--text-muted); }
-.footer-credit a { display: inline-block; padding: 6px 0; }
 @media (min-width: 900px) {
   .site-footer { padding-right: 32px; padding-left: 32px; }
   .footer-signature-short { display: none; }
