@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import type { Creator } from "@types";
 import CreatorHero from "@components/CreatorHero";
 import CreatorHighlights from "@components/CreatorHighlights";
@@ -9,24 +10,83 @@ export default function CreatorPage() {
   const router = useRouter();
   const { mbid } = router.query;
   const [creator, setCreator] = useState<Creator | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<"unavailable" | "missing" | "session" | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    if (!mbid) return;
+    if (!router.isReady) return;
+    if (typeof mbid !== "string") {
+      setError("missing");
+      setLoading(false);
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    let active = true;
+    setCreator(null);
+    setLoading(true);
+    setError(null);
     const fetchCreator = async () => {
-      const resp = await fetch(`/api/creator?mbid=${mbid}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await resp.json();
-      setCreator(data);
+      try {
+        const resp = await fetch(`/api/creator?mbid=${encodeURIComponent(mbid)}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          cache: "no-store",
+        });
+        if (!active) return;
+        if (!resp.ok) {
+          setError(resp.status === 401 ? "session" : resp.status === 404 || resp.status === 400 ? "missing" : "unavailable");
+          return;
+        }
+        const data = await resp.json();
+        if (typeof data?.id !== "string" || typeof data?.name !== "string" || !data.name.trim())
+          throw new Error("Invalid creator response");
+        if (active) setCreator(data);
+      } catch {
+        if (active) setError("unavailable");
+      } finally {
+        clearTimeout(timer);
+        if (active) setLoading(false);
+      }
     };
-    fetchCreator();
-  }, [mbid]);
+    void fetchCreator();
+    return () => {
+      active = false;
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [router.isReady, mbid, attempt]);
 
-  if (!creator) {
+  if (loading) {
     return (
       <div className="bb-container pt-24 pb-8">
-        <div className="font-mono text-sm text-phosphor-dim animate-pulse">Loading...</div>
+        <div role="status" className="font-mono text-sm text-phosphor-dim animate-pulse">Loading creator details...</div>
+      </div>
+    );
+  }
+
+  if (error || !creator) {
+    return (
+      <div className="bb-container pt-24 pb-8">
+        <div className="empty-state" role="alert">
+          <h1 className="text-xl font-semibold">
+            {error === "missing" ? "Creator not found." : error === "session" ? "Sign in to view creator details." : "Creator details are unavailable."}
+          </h1>
+          <p>{error === "missing" ? "Check the creator link or return to Discover." : error === "session" ? "Your session has ended." : "Try again in a moment."}</p>
+          {error === "session" ? (
+            <Link className="button button-secondary" href={`/auth/signin?callbackUrl=${encodeURIComponent(`/creator/${mbid}`)}`}>
+              Sign in
+            </Link>
+          ) : error === "missing" ? (
+            <Link className="button button-secondary" href="/discover">Discover</Link>
+          ) : (
+            <button type="button" className="button button-secondary" onClick={() => setAttempt((n) => n + 1)}>
+              Try again
+            </button>
+          )}
+        </div>
       </div>
     );
   }

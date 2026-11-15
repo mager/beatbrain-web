@@ -2,6 +2,11 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.7 — 2026-11-15
+
+- End creator loading when the music service fails. Show a clear error and a Retry button.
+- Keep creator requests private and bounded. Handle missing creators and expired sessions.
+
 ## 1.9.6 — 2026-11-15
 
 - Increase contrast across both themes with clearer page backgrounds, panels, borders, and secondary text.
