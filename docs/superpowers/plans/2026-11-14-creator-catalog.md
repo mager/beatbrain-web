@@ -65,3 +65,11 @@ Limits: these are known source credits, not a claim of a complete discography. G
 ## Release follow-up — 2026-11-15
 
 The user authorized push and live deployment. The frontend release uses a separate worktree based on public v1.9.5, preserving that footer fix and excluding unrelated local discovery/About edits. Version 1.10.0 passed all 77 tests in this release tree and the production build. The earlier 78-test count included one test from the unrelated discovery work. Occipital commit 88632a0 passed tests, vet, the local build, and Cloud Build. Deploy Occipital first, then the frontend after pushing the version tag; verify the public domain, private access, sign-in, creator journey, posting, and profile.
+
+### Live release hold
+
+The frontend release commit and public `v1.10.0` tag are pushed. Vercel built `https://beatbrain-da7bjmpqv-mager1s-projects.vercel.app` successfully with production settings and without promoting the public domains. Occipital commit `88632a0` is pushed and its Cloud Build passed.
+
+Do not promote this release until the source connection check passes. The no-traffic Cloud Run revisions returned HTTP 503 because MusicBrainz and ListenBrainz HTTPS connections ended with EOF. Tests of Go TLS compatibility settings, Cloud Run generation, and container users did not resolve it. A separate Go/curl job initially succeeded; later the exact probe and curl also failed, so the tests did not prove a code or image defect. Do not infer an IP ban without provider evidence. Certificate verification stayed enabled.
+
+Live traffic was never moved from `occipital-latina-credits-20261113`; `beatbrain.xyz` was not promoted. The temporary diagnostic job was removed. Once source requests succeed from the production runtime, verify the creator catalog and discovery routes, switch Occipital traffic, promote the built Vercel deployment, then run `TEST_BASE_URL=https://beatbrain.xyz node tests/creator-check.mjs` and a real sign-in check. Preserve existing member rows and remove only temporary test data.
