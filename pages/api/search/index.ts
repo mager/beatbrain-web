@@ -4,26 +4,24 @@ import { backendFetch } from "../../../lib/backend";
 import { getSession } from "../../../lib/auth-api";
 import { PRIVATE_CACHE_CONTROL } from "../../../lib/access";
 import prisma from "../../../lib/prisma";
-import type { SearchPerson, SearchTrack } from "../../../lib/search-types";
+import type { SearchArtist, SearchPerson, SearchTrack } from "../../../lib/search-types";
+import { searchArtist, searchTrack } from "../../../lib/artist";
 
 export const config = { api: { bodyParser: { sizeLimit: "4kb" } } };
 
-async function music(query: string, limit: number): Promise<SearchTrack[]> {
+async function music(query: string, limit: number, all = false): Promise<{ results: SearchTrack[]; artists: SearchArtist[] }> {
   const response = await backendFetch(`${SERVER_HOST}/spotify/search`, {
     method: "POST",
-    body: JSON.stringify({ query, limit }),
+    body: JSON.stringify({ query, limit, ...(all ? { type: "all" } : {}) }),
     headers: { "Content-Type": "application/json" },
   });
   if (!response.ok) throw new Error("Music search unavailable");
   const data = await response.json();
-  if (!Array.isArray(data?.results)) throw new Error("Invalid search response");
-  return data.results.filter((item: any) =>
-    typeof item?.id === "string" && /^[A-Za-z0-9]{22}$/.test(item.id) &&
-    typeof item.name === "string" && typeof item.artist === "string"
-  ).slice(0, limit).map((item: any) => ({
-    id: item.id, name: item.name, artist: item.artist,
-    thumb: typeof item.thumb === "string" && /^https:\/\/i\.scdn\.co\/image\/[A-Za-z0-9]+$/.test(item.thumb) ? item.thumb : null,
-  }));
+  if (!Array.isArray(data?.results) || (all && !Array.isArray(data?.artists))) throw new Error("Invalid search response");
+  return {
+    results: data.results.map(searchTrack).filter(Boolean).slice(0, limit),
+    artists: all ? data.artists.map(searchArtist).filter(Boolean).slice(0, limit) : [],
+  };
 }
 
 async function people(query: string): Promise<SearchPerson[]> {
@@ -57,14 +55,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(400).json({ error: "Enter a valid search query (up to 200 characters)." });
     // Keep the existing track-only contract for the post composer.
     if (scope === "music") {
-      try { return res.json({ results: await music(query, 10) }); }
+      try { return res.json({ results: (await music(query, 10)).results }); }
       catch { return res.status(502).json({ error: "Track search is unavailable. Please try again." }); }
     }
-    const [tracks, members] = await Promise.allSettled([music(query, 6), people(query)]);
+    const [tracks, members] = await Promise.allSettled([music(query, 6, true), people(query)]);
     if (tracks.status === "rejected" && members.status === "rejected")
       return res.status(503).json({ error: "Search is unavailable. Please try again." });
     return res.json({
-      results: tracks.status === "fulfilled" ? tracks.value : [],
+      results: tracks.status === "fulfilled" ? tracks.value.results : [],
+      artists: tracks.status === "fulfilled" ? tracks.value.artists : [],
       people: members.status === "fulfilled" ? members.value : [],
       unavailable: [tracks.status === "rejected" ? "music" : null, members.status === "rejected" ? "people" : null].filter(Boolean),
     });

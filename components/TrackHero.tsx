@@ -5,6 +5,7 @@ import { MusicalNoteIcon } from "@heroicons/react/24/outline";
 type Props = {
   name: string;
   artist: string;
+  artistContent?: ReactNode;
   image: string;
   releaseDate?: string;
   children?: ReactNode;
@@ -16,6 +17,7 @@ type Props = {
 export default function TrackHero({
   name,
   artist,
+  artistContent,
   image,
   releaseDate,
   children,
@@ -63,7 +65,7 @@ export default function TrackHero({
       )}
       <div className="track-info">
         <Heading className="track-title">{name}</Heading>
-        <p className="track-artist">{artist}</p>
+        <p className="track-artist">{artistContent ?? artist}</p>
         {afterArtist}
         {date && <p className="track-release">Released {date}</p>}
         {children}

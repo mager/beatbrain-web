@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
+import { Fragment } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import MemberAvatar from "./MemberAvatar";
 import TrackHero from "./TrackHero";
@@ -13,6 +14,7 @@ import SongConnections from "./SongConnections";
 import SongStudios from "./SongStudios";
 import { useAlbumTheme } from "../lib/use-album-theme";
 import { formatReleaseDate, trackFacts, trackSourceLinks } from "../lib/track-details";
+import { validSpotifyId } from "../lib/artist";
 import type { TrackV3 } from "@types";
 
 type Props = {
@@ -63,6 +65,16 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
       <TrackHero
         name={track.name}
         artist={artistNames}
+        artistContent={track.artists?.length ? track.artists.map((artist, index) => (
+          <Fragment key={`${artist.id || artist.name}-${index}`}>
+            {index > 0 && ", "}
+            {validSpotifyId(artist.id) ? (
+              <Link href={`/artist/${artist.id}`} className="underline decoration-1 underline-offset-4 hover:no-underline">
+                {artist.name}
+              </Link>
+            ) : artist.name}
+          </Fragment>
+        )) : undefined}
         image={track.image}
         onArtworkLoad={onArtworkLoad}
         className="song-hero"

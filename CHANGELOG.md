@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.11.0 — 2026-11-15
+
+- Open artist pages from song artist names and the Artists section in search.
+- Show artist songs and releases through Spotify without waiting for MusicBrainz credits.
+- Restore verified Apple Music credits for soundtrack titles such as Happy.
+
 ## 1.9.7 — 2026-11-15
 
 - End creator loading when the music service fails. Show a clear error and a Retry button.
