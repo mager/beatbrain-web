@@ -2,6 +2,11 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.9.6 — 2026-11-15
+
+- Increase contrast across both themes with clearer page backgrounds, panels, borders, and secondary text.
+- Keep album colors readable and make search fields, note fields, and keyboard focus easier to see.
+
 ## 1.9.5 — 2026-11-14
 
 - Remove the duplicate credit from the footer’s More menu.

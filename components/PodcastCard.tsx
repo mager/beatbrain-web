@@ -49,7 +49,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
 
         {/* Play CTA — slides up on hover */}
         <div className="absolute inset-x-0 bottom-0 flex items-center justify-center p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-10">
-          <div className="flex items-center gap-2 rounded-full bg-white/95 backdrop-blur-sm px-4 py-2 text-phosphor font-display text-xs font-semibold shadow-lg">
+          <div className="flex items-center gap-2 rounded-full bg-terminal-surface px-4 py-2 text-phosphor font-display text-xs font-semibold shadow-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -85,7 +85,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
           {name}
         </h3>
         {description && (
-          <p className="hidden sm:block font-mono text-[10px] text-phosphor-dim/70 line-clamp-2 mt-1.5 leading-relaxed">
+          <p className="hidden sm:block font-mono text-[10px] text-phosphor-dim line-clamp-2 mt-1.5 leading-relaxed">
             {description}
           </p>
         )}

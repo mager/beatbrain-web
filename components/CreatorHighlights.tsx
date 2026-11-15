@@ -43,7 +43,7 @@ const CreatorHighlights: React.FC<Props> = ({ highlights }) => {
 
           {/* Track info */}
           <div className="min-w-0 flex-1">
-            <div className="font-mono text-[15px] text-phosphor group-hover:text-white transition-colors truncate leading-snug">
+            <div className="font-mono text-[15px] text-phosphor group-hover:text-accent transition-colors truncate leading-snug">
               {track.title}
             </div>
             <div className="font-mono text-xs text-phosphor-dim mt-1 truncate">

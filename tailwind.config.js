@@ -11,26 +11,26 @@ module.exports = {
       colors: {
         // Bright editorial foundation
         'terminal': {
-          bg: '#101113',
-          surface: '#191b1f',
-          border: '#303238',
-          'border-bright': '#51545c',
+          bg: 'color-mix(in srgb, var(--page-bg) calc(<alpha-value> * 100%), transparent)',
+          surface: 'color-mix(in srgb, var(--surface-bg) calc(<alpha-value> * 100%), transparent)',
+          border: 'color-mix(in srgb, var(--border-color) calc(<alpha-value> * 100%), transparent)',
+          'border-bright': 'color-mix(in srgb, var(--border-strong) calc(<alpha-value> * 100%), transparent)',
         },
         // Text palette — rich dark for readability
-        'phosphor': '#f3f0e9',
-        'phosphor-dim': '#aaaeb7',
+        'phosphor': 'color-mix(in srgb, var(--text-primary) calc(<alpha-value> * 100%), transparent)',
+        'phosphor-dim': 'color-mix(in srgb, var(--text-muted) calc(<alpha-value> * 100%), transparent)',
         // Vivid accent palette — bubblegum meets fashion
-        'accent': '#e4b6ff',           // hot pink — the hero color
-        'warm': '#e4b6ff',             // electric orange
+        'accent': 'color-mix(in srgb, var(--theme-accent) calc(<alpha-value> * 100%), transparent)',
+        'warm': 'color-mix(in srgb, var(--theme-accent) calc(<alpha-value> * 100%), transparent)',
         'cool': '#bcabf2',             // deep violet
         'mint': '#00c9a7',             // fresh teal-mint
         'violet': '#9d4edd',           // purple fashion
-        'rose': '#e4b6ff',             // alias for accent
+        'rose': 'color-mix(in srgb, var(--theme-accent) calc(<alpha-value> * 100%), transparent)',
         // Legacy aliases
-        'ink': '#101113',
-        'vinyl': '#191b1f',
-        'groove': '#303238',
-        'sleeve': '#f3f0e9',
+        'ink': 'color-mix(in srgb, var(--page-bg) calc(<alpha-value> * 100%), transparent)',
+        'vinyl': 'color-mix(in srgb, var(--surface-bg) calc(<alpha-value> * 100%), transparent)',
+        'groove': 'color-mix(in srgb, var(--border-color) calc(<alpha-value> * 100%), transparent)',
+        'sleeve': 'color-mix(in srgb, var(--text-primary) calc(<alpha-value> * 100%), transparent)',
       },
       fontFamily: {
         sans: ['var(--font-display)', 'system-ui', 'sans-serif'],

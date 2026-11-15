@@ -48,7 +48,7 @@ export function useAlbumTheme(source: string) {
       "--room-accent": colors.accent,
       "--accent": colors.accent,
       "--room-accent-hover": colors.hover,
-      "--room-on-accent": theme === "light" ? "#f7f6f2" : "#101113",
+      "--room-on-accent": "var(--page-bg)",
       "--song-surface": colors.surface,
       "--song-border": colors.border,
       "--song-muted": colors.muted,

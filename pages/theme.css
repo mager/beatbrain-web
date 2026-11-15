@@ -1,13 +1,13 @@
 :root {
   color-scheme: dark;
-  --page-bg: #101113;
-  --surface-bg: #191b1f;
-  --surface-raised: #23252b;
-  --surface-low: #141519;
-  --text-primary: #f3f0e9;
-  --text-muted: #aaaeb7;
-  --border-color: #303238;
-  --border-strong: #454850;
+  --page-bg: #080a0e;
+  --surface-bg: #20242c;
+  --surface-raised: #2d333e;
+  --surface-low: #141820;
+  --text-primary: #faf8f3;
+  --text-muted: #c1c7d1;
+  --border-color: #4b5361;
+  --border-strong: #7c879a;
   --theme-accent: #e4b6ff;
   --theme-accent-hover: #edcfff;
   --avatar-bg: #2e2935;
@@ -16,19 +16,19 @@
   --error-text: #ffb9bd;
   --error-bg: #311f23;
   --success-text: #c7e1bc;
-  --footer-bg: #101113ed;
+  --footer-bg: #080a0eed;
 }
 :root[data-theme="light"] {
   color-scheme: light;
-  --page-bg: #f7f6f2;
+  --page-bg: #e7e5df;
   --surface-bg: #ffffff;
-  --surface-raised: #eeece7;
-  --surface-low: #f1efea;
-  --text-primary: #242328;
-  --text-muted: #62616a;
-  --border-color: #d8d5d0;
-  --border-strong: #aaa6af;
-  --theme-accent: #713b88;
+  --surface-raised: #ddd9d2;
+  --surface-low: #f1efe9;
+  --text-primary: #211f25;
+  --text-muted: #56515d;
+  --border-color: #aaa4ae;
+  --border-strong: #77707e;
+  --theme-accent: #653178;
   --theme-accent-hover: #5d2d72;
   --avatar-bg: #e9e1ee;
   --avatar-text: #65506f;
@@ -36,7 +36,7 @@
   --error-text: #a0273b;
   --error-bg: #f9e6e9;
   --success-text: #37602b;
-  --footer-bg: #f7f6f2ed;
+  --footer-bg: #e7e5dfed;
 }
 /* The root script sets the first-paint theme before page content renders. */
 html, body { background: var(--page-bg); color: var(--text-primary); }

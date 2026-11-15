@@ -49,7 +49,7 @@ try {
     await page.waitForFunction(value => document.documentElement.dataset.theme === value, theme);
     await page.waitForFunction(value => {
       const button = document.querySelector(".track-actions .button-secondary");
-      return button && getComputedStyle(button).backgroundColor === (value === "light" ? "rgb(255, 255, 255)" : "rgb(25, 27, 31)");
+      return button && getComputedStyle(button).backgroundColor === (value === "light" ? "rgb(255, 255, 255)" : "rgb(32, 36, 44)");
     }, theme);
     for (const width of [1440, 390, 320]) {
       await page.setViewportSize({ width, height: width > 760 ? 1000 : 844 });

@@ -904,7 +904,7 @@ p {
 }
 .compose-note textarea {
   min-height: 144px;
-  border-color: var(--song-border, var(--border-strong));
+  border-color: var(--border-strong);
   background: var(--song-surface, var(--surface-bg));
 }
 .compose-note .field-hint {
@@ -1610,7 +1610,7 @@ p {
 }
 .form-stack input:hover,
 .form-stack textarea:hover {
-  border-color: #77717f;
+  border-color: var(--room-accent);
 }
 @media (hover: none) {
   .artwork-link::after { display: none; }
@@ -2381,7 +2381,7 @@ html { scroll-padding-bottom: calc(var(--footer-height, 52px) + 16px); }
 .header-inner > nav { flex: 0 1 auto; }
 .header-post { white-space: nowrap; }
 .global-search { position: relative; z-index: 50; flex: 1 1 240px; min-width: 200px; max-width: 360px; margin-left: auto; }
-.global-search-field { display: flex; align-items: center; gap: 10px; padding-left: 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface-bg); color: var(--text-muted); }
+.global-search-field { display: flex; align-items: center; gap: 10px; padding-left: 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-bg); color: var(--text-muted); }
 .global-search-field:focus-within { border-color: var(--room-accent); }
 .global-search-field > svg { flex-shrink: 0; }
 .global-search-field input { width: 100%; min-width: 0; height: 44px; padding: 0 8px 0 0; border: 0; outline: none; background: transparent; color: var(--text-primary); font-size: 14px; }

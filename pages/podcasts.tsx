@@ -124,7 +124,7 @@ const PodcastsPage: React.FC = () => {
               bg-terminal-surface
               ${searchFocused
                 ? "border-accent/60 shadow-[0_0_0_3px_rgba(255,51,102,0.08)]"
-                : "border-terminal-border hover:border-phosphor-dim/30"
+                : "border-terminal-border-bright hover:border-accent"
               }
             `}
           >
@@ -137,7 +137,7 @@ const PodcastsPage: React.FC = () => {
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className={`flex-shrink-0 transition-colors duration-200 ${searchFocused ? "text-accent" : "text-phosphor-dim/50"}`}
+              className={`flex-shrink-0 transition-colors duration-200 ${searchFocused ? "text-accent" : "text-phosphor-dim"}`}
             >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
@@ -150,12 +150,12 @@ const PodcastsPage: React.FC = () => {
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
               placeholder={`Search ${categories.length} categories...`}
-              className="flex-1 bg-transparent font-mono text-xs text-phosphor placeholder-phosphor-dim/40 focus:outline-none min-w-0"
+              className="flex-1 bg-transparent font-mono text-xs text-phosphor placeholder-phosphor-dim focus:outline-none min-w-0"
             />
             {categorySearch && (
               <button
                 onClick={() => setCategorySearch("")}
-                className="flex-shrink-0 text-phosphor-dim/50 hover:text-phosphor transition-colors"
+                className="flex-shrink-0 text-phosphor-dim hover:text-phosphor transition-colors"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -178,7 +178,7 @@ const PodcastsPage: React.FC = () => {
           </div>
         ) : filteredCategories.length === 0 ? (
           <div className="px-4">
-            <p className="font-mono text-xs text-phosphor-dim/50 py-2">
+            <p className="font-mono text-xs text-phosphor-dim py-2">
               no categories match &ldquo;{categorySearch}&rdquo;
             </p>
           </div>
@@ -200,13 +200,13 @@ const PodcastsPage: React.FC = () => {
                     border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40
                     ${
                       isActive
-                        ? "bg-accent text-white border-accent shadow-glow-accent scale-[1.02]"
-                        : "bg-terminal-surface border-terminal-border text-phosphor-dim hover:border-phosphor-dim/40 hover:text-phosphor active:scale-95"
+                        ? "bg-accent text-terminal-bg border-accent shadow-glow-accent scale-[1.02]"
+                        : "bg-terminal-surface border-terminal-border-bright text-phosphor-dim hover:border-accent hover:text-phosphor active:scale-95"
                     }
                   `}
                 >
                   <span className="font-medium">{cat.name}</span>
-                  <span className={`text-[10px] tabular-nums ${isActive ? "text-white/70" : "text-phosphor-dim/40"}`}>
+                  <span className={`text-[10px] tabular-nums ${isActive ? "text-terminal-bg" : "text-phosphor-dim"}`}>
                     {cat.count}
                   </span>
                 </button>

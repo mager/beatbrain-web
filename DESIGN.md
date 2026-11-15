@@ -4,12 +4,12 @@ The user chose an album-led room with gentle 3D tilt, art-colored light, and smo
 
 ## Theme
 
-Follow the system color scheme until the visitor chooses a theme with the footer light bulb. Save that choice locally and apply it before first paint. System changes remain live until an explicit choice is saved. Both themes use the same layout and artwork. Light uses warm paper (#f7f6f2), dark text (#242328), and a deep purple accent (#713b88). Dark keeps the existing palette. Album accents must meet 7:1 against the active page and button text.
+Follow the system color scheme until the visitor chooses a theme with the footer light bulb. Save that choice locally and apply it before first paint. System changes remain live until an explicit choice is saved. Both themes use the same layout and artwork. Light uses warm paper (#e7e5df), white panels, dark text (#211f25), and a deep purple accent (#653178). Dark uses a near-black canvas with lighter panels. Keep clear borders around inputs and secondary controls, with brighter secondary text. Album accents must meet 7:1 against the active page and button text.
 
 ## Tokens
 
-- Background: `#101113`; surface: `#191b1f`; rule: `#303238`.
-- Primary text: `#f3f0e9`; secondary text: `#aaaeb7`; accent: `#e4b6ff`.
+- Background: `#080a0e`; surface: `#20242c`; raised surface: `#2d333e`; rule: `#4b5361`; control border: `#7c879a`.
+- Primary text: `#faf8f3`; secondary text: `#c1c7d1`; accent: `#e4b6ff`.
 - Type: locally served Space Grotesk, 400–700 for controls, metadata, and music. Archivo 900 italic for page headings. Body 14–16 px; music titles 15–21 px; page headings 44–96 px.
 - Main measure: full viewport with 32 px edges on desktop and 16 px on mobile. Forms keep a short measure. About prose is at most 65ch.
 - Artwork: square, 3 px corner. Controls: 6 px corner, 46 px minimum height.

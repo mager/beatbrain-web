@@ -16,8 +16,8 @@ test("album palettes keep dark-text controls and page links readable", () => {
     [255, 140, 180],
   ]) {
     const palette = paletteFromPixels(pixels(Array(80).fill(rgb)));
-    assert.ok(contrastRatio(palette.accent, "#101113") >= 7);
-    assert.ok(contrastRatio(palette.hover, "#101113") >= 7);
+    assert.ok(contrastRatio(palette.accent, "#080a0e") >= 7);
+    assert.ok(contrastRatio(palette.hover, "#080a0e") >= 7);
   }
 });
 test("dominant album color wins over a small vivid detail", () => {
