@@ -4,6 +4,8 @@ An invite-only music room. Members post a track and an optional note. Their prof
 
 Members can follow people from their profiles. Following is directional and requires no approval. Profiles show counts and “Follows you” when the other member follows the viewer. `/feed?view=friends` shows only followed people's posts, in time order; `/feed` keeps everyone's posts. Follows never grant site access.
 
+Creator pages (`/creator/{MusicBrainz artist ID}`) show searchable recording, release, and composition credits with role filters. Song role links select the matching filter. Group/member connections keep their own credits and dates; a group's work is never assigned to every member. MusicBrainz supplies credits. ListenBrainz supplies exact-recording artwork metadata and separate related-artist suggestions. Occipital owns the bounded, shared source requests and caches; the private Next.js routes validate the session and query. Recording results open song pages with the existing posting path. Source coverage can be incomplete.
+
 ## Run
 
 Copy `.env.example` to `.env.local` and set the values. Install with `npm ci`, then run `npm run dev`. Use the same host as `BETTER_AUTH_URL`. The Go API requires a server-only `BEATBRAIN_API_KEY`.
@@ -30,6 +32,8 @@ The integration test checks guest/forged-cookie rejection, invited signup, membe
 
 - `node --env-file=.env.local tests/song-details-check.mjs`: checks real credits, album/duration/releases, dynamic cover accents, theme reset, and responsive song pages.
 
+- `node tests/creator-check.mjs`: checks live Pharrell and The Neptunes credits, role filters, search, source boundaries, retry, both themes, phone layouts, and manual posting. The default server is `http://localhost:3015`; set `TEST_BASE_URL` to change it. The script loads `.env.local`, creates a temporary test member and session, and removes its member and posts when it ends. Point the local frontend at the updated Occipital service before running it.
+
 - `node --env-file=.env.local tests/profile-view-check.mjs`: checks the responsive cover grid, saved Grid / Feed choice, notes, and track links. It creates and removes its own invited member and posts. Set `TEST_BASE_URL=https://beatbrain.xyz` to check production.
 
 - `node --env-file=.env.local tests/friends-check.mjs`: creates three temporary invited members and checks follow/unfollow, actor and origin protection, duplicate requests, self-follow prevention, mutual status, Friends feed isolation, failure recovery, keyboard controls, and desktop/mobile profiles. It removes its relationships, members, posts, and invites. Use `TEST_BASE_URL=https://beatbrain.xyz` for production and run it sequentially with other signup tests.
@@ -41,6 +45,8 @@ The integration test checks guest/forged-cookie rejection, invited signup, membe
 - `node --env-file=.env.local tests/waitlist-ui-check.mjs`: checks public entry and confirmation, OAuth start, guest/member restrictions, and desktop/mobile owner controls. Owner UI responses are fixtures; it does not impersonate a real owner session. Set `TEST_BASE_URL=https://beatbrain.xyz` for production. All three checks remove their test records.
 
 ## Deploy
+
+Creator catalog changes require the updated Occipital `/creator` and `/creator/discovery` handlers before the frontend is deployed. Successful creator metadata is cached for 15 minutes (64 entries), and optional ListenBrainz metadata for one hour (128 entries), in each Occipital process. Concurrent identical reads share a bounded lookup. No schema change or new secret is required.
 
 Vercel project: `beatbrain-web`. Canonical URL: `https://beatbrain.xyz`. `www` redirects to the canonical URL. Set the production environment values in Vercel, then use `vercel deploy --prod` from this folder. Apply reviewed additive migrations before code that uses them. Never reset the existing database.
 

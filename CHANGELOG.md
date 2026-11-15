@@ -2,6 +2,13 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.10.0 — 2026-11-15
+
+- Explore a creator's recording, release, and composition credits with search and role filters.
+- Open production credits from a song, then explore other credited artists and group catalogs.
+- Keep group membership, credit roles, and recording versions clear, with visible sources and recovery controls.
+- Add ListenBrainz artwork metadata and artist suggestions through cached, bounded Occipital lookups.
+
 ## 1.9.5 — 2026-11-14
 
 - Remove the duplicate credit from the footer’s More menu.

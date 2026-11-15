@@ -224,6 +224,22 @@ export type Creator = {
   links: Link[];
   credits: CreatorCredit[];
   highlights?: CreatorHighlight[];
+  catalog: CreatorCatalogEntry[];
+  connections: CreatorConnection[];
+  source_url: string;
+};
+
+export type CreatorCatalogEntry = {
+  id: string;
+  kind: "recording" | "release" | "work";
+  title: string;
+  disambiguation?: string;
+  date?: string;
+  artists: CreditArtist[];
+  roles: string[];
+};
+export type CreatorConnection = {
+  id: string; name: string; relation: string; begin?: string; end?: string; ended: boolean;
 };
 
 export type CreatorHighlight = {
