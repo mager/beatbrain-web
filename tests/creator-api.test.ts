@@ -92,7 +92,7 @@ test("creator API protects access and ends failed requests with stable JSON", as
 
   await t.test("slow service requests abort within the route deadline", { timeout: 10000 }, async () => {
     // The pending fetch exits only when the route aborts it.
-    global.fetch = async (_url, init) => new Promise((_resolve, reject) => {
+    global.fetch = async (_url, init) => new Promise<Response>((_resolve, reject) => {
       assert.ok(init?.signal);
       init.signal.addEventListener("abort", () => reject(init.signal.reason), { once: true });
     });

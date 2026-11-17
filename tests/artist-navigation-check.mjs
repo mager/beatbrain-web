@@ -30,13 +30,13 @@ try {
   assert.equal(signin.status(), 200, 'Email sign-in works without Spotify');
   const artistResponse = await context.request.get(`/api/artist?spotifyId=${artistID}`);
   assert.equal(artistResponse.status(), 200); assert.match(artistResponse.headers()['cache-control'], /no-store/);
-  const artist = await artistResponse.json(); assert.equal(artist.artist.name, 'Pharrell Williams'); assert.ok(artist.tracks.length); assert.ok(artist.albums.length);
+  const artist = await artistResponse.json(); assert.equal(artist.artist.name, 'Pharrell Williams'); assert.ok(artist.tracks.length > 5); assert.ok(artist.albums.length > 10); assert.ok(artist.release_total > artist.albums.length); assert.ok(artist.next_cursor);
   const searchResponse = await context.request.post('/api/search', { data: { query: 'Pharrell', scope: 'all' } });
   assert.equal(searchResponse.status(), 200); assert.ok((await searchResponse.json()).artists.some(a=>a.id===artistID));
   await page.goto(`/ext/spotify/${trackID}`);
   await page.locator('.track-artist').getByRole('link', { name: 'Pharrell Williams', exact: true }).waitFor();
   if (process.env.TEST_EXPECT_CREDITS === '1') {
-    await page.locator('.liner-credits').getByText('Producer', { exact: true }).first().waitFor();
+    await page.locator('.liner-credits').getByText(/^producer$/i).first().waitFor();
     assert.equal(await page.getByText('We could not load credits right now. Refresh to try again.').count(), 0);
   }
   await page.screenshot({ path: `${output}/happy-390.png`, fullPage: true });
@@ -52,7 +52,7 @@ try {
       await page.evaluate(()=>document.fonts.ready);
       await page.waitForTimeout(150);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth), false, `No overflow at ${width}`);
-      await page.screenshot({ path: `${output}/artist-${theme}-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `${output}/artist-${theme}-${width}.png`, fullPage: false });
     }
   }
   const search = page.getByRole('combobox', { name: 'Search artists, people, and music' });
@@ -60,7 +60,7 @@ try {
   await page.getByRole('group', { name: 'Artists', exact: true }).getByRole('option').first().waitFor();
   await search.press('ArrowDown'); await search.press('Enter');
   await page.waitForURL(`**/artist/${artistID}`); await page.getByRole('heading', { name: 'Pharrell Williams', exact: true }).waitFor();
-  await page.locator(`#main-content a[href="/ext/spotify/${trackID}"]`).first().click();
+  await page.locator('section[aria-labelledby="artist-songs"] a[href^="/ext/spotify/"]').first().click();
   await page.getByRole('link', { name: 'Post this track', exact: true }).click();
   await page.getByLabel('Your note', { exact: false }).fill('Artist navigation release check.');
   await page.getByRole('button', { name: 'Post to my feed', exact: true }).click();
@@ -73,16 +73,16 @@ try {
       if (mode === 'timeout') return;
       if (mode === 'failure') return route.fulfill({status:502,json:{error:'Unavailable'}});
       if (mode === 'session') return route.fulfill({status:401,json:{error:'Sign in'}});
-      if (mode === 'partial') return route.fulfill({json:{...artist,tracks:[],unavailable:['tracks']}});
+      if (mode === 'partial') return route.fulfill({json:{...artist,tracks:[],next_cursor:'0.0',unavailable:['tracks']}});
       return route.fulfill({json:artist});
     });
     await page.goto(`/artist/${artistID}`);
-    await page.getByRole('alert').getByText('The artist is unavailable. Try again.').waitFor();
+    await page.getByRole('alert').getByText('The artist could not load. Try again.').waitFor();
     mode = 'partial'; await page.getByRole('button',{name:'Try again',exact:true}).click();
     await page.getByRole('button',{name:'Retry songs',exact:true}).waitFor();
     await page.getByRole('heading',{name:'Releases',exact:true}).waitFor();
     mode = 'success'; await page.getByRole('button',{name:'Retry songs',exact:true}).click();
-    await page.locator(`#main-content a[href="/ext/spotify/${trackID}"]`).first().waitFor();
+    await page.locator(`#main-content a[href="/ext/spotify/${artist.tracks[0].id}"]`).first().waitFor();
     mode = 'session'; await page.reload();
     await page.getByRole('link',{name:'Sign in',exact:true}).waitFor();
     assert.equal(await page.getByRole('heading',{name:'Pharrell Williams',exact:true}).count(),0);

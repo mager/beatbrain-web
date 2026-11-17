@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ArrowUpRightIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 import AlbumArtwork from "../../components/AlbumArtwork";
 import SpotifyLogo from "../../components/SpotifyLogo";
-import { parseArtistPayload, validSpotifyId, type ArtistPayload } from "../../lib/artist";
+import { useArtistCatalog } from "../../components/useArtistCatalog";
+import { validSpotifyId } from "../../lib/artist";
 import { formatReleaseDate } from "../../lib/track-details";
 import styles from "../artist.module.css";
 
@@ -21,70 +22,48 @@ function Artwork({ src, name, portrait = false }: { src: string | null; name: st
   </div>;
 }
 
+function CatalogControls({ section, state, complete, progress, onLoad, onStop }: {
+  section: "songs" | "releases";
+  state: { loading: boolean; automatic: boolean; stopped: boolean; error: string };
+  complete: boolean;
+  progress: string;
+  onLoad: (automatic?: boolean) => void;
+  onStop: () => void;
+}) {
+  return <div className={styles.catalogControls}>
+    <p className={styles.progress} id={`${section}-progress`} role="status" aria-live="polite" aria-atomic="true">
+      {progress}
+      <span className={styles.loadStatus}>
+        {state.loading ? state.automatic ? `Loading all ${section}…` : `Loading more ${section}…`
+          : state.stopped ? `Loading stopped. Loaded ${section} are kept.`
+            : complete ? section === "songs" ? "All available releases checked." : "All available releases loaded." : ""}
+      </span>
+    </p>
+    {state.error && <p className={styles.sectionError} role="alert">{state.error} Loaded {section} are kept.</p>}
+    <div className={styles.pagination}>
+      <button className="button button-secondary" type="button" disabled={state.loading}
+        aria-disabled={complete || state.loading} aria-describedby={`${section}-progress`}
+        onClick={() => { if (!complete) onLoad(); }}>
+        {state.loading ? `Loading ${section}…` : state.error ? `Retry ${section}` : `Load more ${section}`}
+      </button>
+      <button className="button button-secondary" type="button" aria-disabled={complete}
+        aria-describedby={`${section}-progress`} aria-label={state.loading ? `Stop loading ${section}` : undefined}
+        onClick={() => { if (state.loading) onStop(); else if (!complete) onLoad(true); }}>
+        {state.loading ? "Stop" : section === "songs" ? "Load full catalog" : "Load all releases"}
+      </button>
+    </div>
+  </div>;
+}
+
 function ArtistCatalog({ spotifyId }: { spotifyId: string }) {
-  const [data, setData] = useState<ArtistPayload | null>(null);
-  const [offset, setOffset] = useState(0);
-  const [attempt, setAttempt] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [status, setStatus] = useState(0);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    let active = true;
-    let message = "The artist is unavailable. Try again.";
-    setLoading(true);
-    setError("");
-    setStatus(0);
-    const timer = setTimeout(() => {
-      controller.abort();
-      if (active) {
-        setLoading(false);
-        setError("The artist took too long to load. Try again.");
-      }
-    }, 12000);
-    async function load() {
-      try {
-        const response = await fetch(`/api/artist?spotifyId=${spotifyId}&offset=${offset}`, { signal: controller.signal });
-        if (!active || controller.signal.aborted) return;
-        if (!response.ok) {
-          setStatus(response.status);
-          if (response.status === 401) setData(null);
-          message = response.status === 401 ? "Your session ended. Sign in again to view this artist."
-            : response.status === 404 ? "This artist was not found on Spotify."
-              : response.status === 400 ? "This artist link is invalid."
-                : response.status === 504 ? "The artist took too long to load. Try again."
-                  : message;
-          throw new Error(message);
-        }
-        const result = parseArtistPayload(await response.json(), spotifyId, offset);
-        if (!active || controller.signal.aborted) return;
-        if (!result) throw new Error("The artist is unavailable. Try again.");
-        setData(previous => {
-          if (!previous) return result;
-          const tracks = offset > 0 || result.unavailable.includes("tracks")
-            ? Array.from(new Map([...previous.tracks, ...result.tracks].map(track => [track.id, track])).values())
-            : result.tracks;
-          return {
-            ...result,
-            tracks,
-            albums: result.unavailable.includes("albums") ? previous.albums : result.albums,
-          };
-        });
-      } catch {
-        if (active && !controller.signal.aborted) {
-          setError(message);
-        }
-      } finally {
-        clearTimeout(timer);
-        if (active && !controller.signal.aborted) setLoading(false);
-      }
-    }
-    void load();
-    return () => { active = false; controller.abort(); clearTimeout(timer); };
-  }, [spotifyId, offset, attempt]);
-
-  const retry = () => setAttempt(value => value + 1);
+  const { data, initial, songs, releases, retryInitial, load, stop } = useArtistCatalog(spotifyId);
+  const [songFilter, setSongFilter] = useState("");
+  const [releaseFilter, setReleaseFilter] = useState("");
+  const songQuery = songFilter.trim().toLocaleLowerCase();
+  const releaseQuery = releaseFilter.trim().toLocaleLowerCase();
+  const visibleSongs = data?.tracks.filter(track =>
+    [track.name, track.artist, track.album_name].some(value => value.toLocaleLowerCase().includes(songQuery))) || [];
+  const visibleReleases = data?.albums.filter(album => album.name.toLocaleLowerCase().includes(releaseQuery)) || [];
   const artist = data?.artist;
   return <div className={`room-container ${styles.page}`}>
     <Head><title>{artist ? `${artist.name} — Beatbrain` : "Artist — Beatbrain"}</title></Head>
@@ -100,62 +79,82 @@ function ArtistCatalog({ spotifyId }: { spotifyId: string }) {
     </header> : <h1 className={styles.emptyTitle}>Artist</h1>}
 
     <p className="sr-only" role="status" aria-live="polite">
-      {loading ? data ? "Loading more artist music…" : "Loading artist…" : data ? `${data.tracks.length} songs loaded.` : ""}
+      {initial.loading ? "Loading artist…" : ""}
     </p>
-    {!data && loading && <p className={styles.message}>Loading artist…</p>}
-    {error && <div className={styles.error} role="alert">
-      <p>{error}</p>
-      {status === 401
+    {!data && initial.loading && <p className={styles.message}>Loading artist…</p>}
+    {initial.error && <div className={styles.error} role="alert">
+      <p>{initial.error}</p>
+      {initial.status === 401
         ? <Link className="button button-secondary" href={`/auth/signin?callbackUrl=${encodeURIComponent(`/artist/${spotifyId}`)}`}>Sign in</Link>
-        : status === 400 || status === 404
+        : initial.status === 400 || initial.status === 404
           ? <Link className="button button-secondary" href="/discover">Back to Discover</Link>
-          : <button className="button button-secondary" type="button" onClick={retry} disabled={loading}>Try again</button>}
+          : <button className="button button-secondary" type="button" onClick={retryInitial} disabled={initial.loading}>Try again</button>}
     </div>}
 
     {data && <>
-      <section className={styles.section} aria-labelledby="artist-songs" aria-busy={loading}>
+      <section className={styles.section} aria-labelledby="artist-songs">
         <div className={styles.sectionHeading}>
           <h2 id="artist-songs">Songs</h2>
-          <p>Songs with {data.artist.name}, from Spotify.</p>
+          <p>Songs that credit {data.artist.name} as a performing artist on Spotify.</p>
         </div>
-        {data.tracks.length > 0 && <div className={styles.grid}>
-          {data.tracks.map((track, index) => <article className={styles.record} key={track.id}>
+        <CatalogControls section="songs" state={songs}
+          complete={data.next_cursor === null && !songs.error && !data.unavailable.includes("tracks")}
+          progress={`${data.tracks.length.toLocaleString()} songs loaded · ${data.scanned_releases.toLocaleString()} of ${data.release_total.toLocaleString()} releases checked`}
+          onLoad={automatic => { void load("songs", automatic); }} onStop={() => stop("songs")} />
+        <div className={styles.filter}>
+          <label htmlFor="song-filter">Filter loaded songs</label>
+          <input id="song-filter" type="search" value={songFilter} onChange={event => setSongFilter(event.target.value)}
+            placeholder="Song, artist, or album" aria-describedby={songQuery ? "song-matches" : undefined} />
+          {songQuery && <p id="song-matches" role="status">{visibleSongs.length.toLocaleString()} matching songs in {data.tracks.length.toLocaleString()} loaded.</p>}
+        </div>
+        {visibleSongs.length > 0 && <div className={styles.grid} aria-busy={songs.loading}>
+          {visibleSongs.map((track, index) => <article className={styles.record} key={track.id}>
             <AlbumArtwork src={track.thumb || ""} title={track.name} href={`/ext/spotify/${track.id}`} priority={index < 2} />
             <h3><Link href={`/ext/spotify/${track.id}`}>{track.name}</Link></h3>
             <p>{track.artist}</p>
+            <p className={styles.albumContext}>
+              <a href={`https://open.spotify.com/album/${track.album_id}`} target="_blank" rel="noreferrer">{track.album_name}</a>
+              {track.release_date && <> · {formatReleaseDate(track.release_date)}</>}
+            </p>
           </article>)}
         </div>}
-        {data.unavailable.includes("tracks") ? <div className={styles.partial} role="status">
-          <p>{data.tracks.length ? "More songs are unavailable. Try again." : "Songs are unavailable. Try again."}</p>
-          <button className="button button-secondary" type="button" disabled={loading} onClick={retry}>{loading ? "Loading…" : "Retry songs"}</button>
-        </div> : !data.tracks.length && <p className={styles.message}>
-          {data.next_offset !== null ? "No songs in this set. Load more to continue." : "No songs found for this artist."}
+        {!data.tracks.length && !songs.error && <p className={styles.message}>
+          {data.next_cursor !== null ? "No songs in these releases. Load more to continue." : "No songs found for this artist."}
         </p>}
-        {data.next_offset !== null && !data.unavailable.includes("tracks") && !error && <div className={styles.pagination}>
-          <button className="button button-secondary" type="button" disabled={loading} onClick={() => setOffset(data.next_offset!)}>
-            {loading ? "Loading songs…" : "Load more songs"}
-          </button>
-        </div>}
+        {songQuery && data.tracks.length > 0 && !visibleSongs.length && <p className={styles.message}>
+          No loaded songs match this filter. {data.next_cursor !== null ? "Change the filter or load more songs." : "Change the filter."}
+        </p>}
       </section>
 
-      <section className={styles.section} aria-labelledby="artist-releases" aria-busy={loading}>
+      <section className={styles.section} aria-labelledby="artist-releases">
         <div className={styles.sectionHeading}>
           <h2 id="artist-releases">Releases</h2>
-          <p>Open a release on Spotify.</p>
+          <p>Albums, singles, compilations, and appearances. Open a release on Spotify.</p>
         </div>
-        {data.albums.length > 0 && <div className={styles.grid}>
-          {data.albums.map(album => <article className={styles.record} key={album.id}>
+        <CatalogControls section="releases" state={releases}
+          complete={data.next_release_offset === null && !releases.error && !data.unavailable.includes("albums")}
+          progress={`${data.albums.length.toLocaleString()} releases loaded · ${data.release_total.toLocaleString()} release entries on Spotify`}
+          onLoad={automatic => { void load("releases", automatic); }} onStop={() => stop("releases")} />
+        <div className={styles.filter}>
+          <label htmlFor="release-filter">Filter loaded releases</label>
+          <input id="release-filter" type="search" value={releaseFilter} onChange={event => setReleaseFilter(event.target.value)}
+            placeholder="Release name" aria-describedby={releaseQuery ? "release-matches" : undefined} />
+          {releaseQuery && <p id="release-matches" role="status">{visibleReleases.length.toLocaleString()} matching releases in {data.albums.length.toLocaleString()} loaded.</p>}
+        </div>
+        {visibleReleases.length > 0 && <div className={styles.grid} aria-busy={releases.loading}>
+          {visibleReleases.map(album => <article className={styles.record} key={album.id}>
             <a className={styles.releaseLink} href={album.url} target="_blank" rel="noreferrer" aria-label={`${album.name} on Spotify`}>
               <Artwork key={album.image} src={album.image} name={album.name} />
             </a>
             <h3><a href={album.url} target="_blank" rel="noreferrer">{album.name}<ArrowUpRightIcon width={15} aria-hidden="true" /></a></h3>
-            <p>{[album.album_type ? album.album_type[0].toUpperCase() + album.album_type.slice(1) : "", formatReleaseDate(album.release_date)].filter(Boolean).join(" · ")}</p>
+            <p>{[album.album_group === "appears_on" ? "Appears on" : album.album_type ? album.album_type[0].toUpperCase() + album.album_type.slice(1) : "",
+              formatReleaseDate(album.release_date)].filter(Boolean).join(" · ")}</p>
           </article>)}
         </div>}
-        {data.unavailable.includes("albums") ? <div className={styles.partial} role="status">
-          <p>Releases are unavailable. Try again.</p>
-          <button className="button button-secondary" type="button" disabled={loading} onClick={retry}>{loading ? "Loading…" : "Retry releases"}</button>
-        </div> : !data.albums.length && <p className={styles.message}>No releases found for this artist.</p>}
+        {!data.albums.length && !releases.error && <p className={styles.message}>No releases found for this artist.</p>}
+        {releaseQuery && data.albums.length > 0 && !visibleReleases.length && <p className={styles.message}>
+          No loaded releases match this filter. {data.next_release_offset !== null ? "Change the filter or load more releases." : "Change the filter."}
+        </p>}
       </section>
     </>}
   </div>;

@@ -2,6 +2,12 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.12.0 — 2026-11-17
+
+- Browse artist songs from album track lists, including singles, compilations, and guest appearances.
+- Load more songs and releases, or load the full available catalog with progress and a Stop control.
+- Filter loaded songs and releases. Keep confirmed results when a request fails and resume at the same position.
+
 ## 1.11.0 — 2026-11-15
 
 - Open artist pages from song artist names and the Artists section in search.

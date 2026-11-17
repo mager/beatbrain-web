@@ -16,14 +16,29 @@
 .record h3 { margin-top: 13px; font-size: 17px; font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; }
 .record h3 a:hover { text-decoration: underline; }
 .record h3 svg { display: inline; margin-left: 5px; vertical-align: -1px; }
-.record > p { margin-top: 4px; color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+.record > p { margin-top: 4px; color: var(--text-muted); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.albumContext a { text-decoration: underline; text-underline-offset: 3px; }
+.albumContext a:hover { color: var(--text-primary); }
 .releaseLink { display: block; border-radius: 3px; }
 .releaseArt { aspect-ratio: 1; overflow: hidden; border-radius: 3px; background: var(--surface-bg); }
 .missingArt { display: grid; place-items: center; width: 100%; height: 100%; color: var(--text-muted); }
-.pagination { margin-top: 28px; }
+.catalogControls { margin-bottom: 24px; }
+.progress { color: var(--text-muted); font-size: 15px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+.loadStatus { display: block; }
+.loadStatus:empty { display: none; }
+.pagination { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.pagination button { min-height: 46px; }
+.pagination button[aria-disabled="true"] { opacity: 0.55; cursor: default; transform: none; }
+.sectionError { margin-top: 12px; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+.filter { display: grid; gap: 8px; width: min(100%, 420px); margin-bottom: 24px; }
+.filter label { font-size: 14px; font-weight: 500; }
+.filter input { width: 100%; min-width: 0; min-height: 46px; padding: 11px 14px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-bg); color: var(--text-primary); font: inherit; font-size: 16px; }
+.filter input::placeholder { color: var(--text-muted); opacity: 1; }
+.filter p { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+.filter input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .message { margin: 20px 0; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
-.partial, .error { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 22px; padding: 20px 0; border-top: 1px solid var(--border-color); }
-.partial p, .error p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+.error { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 22px; padding: 20px 0; border-top: 1px solid var(--border-color); }
+.error p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
 
 @media (max-width: 1000px) {
   .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -44,4 +59,6 @@
   .sectionHeading h2 { font-size: 25px; }
   .record h3 { font-size: 15px; margin-top: 11px; }
   .record > p { font-size: 13px; }
+  .pagination { gap: 10px; }
+  .pagination button { flex: 1 1 140px; }
 }
