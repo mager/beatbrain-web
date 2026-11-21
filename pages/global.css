@@ -440,11 +440,22 @@ textarea {
   transform: none;
 }
 .button-primary {
-  background: var(--room-accent);
-  color: var(--room-on-accent, var(--accent-surface));
+  background: var(--action-fill);
+  color: var(--action-ink);
 }
-.button-primary:hover {
-  background: var(--room-accent-hover, var(--theme-accent-hover));
+.button-primary:enabled:hover,
+a.button-primary:hover {
+  background: var(--action-hover);
+}
+.button-primary:focus-visible {
+  outline: 3px solid var(--action-fill);
+  outline-offset: 3px;
+}
+.button-primary:disabled {
+  opacity: 1;
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  color: var(--text-muted);
 }
 .button-secondary {
   border-color: var(--border-strong);

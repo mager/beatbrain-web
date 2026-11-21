@@ -8,6 +8,9 @@
   --text-muted: #cbc4d9;
   --border-color: #514a62;
   --border-strong: #91869f;
+  --action-fill: #efd6ff;
+  --action-hover: #f7eaff;
+  --action-ink: #150b1d;
   --theme-accent: #e4b6ff;
   --theme-accent-hover: #edcfff;
   --avatar-bg: #2e2935;
@@ -28,6 +31,9 @@
   --text-muted: #595066;
   --border-color: #aba0ba;
   --border-strong: #786987;
+  --action-fill: #4c1669;
+  --action-hover: #390f51;
+  --action-ink: #ffffff;
   --theme-accent: #623284;
   --theme-accent-hover: #4e226d;
   --avatar-bg: #e9e1ee;
