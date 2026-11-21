@@ -2,6 +2,11 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.12.4 — 2026-11-21
+
+- Increase contrast for primary actions, disabled controls, and the scrollbar.
+- Give Discover listen links a larger tap target and load album covers to match the tile size.
+
 ## 1.12.2 — 2026-11-21
 
 - Keep navigation, search, and posting in one sticky header. Use a compact navigation menu on smaller screens.

@@ -7,15 +7,27 @@ export default function AlbumArtwork({
   title,
   href,
   priority = false,
+  sizes,
 }: {
   src: string;
   title: string;
   href: string;
   priority?: boolean;
+  sizes?: string;
 }) {
   const stage = useRef<HTMLDivElement>(null);
-  const [failed, setFailed] = useState(false);
+  const [retrySource, setRetrySource] = useState<string | null>(null);
+  const [failedSource, setFailedSource] = useState<string | null>(null);
+  const failed = src === failedSource;
   const full = src.replace("ab67616d00001e02", "ab67616d0000b273");
+  const spotifyCover = /^https:\/\/i\.scdn\.co\/image\/ab67616d0000(?:1e02|b273)[a-f0-9]+$/i.test(src);
+  const thumb = src.replace("ab67616d0000b273", "ab67616d00001e02");
+  const responsive = sizes && spotifyCover && retrySource !== src;
+  const imageProps = {
+    src: retrySource === src ? src : full,
+    srcSet: responsive ? `${thumb} 300w, ${full} 640w` : undefined,
+    sizes: responsive ? sizes : undefined,
+  };
   function tilt(event: PointerEvent<HTMLDivElement>) {
     if (
       event.pointerType !== "mouse" ||
@@ -43,7 +55,7 @@ export default function AlbumArtwork({
     >
       {src && !failed && (
         <img
-          src={full}
+          {...imageProps}
           className="artwork-light"
           alt=""
           aria-hidden="true"
@@ -59,16 +71,18 @@ export default function AlbumArtwork({
         {src && !failed ? (
           <img
             className="album-art"
-            src={full}
+            {...imageProps}
             alt={`${title} cover`}
             width={400}
             height={400}
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : "auto"}
             onError={(event) => {
-              if (event.currentTarget.src !== src) {
-                event.currentTarget.src = src;
-              } else setFailed(true);
+              if (retrySource !== src && event.currentTarget.currentSrc !== new URL(src, document.baseURI).href) {
+                setRetrySource(src);
+              } else {
+                setFailedSource(src);
+              }
             }}
           />
         ) : (

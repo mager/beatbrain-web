@@ -28,7 +28,6 @@
 .loadStatus:empty { display: none; }
 .pagination { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
 .pagination button { min-height: 46px; }
-.pagination button[aria-disabled="true"] { opacity: 0.55; cursor: default; transform: none; }
 .sectionError { margin-top: 12px; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
 .filter { display: grid; gap: 8px; width: min(100%, 420px); margin-bottom: 24px; }
 .filter label { font-size: 14px; font-weight: 500; }

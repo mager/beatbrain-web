@@ -178,6 +178,9 @@ export default function Discover() {
                 src={track.image || ""}
                 title={`${track.name} by ${track.artist}`}
                 href={`/ext/spotify/${track.source_id}`}
+                sizes={index === 0
+                  ? "(max-width: 600px) 50vw, (max-width: 760px) 67vw, (max-width: 1100px) 50vw, 29vw"
+                  : "auto, (max-width: 600px) 50vw, (max-width: 760px) 33vw, (max-width: 1100px) 25vw, 14.3vw"}
                 priority={index === 0}
               />
               <div className="post-track">

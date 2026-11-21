@@ -50,7 +50,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #51545c;
+    background: var(--border-strong);
     border-radius: 2px;
   }
 
@@ -434,11 +434,6 @@ textarea {
 .button:active {
   transform: translateY(1px);
 }
-.button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  transform: none;
-}
 .button-primary {
   background: var(--action-fill);
   color: var(--action-ink);
@@ -451,12 +446,6 @@ a.button-primary:hover {
   outline: 3px solid var(--action-fill);
   outline-offset: 3px;
 }
-.button-primary:disabled {
-  opacity: 1;
-  background: var(--surface-raised);
-  border-color: var(--border-strong);
-  color: var(--text-muted);
-}
 .button-secondary {
   border-color: var(--border-strong);
   background: var(--surface-bg);
@@ -464,6 +453,14 @@ a.button-primary:hover {
 }
 .button-secondary:hover {
   background: var(--surface-raised);
+}
+.button:disabled,
+.button[aria-disabled="true"] {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
 }
 .room-container {
   width: 100%;
@@ -1774,8 +1771,9 @@ p {
   line-height: 1.45;
 }
 .discovery-track .listen-link {
-  min-width: 28px;
-  min-height: 28px;
+  flex: 0 0 44px;
+  min-width: 44px;
+  min-height: 44px;
 }
 .discovery-skeleton > div {
   aspect-ratio: 1;
@@ -1936,15 +1934,6 @@ p {
   }
   .discovery-track .post-track p {
     font-size: 12px;
-  }
-  .discovery-track .post-track {
-    position: relative;
-    padding-right: 18px;
-  }
-  .discovery-track .listen-link {
-    position: absolute;
-    right: -4px;
-    top: -3px;
   }
   .discovery-track .artwork-open {
     right: 6px;
