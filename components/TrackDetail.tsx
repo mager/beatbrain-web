@@ -134,6 +134,12 @@ export default function TrackDetail({ track, posts, sourceId }: Props) {
               <SpotifyLogo />
               Listen on Spotify
             </a>
+            <Link
+              className="text-button"
+              href={{ pathname: "/create", query: { versionOf: sourceId } }}
+            >
+              Choose a version
+            </Link>
           </div>
         )}
         {people.length > 0 && (

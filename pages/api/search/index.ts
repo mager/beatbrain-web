@@ -19,7 +19,17 @@ async function music(query: string, limit: number, all = false): Promise<{ resul
   const data = await response.json();
   if (!Array.isArray(data?.results) || (all && !Array.isArray(data?.artists))) throw new Error("Invalid search response");
   return {
-    results: data.results.map(searchTrack).filter(Boolean).slice(0, limit),
+    results: data.results.flatMap((item: any) => {
+      const track = searchTrack(item);
+      if (!track) return [];
+      return [{
+        ...track,
+        album: typeof item.album === "string" ? item.album : undefined,
+        album_type: typeof item.album_type === "string" ? item.album_type : undefined,
+        release_date: typeof item.release_date === "string" ? item.release_date : undefined,
+        explicit: typeof item.explicit === "boolean" ? item.explicit : undefined,
+      }];
+    }).slice(0, limit),
     artists: all ? data.artists.map(searchArtist).filter(Boolean).slice(0, limit) : [],
   };
 }

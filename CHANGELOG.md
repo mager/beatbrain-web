@@ -2,6 +2,10 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.12.3 — 2026-11-21
+
+- Choose a Spotify release from the track page or the post search. The composer shows the release details and keeps the note when you switch versions.
+
 ## 1.12.1 — 2026-11-21
 
 - Use lavender in light mode and midnight violet in dark mode.

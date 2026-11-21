@@ -6,6 +6,19 @@ import handler from '../pages/api/search';
 
 function response() { return { code: 200, body: undefined as any, headers: {} as any, setHeader(k: string,v: unknown) { this.headers[k]=v; return this; }, status(n: number) { this.code=n; return this; }, json(v: unknown) { this.body=v; return this; } } as any; }
 const request=(body: unknown={query:'mager',scope:'all'})=>({method:'POST',headers:{},body} as any);
+
+test('composer search identifies separate Spotify releases', async (t) => {
+ const session = auth.api.getSession, fetcher = global.fetch;
+ t.after(() => { auth.api.getSession = session; global.fetch = fetcher; });
+ auth.api.getSession = (async () => ({ user: { id: 'member' } })) as any;
+ const single = {id:'2QrLrUqdSg5njDVEqq5QFp',name:'RHYNO',artist:'Travis Scott',thumb:null,album:'RHYNO (from GTAVI: The Album)',album_type:'single',release_date:'2026-09-17',explicit:true};
+ const album = {id:'2NliF6CtlWolNA0Jzkw4ba',name:'RHYNO',artist:'Travis Scott',thumb:null,album:'Grand Theft Auto VI: The Album',album_type:'album',release_date:'2026-11-19',explicit:true};
+ global.fetch = async () => Response.json({ results: [single, album] });
+ const res = response();
+ await handler(request({query:'RHYNO'}), res);
+ assert.equal(res.code, 200);
+ assert.deepEqual(res.body.results, [single, album]);
+});
 test('combined search protects membership and returns only public profile fields',async t=>{
  const session=auth.api.getSession,find=prisma.user.findMany,fetcher=global.fetch;
  t.after(()=>{auth.api.getSession=session;prisma.user.findMany=find;global.fetch=fetcher;});

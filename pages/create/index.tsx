@@ -10,29 +10,38 @@ import {
   ArrowUpRightIcon,
 } from "@heroicons/react/24/outline";
 import SelectedTrack from "../../components/SelectedTrack";
-type Track = { id: string; name: string; artist: string; thumb: string | null };
+import type { SearchTrack } from "../../lib/search-types";
+import { trackReleaseLabel, trackVersionSearch } from "../../lib/track-details";
+
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  if (typeof query.track !== "string" || !/^[a-zA-Z0-9]{22}$/.test(query.track))
+  const sourceId = query.track ?? query.versionOf;
+  if (typeof sourceId !== "string" || !/^[a-zA-Z0-9]{22}$/.test(sourceId))
     return { props: { initialTrack: null } };
   try {
     let response = await backendFetch(
-      `${SERVER_HOST}/v2/track?spotifyId=${query.track}`,
+      `${SERVER_HOST}/v2/track?spotifyId=${sourceId}`,
     );
     if (!response.ok)
       response = await backendFetch(
-        `${SERVER_HOST}/track?spotifyId=${query.track}`,
+        `${SERVER_HOST}/track?spotifyId=${sourceId}`,
       );
     if (!response.ok) throw new Error("Track unavailable");
     const data = await response.json();
     if (!data.track) throw new Error("Track unavailable");
     const track = adaptTrack(data);
+    if (query.track === undefined)
+      return { props: { initialTrack: null, initialVersionSearch: trackVersionSearch(track.name, track.artist) } };
     return {
       props: {
         initialTrack: {
-          id: query.track,
+          id: sourceId,
           name: track.name,
           artist: track.artist,
           thumb: track.image || null,
+          album: track.album?.name || null,
+          album_type: track.album?.album_type || null,
+          release_date: track.release_date || null,
+          explicit: track.explicit,
         },
       },
     };
@@ -48,16 +57,19 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 export default function Create({
   initialTrack,
   initialError = "",
+  initialVersionSearch = null,
 }: {
-  initialTrack: Track | null;
+  initialTrack: SearchTrack | null;
   initialError?: string;
+  initialVersionSearch?: ReturnType<typeof trackVersionSearch> | null;
 }) {
   const router = useRouter();
   const searchInput = useRef<HTMLInputElement>(null);
   const restoreSearchFocus = useRef(false);
-  const [query, setQuery] = useState(""),
-    [tracks, setTracks] = useState<Track[]>([]),
-    [selected, setSelected] = useState<Track | null>(initialTrack),
+  const [query, setQuery] = useState(initialVersionSearch?.label ?? ""),
+    [versionSearch, setVersionSearch] = useState(initialVersionSearch),
+    [tracks, setTracks] = useState<SearchTrack[]>([]),
+    [selected, setSelected] = useState<SearchTrack | null>(initialTrack),
     [content, setContent] = useState(""),
     [searching, setSearching] = useState(false),
     [saving, setSaving] = useState(false),
@@ -72,8 +84,9 @@ export default function Create({
     setSelected(initialTrack);
     setError(initialError);
     setContent("");
-    setQuery("");
-  }, [initialTrack, initialError]);
+    setVersionSearch(initialVersionSearch);
+    setQuery(initialVersionSearch?.label ?? "");
+  }, [initialTrack, initialError, initialVersionSearch]);
   useEffect(() => {
     if (query.trim().length < 2 || selected) {
       setTracks([]);
@@ -81,14 +94,15 @@ export default function Create({
       return;
     }
     const controller = new AbortController();
+    setTracks([]);
+    setSearching(true);
+    setError("");
     const timer = setTimeout(async () => {
-      setSearching(true);
-      setError("");
       try {
         const response = await fetch("/api/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query }),
+          body: JSON.stringify({ query: versionSearch?.label === query ? versionSearch.query : query }),
           signal: controller.signal,
         });
         const data = await response.json();
@@ -107,7 +121,7 @@ export default function Create({
       clearTimeout(timer);
       controller.abort();
     };
-  }, [query, selected]);
+  }, [query, selected, versionSearch]);
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (!selected) return;
@@ -155,7 +169,7 @@ export default function Create({
                 ref={searchInput}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Track or artist name"
+                placeholder="Track, artist, or album"
                 autoComplete="off"
                 maxLength={200}
               />
@@ -165,29 +179,33 @@ export default function Create({
                 ? "Finding your track…"
                 : query.trim().length >= 2 && !tracks.length
                   ? "No tracks found. Try a different title or artist."
-                  : "Search, then choose the cover."}
+                  : "Choose the release you want to post."}
             </div>
             <ul className="search-results">
-              {tracks.map((track) => (
-                <li key={track.id}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelected(track);
-                      setError("");
-                    }}
-                  >
-                    {track.thumb && (
-                      <img src={track.thumb} width={56} height={56} alt="" />
-                    )}
-                    <span>
-                      <strong>{track.name}</strong>
-                      <span>{track.artist}</span>
-                    </span>
-                    <ArrowUpRightIcon width={18} />
-                  </button>
-                </li>
-              ))}
+              {tracks.map((track) => {
+                const release = trackReleaseLabel(track);
+                return (
+                  <li key={track.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelected(track);
+                        setError("");
+                      }}
+                    >
+                      {track.thumb && (
+                        <img src={track.thumb} width={56} height={56} alt="" />
+                      )}
+                      <span>
+                        <strong>{track.name}</strong>
+                        <span>{track.artist}</span>
+                        {release && <span>{release}</span>}
+                      </span>
+                      <ArrowUpRightIcon width={18} />
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </>
         ) : (
@@ -197,7 +215,11 @@ export default function Create({
             onChange={() => {
               restoreSearchFocus.current = true;
               setSelected(null);
-              setQuery("");
+              if (!query.trim()) {
+                const search = trackVersionSearch(selected.name, selected.artist);
+                setVersionSearch(search);
+                setQuery(search.label);
+              }
             }}
           >
             <label>

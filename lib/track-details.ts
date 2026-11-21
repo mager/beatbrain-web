@@ -1,4 +1,5 @@
 import type { TrackMeta } from "./types";
+import type { SearchRelease } from "./search-types";
 export function trackFacts(
   meta?: TrackMeta | null,
 ): { label: string; value: string }[] {
@@ -53,6 +54,28 @@ export function formatReleaseDate(value?: string): string {
     timeZone: "UTC",
   });
 }
+
+const releaseTypes = new Map([["album", "Album"], ["single", "Single"], ["compilation", "Compilation"]]);
+
+export function trackReleaseLabel(track: SearchRelease): string {
+  return [
+    track.album,
+    releaseTypes.get(track.album_type ?? ""),
+    formatReleaseDate(track.release_date ?? undefined),
+    track.explicit ? "Explicit" : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
+
+export function trackVersionSearch(name: string, artist: string) {
+  const title = name.replace(/ (\(from [^()]+\)|\[from [^\[\]]+\]|- from "[^"]+")$/i, "");
+  const label = `${title} ${artist}`.trim().slice(0, 200);
+  const field = (value: string) => value.replace(/[:"]/g, " ").trim();
+  const query = `track:${field(title)} artist:${field(artist)}`;
+  return { label, query: title && artist && query.length <= 200 ? query : label };
+}
+
 export function trackSourceLinks(track: {
   id?: string;
   links?: { type: string; url: string }[] | null;

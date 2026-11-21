@@ -948,9 +948,15 @@ p {
 }
 .search-results button > span {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+.search-results button > img,
+.search-results button > svg {
+  flex-shrink: 0;
 }
 .search-results strong {
   font-size: 15px;
