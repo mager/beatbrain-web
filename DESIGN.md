@@ -4,16 +4,16 @@ The user chose an album-led room with gentle 3D tilt, art-colored light, and smo
 
 ## Theme
 
-Follow the system color scheme until the visitor chooses a theme with the footer light bulb. Save that choice locally and apply it before first paint. System changes remain live until an explicit choice is saved. Both themes use the same layout and artwork. Light uses warm paper (#e7e5df), white panels, dark text (#211f25), and a deep purple accent (#653178). Dark uses a near-black canvas with lighter panels. Keep clear borders around inputs and secondary controls, with brighter secondary text. Album accents must meet 7:1 against the active page and button text.
+Follow the system color scheme until the visitor chooses a theme with the footer light bulb. Save that choice locally and apply it before first paint. System changes remain live until an explicit choice is saved. Both themes use the same layout and artwork. Light uses pale lavender (#e8e3f5), white panels, dark text (#241c32), and a deep purple accent (#623284). Dark uses a midnight violet canvas with lighter panels. Keep clear borders around inputs and secondary controls, with brighter secondary text. Album accents must meet 7:1 against the active page and button text.
 
 ## Tokens
 
-- Background: `#080a0e`; surface: `#20242c`; raised surface: `#2d333e`; rule: `#4b5361`; control border: `#7c879a`.
-- Primary text: `#faf8f3`; secondary text: `#c1c7d1`; accent: `#e4b6ff`.
+- Background: `#151322`; surface: `#242135`; raised surface: `#343047`; rule: `#514a62`; control border: `#91869f`.
+- Primary text: `#faf8f3`; secondary text: `#cbc4d9`; accent: `#e4b6ff`.
 - Type: locally served Space Grotesk, 400–700 for controls, metadata, and music. Archivo 900 italic for page headings. Body 14–16 px; music titles 15–21 px; page headings 44–96 px.
 - Main measure: full viewport with 32 px edges on desktop and 16 px on mobile. Forms keep a short measure. About prose is at most 65ch.
 - Artwork: square, 3 px corner. Controls: 6 px corner, 46 px minimum height.
-- Post grid: fill available width with columns at least 280 px; two below 900 px, one below 600 px. Discover: six columns on desktop, four or three at intermediate widths, two on mobile. Its first cover spans two columns and two rows on larger screens, and the full width on phones. Its title uses the display face and a direct posting link. Source order stays intact; size does not imply a chart rank. Keep author, date, title, artist, and note visible.
+- Post grid: fill available width with columns at least 280 px; two below 900 px, one below 600 px. Discover: seven columns on desktop, four or three at intermediate widths, two on mobile. Its first cover spans two columns and two rows on larger screens, and one column on phones. Its title uses the display face and a direct posting link. Source order stays intact; size does not imply a chart rank. Keep author, date, title, artist, and note visible.
 
 ## Interaction
 

@@ -19,9 +19,9 @@ test("blocked storage still uses the system theme", () => {
 test("album accents remain readable on light pages and buttons", () => {
   for (const accent of ["#eeeeee", "#ffccee", "#ccee00", "#6688ff", "#111111"]) {
     const palette = paletteForTheme({ ...FALLBACK_PALETTE, accent }, "light");
-    assert.ok(contrastRatio(palette.accent, "#e7e5df") >= 7);
-    assert.ok(contrastRatio(palette.hover, "#e7e5df") >= 7);
-    assert.ok(contrastRatio(palette.muted, "#e7e5df") >= 4.5);
+    assert.ok(contrastRatio(palette.accent, "#e8e3f5") >= 7);
+    assert.ok(contrastRatio(palette.hover, "#e8e3f5") >= 7);
+    assert.ok(contrastRatio(palette.muted, "#e8e3f5") >= 4.5);
   }
   assert.deepEqual(paletteForTheme(FALLBACK_PALETTE, "dark"), FALLBACK_PALETTE);
 });

@@ -7,7 +7,7 @@ export type AlbumPalette = {
   border: string;
   muted: string;
 };
-const PAGE: RGB = [8, 10, 14];
+const PAGE: RGB = [21, 19, 34];
 const hex = (rgb: RGB) =>
   "#" + rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
 const rgb = (color: string): RGB =>
@@ -32,7 +32,7 @@ function palette(color: RGB): AlbumPalette {
   return {
     accent: hex(accent),
     hover: hex(mix(accent, [255, 255, 255], 0.16)),
-    surface: hex(mix([32, 36, 44], color, 0.08)),
+    surface: hex(mix([36, 33, 53], color, 0.08)),
     border: hex(mix(PAGE, accent, 0.36)),
     muted: hex(mix(accent, [225, 225, 225], 0.68)),
   };
@@ -41,7 +41,7 @@ export const FALLBACK_PALETTE: AlbumPalette = palette([216, 213, 207]);
 
 export function paletteForTheme(value: AlbumPalette, theme: "light" | "dark"): AlbumPalette {
   if (theme === "dark") return value;
-  const page: RGB = [231, 229, 223];
+  const page: RGB = [232, 227, 245];
   let accent = rgb(value.accent);
   for (let i = 0; i < 60 && contrastRatio(hex(accent), hex(page)) < 7; i++)
     accent = mix(accent, [0, 0, 0], 0.08);

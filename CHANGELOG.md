@@ -2,6 +2,11 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.12.1 — 2026-11-21
+
+- Use lavender in light mode and midnight violet in dark mode.
+- Show more covers at the top of Discover with a shorter header, a smaller title, and a denser album grid.
+
 ## 1.12.0 — 2026-11-17
 
 - Browse artist songs from album track lists, including singles, compilations, and guest appearances.

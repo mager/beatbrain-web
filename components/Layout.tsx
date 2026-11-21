@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           content="An invite-only listening room for you and your music friends."
         />
         <meta name="robots" content="noindex,nofollow" />
-        <meta name="theme-color" content={theme === "light" ? "#e7e5df" : "#080a0e"} />
+        <meta name="theme-color" content={theme === "light" ? "#e8e3f5" : "#151322"} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       {!entry && <Header />}

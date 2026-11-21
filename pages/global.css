@@ -361,7 +361,7 @@ textarea {
 }
 .header-inner {
   width: 100%;
-  padding: 24px 32px;
+  padding: 12px 32px;
   margin: auto;
   display: flex;
   align-items: center;
@@ -1672,12 +1672,21 @@ p {
   margin: 0 8px;
   color: #62656d;
 }
+.discover-page {
+  padding-top: 20px;
+}
+.discover-page .display-title {
+  font-size: clamp(36px, 4vw, 56px);
+}
+.discover-page .collection-heading {
+  margin-bottom: 12px;
+}
 .discovery-controls {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px 24px;
-  margin-bottom: 28px;
+  gap: 6px 16px;
+  margin-bottom: 16px;
 }
 .discovery-controls .profile-view-switch {
   max-width: 100%;
@@ -1696,8 +1705,8 @@ p {
 }
 .discover-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 32px 20px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 24px 16px;
 }
 .discovery-lead {
   grid-column: span 2;
@@ -1861,8 +1870,8 @@ p {
   }
   .header-inner {
     flex-wrap: wrap;
-    gap: 16px;
-    padding: 20px;
+    gap: 12px;
+    padding: 12px 20px;
   }
   .header-inner nav {
     order: 3;
@@ -1892,14 +1901,21 @@ p {
   }
   .discover-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px 12px;
+    gap: 20px 12px;
   }
   .discovery-lead {
-    grid-column: 1 / -1;
+    grid-column: auto;
     grid-row: auto;
   }
+  .discovery-track.discovery-lead h2 {
+    font-size: 18px;
+  }
+  .discovery-track.discovery-lead .post-track p {
+    font-size: 12px;
+    margin-top: 4px;
+  }
   .discovery-track.discovery-lead .post-track {
-    margin-top: 16px;
+    margin-top: 12px;
   }
   .discovery-track h2 {
     font-size: 15px;
