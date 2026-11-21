@@ -2,6 +2,10 @@
 
 Beatbrain is an invite-only social music site. Album art leads. Your profile is your feed.
 
+## 1.12.2 — 2026-11-21
+
+- Keep navigation, search, and posting in one sticky header. Use a compact navigation menu on smaller screens.
+
 ## 1.12.1 — 2026-11-21
 
 - Use lavender in light mode and midnight violet in dark mode.
